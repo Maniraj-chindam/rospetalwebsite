@@ -99,7 +99,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 01. HERO SECTION WITH EXACT USER IMAGE & 8 ARCHED CATEGORIES    */}
       {/* ============================================================== */}
-      <section id="step-01" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
+      <section id="step-01" className="relative bg-transparent">
 
         {/* ---------------- EXACT HERO BANNER ---------------- */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -183,7 +183,7 @@ export default function MasterBoutiquePage() {
                 className="group flex flex-col items-center text-center space-y-2 cursor-pointer"
               >
                 {/* Signature Arched Card Shape */}
-                <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-xl overflow-hidden bg-rosepetal-card border border-rosepetal-border/50 shadow-sm group-hover:shadow-md transition-all duration-300">
+                <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-xl overflow-hidden bg-transparent border border-rosepetal-border/40 group-hover:shadow-md transition-all duration-300">
                   <Image
                     src={cat.image}
                     alt={cat.name}
