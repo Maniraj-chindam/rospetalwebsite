@@ -32,7 +32,7 @@ export const HERO_ARCHED_CATEGORIES = [
     id: "sarees",
     name: "SAREES",
     subtitle: "Timeless Elegance",
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
+    image: "/sarees-new-photo.png",
     href: "/collections?category=Sarees",
   },
   {
