@@ -237,35 +237,26 @@ export default function MasterBoutiquePage() {
 
         {/* Row 2: 2 Promotional Banners */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Banner 1: Elegant Dresses (Matches Banner 2 HTML Structure with interactive button) */}
-          <div className="relative rounded-2xl overflow-hidden bg-[#F8E7E9] border border-rosepetal-border/60 p-8 sm:p-10 flex flex-col justify-between min-h-[220px]">
-            <div className="z-10 max-w-[60%] space-y-2">
-              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-rosepetal-muted block">
-                PREMIUM COLLECTION
-              </span>
-              <h3 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text leading-tight">
-                Elegant Dresses for Every Occasion
-              </h3>
-              <p className="text-xs text-rosepetal-muted font-light leading-relaxed hidden sm:block">
-                From casual days to grand celebrations — find dresses that make you feel extraordinary.
-              </p>
-              <div className="pt-3">
+          {/* Banner 1: Elegant Dresses (Matches Banner 2 clean design with real interactive button) */}
+          <div className="relative rounded-2xl overflow-hidden bg-[#F8E7E9] border border-rosepetal-border/60 shadow-sm group min-h-[220px]">
+            <div className="relative aspect-[1024/412] sm:aspect-auto sm:h-full min-h-[220px] w-full">
+              <Image
+                src="/elegant-dresses-clean-banner.png"
+                alt="Elegant Dresses for Every Occasion - Premium Collection"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-center group-hover:scale-[1.01] transition-transform duration-500"
+              />
+              {/* Live Interactive Button outside/over the image */}
+              <div className="absolute left-[7%] bottom-[22%] z-10">
                 <Link
                   href="/collections?category=Dresses"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-sm shadow-sm transition-all group"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-sm shadow-sm transition-all group/btn"
                 >
                   <span>SHOP DRESSES</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
                 </Link>
               </div>
-            </div>
-            <div className="absolute right-0 top-0 bottom-0 w-[45%]">
-              <Image
-                src="/elegant-dresses-model-arch.png"
-                alt="Elegant Dresses for Every Occasion"
-                fill
-                className="object-cover object-center"
-              />
             </div>
           </div>
 
