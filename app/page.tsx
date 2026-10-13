@@ -119,7 +119,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         {/* ---------------- 6 ARCHED CATEGORIES (MATCHING 1ST IMAGE) ---------------- */}
-        <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="pt-12 pb-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           {/* Centered Heading */}
           <div className="text-center mb-10">
             <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
@@ -171,9 +171,9 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 05. NEW ARRIVALS SECTION                                        */}
       {/* ============================================================== */}
-      <section id="new-arrivals" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section id="new-arrivals" className="pt-4 pb-8 sm:pt-6 sm:pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header: Title & Subtitle on Left, VIEW ALL on Right */}
-        <div className="flex items-end justify-between mb-8 pb-3 border-b border-rosepetal-border/40">
+        <div className="flex items-end justify-between mb-6 pb-2.5 border-b border-rosepetal-border/40">
           <div>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
               New Arrivals
@@ -192,7 +192,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         {/* Row 1: 4 Product Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
           {NEW_ARRIVALS_PRODUCTS.map((product) => {
             const isFavorited = wishlist.includes(product.id);
             return (
@@ -288,7 +288,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 05B. CRAFTED WITH HEART SECTION (MATCHING USER REFERENCE)      */}
       {/* ============================================================== */}
-      <section id="crafted-with-heart" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section id="crafted-with-heart" className="pt-2 pb-12 sm:pt-4 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="relative rounded-2xl overflow-hidden shadow-lg border border-rosepetal-border/60 min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex items-center">
           {/* Edge-to-Edge Full-Width Video */}
           <video
