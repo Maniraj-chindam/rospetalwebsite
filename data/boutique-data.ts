@@ -72,6 +72,65 @@ export const HERO_ARCHED_CATEGORIES = [
   },
 ];
 
+export const SHOP_BY_CATEGORY_ITEMS = [
+  {
+    id: "sarees",
+    name: "Sarees",
+    subtitle: "Timeless Elegance",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Sarees",
+  },
+  {
+    id: "lehengas",
+    name: "Lehengas",
+    subtitle: "For Your Big Days",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Lehengas",
+  },
+  {
+    id: "dresses",
+    name: "Dresses",
+    subtitle: "Modern & Ethnic",
+    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Dresses",
+  },
+  {
+    id: "kurtis",
+    name: "Kurtis & Suits",
+    subtitle: "Everyday Grace",
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Designer+Suits",
+  },
+  {
+    id: "bed-covers",
+    name: "Bed Covers",
+    subtitle: "Dream in Style",
+    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Bed+Linens",
+  },
+  {
+    id: "blankets-quilts",
+    name: "Blankets & Quilts",
+    subtitle: "Warmth Redefined",
+    image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Blankets+%26+Quilts",
+  },
+  {
+    id: "cushion-covers",
+    name: "Pillow & Cushion Covers",
+    subtitle: "Little Details, Big Change",
+    image: "https://images.unsplash.com/photo-1584100936733-146603a165df?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Accessories",
+  },
+  {
+    id: "home-decor",
+    name: "Home Decor",
+    subtitle: "Style Your Space",
+    image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Home+Decor",
+  },
+];
+
 export const HOME_PILLARS = [
   {
     icon: "Sparkles",

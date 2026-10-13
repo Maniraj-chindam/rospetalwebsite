@@ -18,6 +18,7 @@ import {
   Calendar,
   CheckCircle2,
   Play,
+  Heart,
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
 import ProductCard from "@/components/ProductCard";
@@ -25,6 +26,7 @@ import StoryVideoModal from "@/components/StoryVideoModal";
 import {
   HOME_PILLARS,
   HERO_ARCHED_CATEGORIES,
+  SHOP_BY_CATEGORY_ITEMS,
   ABOUT_PILLARS,
   PRODUCTS_CATALOG,
   LOOKBOOK_GALLERY,
@@ -45,7 +47,7 @@ const COLLECTION_TABS = [
 const LOOKBOOK_TABS = ["All", "Festive", "Bridal", "Handloom", "Contemporary"];
 
 export default function MasterBoutiquePage() {
-  const { setIsConsultationOpen } = useBoutique();
+  const { setIsConsultationOpen, wishlist, toggleWishlist } = useBoutique();
 
   // Story video modal state
   const [isStoryOpen, setIsStoryOpen] = useState(false);
@@ -150,74 +152,82 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* ---------------- EXPLORE OUR COLLECTIONS (EXACT USER BACKGROUND IMAGE) ---------------- */}
-        <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="w-full overflow-x-auto scrollbar-none pb-2">
-            <div className="relative min-w-[760px] lg:min-w-0 w-full aspect-[1024/385] rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-rosepetal-border/50 bg-[#FCECEE]">
-              {/* 1. Exact Given Image Without Any Changes */}
-              <Image
-                src="/user-given-background.png"
-                alt="Explore Our Collections - A curated range for every you"
-                fill
-                priority
-                quality={100}
-                className="object-cover"
-                sizes="(max-width: 1280px) 100vw, 1280px"
-              />
-
-              {/* 2. Interactive Hotzone: VIEW ALL → */}
-              <Link
-                href="/collections"
-                className="absolute top-[17%] right-[4.5%] w-[12%] h-[12%] rounded-md cursor-pointer hover:bg-rosepetal-wine/10 focus:outline-none transition-colors"
-                title="View All Collections"
-                aria-label="View All Collections"
-              />
-
-              {/* 3. Interactive Hotzones: 6 Category Cards */}
-              <div className="absolute top-[34%] bottom-[6%] left-[5.5%] right-[5.5%] grid grid-cols-6 gap-[1.2%]">
-                {[
-                  { name: "Sarees", tab: "Sarees" },
-                  { name: "Lehengas", tab: "Lehengas" },
-                  { name: "Designer Suits", tab: "Designer Suits" },
-                  { name: "Bridal Wear", tab: "Bridal Wear" },
-                  { name: "Bed & Bath", tab: "All" },
-                  { name: "Accessories", tab: "Accessories" },
-                ].map((item) => (
-                  <button
-                    key={item.name}
-                    type="button"
-                    onClick={() => {
-                      setActiveCollectionTab(item.tab);
-                      const el = document.getElementById("step-03");
-                      el?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group relative w-full h-full rounded-2xl cursor-pointer hover:bg-rosepetal-wine/5 hover:ring-2 hover:ring-rosepetal-wine/30 transition-all focus:outline-none"
-                    aria-label={`Explore ${item.name}`}
-                    title={`Explore ${item.name}`}
-                  >
-                    <span className="sr-only">Explore {item.name}</span>
-                  </button>
-                ))}
-              </div>
-
-              {/* 4. Interactive Hotzones: Carousel Navigation Arrows */}
-              <button
-                type="button"
-                onClick={() => {
-                  document.getElementById("step-03")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="absolute left-[1.2%] top-[52%] -translate-y-1/2 w-[3.5%] aspect-square rounded-full cursor-pointer hover:bg-rosepetal-wine/10 transition-colors focus:outline-none"
-                aria-label="Previous Collection"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  document.getElementById("step-03")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="absolute right-[1.2%] top-[52%] -translate-y-1/2 w-[3.5%] aspect-square rounded-full cursor-pointer hover:bg-rosepetal-wine/10 transition-colors focus:outline-none"
-                aria-label="Next Collection"
-              />
+        {/* ---------------- SHOP BY CATEGORY SECTION (MATCHING SCREENSHOT) ---------------- */}
+        <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          {/* Header Row: Title & Subtitle on Left, VIEW ALL on Right */}
+          <div className="flex items-end justify-between mb-8 pb-3 border-b border-rosepetal-border/40">
+            <div>
+              <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
+                Shop by Category
+              </h2>
+              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-muted mt-1 block">
+                EXPLORE OUR WORLD
+              </span>
             </div>
+            <Link
+              href="/collections"
+              className="text-xs uppercase font-medium tracking-[0.2em] text-rosepetal-wine hover:text-rosepetal-wineHover flex items-center gap-1.5 transition-colors group"
+            >
+              <span>VIEW ALL</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          {/* 8 Category Cards (2 Rows of 4) */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {SHOP_BY_CATEGORY_ITEMS.map((cat) => {
+              const isFavorited = wishlist.includes(cat.id);
+              return (
+                <div
+                  key={cat.id}
+                  onClick={() => {
+                    setActiveCollectionTab(cat.name);
+                    const el = document.getElementById("step-03");
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="group flex flex-col text-left cursor-pointer"
+                >
+                  {/* Rounded Rectangular Card Image */}
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-rosepetal-card border border-rosepetal-border/60 shadow-sm group-hover:shadow-md transition-all duration-300">
+                    <Image
+                      src={cat.image}
+                      alt={cat.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 25vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
+                  </div>
+
+                  {/* Card Title, Subtitle, and Wishlist Heart */}
+                  <div className="mt-3 flex items-start justify-between">
+                    <div>
+                      <h3 className="font-serif-luxury text-base text-rosepetal-text font-semibold group-hover:text-rosepetal-wine transition-colors">
+                        {cat.name}
+                      </h3>
+                      <p className="text-xs text-rosepetal-muted font-light">
+                        {cat.subtitle}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(cat.id);
+                      }}
+                      className="p-1 text-rosepetal-muted hover:text-rosepetal-wine transition-colors"
+                      aria-label={`Add ${cat.name} to wishlist`}
+                    >
+                      <Heart
+                        className={`w-4 h-4 ${
+                          isFavorited ? "fill-rosepetal-wine text-rosepetal-wine" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
