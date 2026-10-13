@@ -21,41 +21,20 @@ import {
   Heart,
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
-import ProductCard from "@/components/ProductCard";
 import StoryVideoModal from "@/components/StoryVideoModal";
 import {
   HOME_PILLARS,
   HERO_ARCHED_CATEGORIES,
   SHOP_BY_CATEGORY_ITEMS,
-  PRODUCTS_CATALOG,
-  LOOKBOOK_GALLERY,
   CONTACT_INFO,
 } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
-
-const COLLECTION_TABS = [
-  "All",
-  "Sarees",
-  "Lehengas",
-  "Designer Suits",
-  "Bridal Wear",
-  "Handlooms",
-  "Accessories",
-];
-
-const LOOKBOOK_TABS = ["All", "Festive", "Bridal", "Handloom", "Contemporary"];
 
 export default function MasterBoutiquePage() {
   const { setIsConsultationOpen, wishlist, toggleWishlist } = useBoutique();
 
   // Story video modal state
   const [isStoryOpen, setIsStoryOpen] = useState(false);
-
-  // Collections filtering state
-  const [activeCollectionTab, setActiveCollectionTab] = useState("All");
-
-  // Lookbook filtering state
-  const [activeLookbookTab, setActiveLookbookTab] = useState("All");
 
   // Contact form state
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
@@ -81,16 +60,6 @@ export default function MasterBoutiquePage() {
       setContactLoading(false);
     }
   };
-
-  const filteredProducts = PRODUCTS_CATALOG.filter((item) => {
-    if (activeCollectionTab === "All") return true;
-    return item.category === activeCollectionTab;
-  });
-
-  const filteredLookbook = LOOKBOOK_GALLERY.filter((item) => {
-    if (activeLookbookTab === "All") return true;
-    return item.category === activeLookbookTab;
-  });
 
   return (
     <div className="relative">
@@ -125,16 +94,13 @@ export default function MasterBoutiquePage() {
 
                 {/* Live Action Buttons pinned to match visual CTAs */}
                 <div className="pointer-events-auto flex flex-wrap items-center gap-4 pt-16 sm:pt-24 max-w-lg">
-                  <button
-                    onClick={() => {
-                      const el = document.getElementById("step-03");
-                      el?.scrollIntoView({ behavior: "smooth" });
-                    }}
+                  <Link
+                    href="/collections"
                     className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs font-semibold tracking-[0.2em] uppercase rounded-sm shadow-lg hover:shadow-xl transition-all group"
                   >
                     <span>EXPLORE COLLECTIONS</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </button>
+                  </Link>
 
                   <button
                     onClick={() => setIsStoryOpen(true)}
@@ -166,21 +132,9 @@ export default function MasterBoutiquePage() {
           {/* 6 Arched Category Cards Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
             {HERO_ARCHED_CATEGORIES.map((cat) => (
-              <div
+              <Link
                 key={cat.id}
-                onClick={() => {
-                  const tabTarget =
-                    cat.name === "SAREES"
-                      ? "Sarees"
-                      : cat.name === "LEHENGAS"
-                      ? "Lehengas"
-                      : cat.name === "KURTIS & SUITS"
-                      ? "Designer Suits"
-                      : "All";
-                  setActiveCollectionTab(tabTarget);
-                  const el = document.getElementById("step-03");
-                  el?.scrollIntoView({ behavior: "smooth" });
-                }}
+                href={cat.href}
                 className="group flex flex-col items-center text-center space-y-2 cursor-pointer"
               >
                 {/* Signature Arched Card Shape */}
@@ -203,7 +157,7 @@ export default function MasterBoutiquePage() {
                     {cat.subtitle}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -211,137 +165,7 @@ export default function MasterBoutiquePage() {
 
 
 
-      {/* ============================================================== */}
-      {/* 03. COLLECTIONS PAGE SECTION                                    */}
-      {/* ============================================================== */}
-      <section id="step-03" className="relative bg-[#FCECEE]">
-        <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-10">
-            <h2 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
-              Our Collections
-            </h2>
-            <p className="text-[11px] uppercase tracking-[0.25em] text-rosepetal-wine font-semibold">
-              A CURATED RANGE FOR EVERY YOU
-            </p>
-            <p className="text-xs sm:text-sm text-rosepetal-muted leading-relaxed font-sans font-light">
-              From timeless handlooms to contemporary couture, explore our exquisite collections designed to make every moment special.
-            </p>
-          </div>
 
-          <div className="flex items-center justify-center overflow-x-auto pb-4 mb-10 no-scrollbar">
-            <div className="inline-flex items-center space-x-2 sm:space-x-6 border-b border-rosepetal-border/50 pb-2 px-2">
-              {COLLECTION_TABS.map((cat) => {
-                const isActive = activeCollectionTab === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCollectionTab(cat)}
-                    className={`text-xs sm:text-sm tracking-wide whitespace-nowrap py-1 transition-all relative ${
-                      isActive
-                        ? "text-rosepetal-wine font-semibold"
-                        : "text-rosepetal-muted hover:text-rosepetal-text"
-                    }`}
-                  >
-                    {cat}
-                    {isActive && (
-                      <span className="absolute -bottom-2.5 left-0 w-full h-[2px] bg-rosepetal-wine rounded-full" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================== */}
-      {/* 04. LOOKBOOK PAGE SECTION                                       */}
-      {/* ============================================================== */}
-      <section id="step-04" className="relative bg-[#FCECEE]">
-        <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-8">
-            <h2 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
-              Lookbook
-            </h2>
-            <p className="text-[11px] uppercase tracking-[0.25em] text-rosepetal-wine font-semibold">
-              REAL WOMEN. REAL MOMENTS. TIMELESS STYLE
-            </p>
-          </div>
-
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-12 flex-wrap">
-            {LOOKBOOK_TABS.map((cat) => {
-              const isActive = activeLookbookTab === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveLookbookTab(cat)}
-                  className={`px-5 py-2 rounded-full text-xs tracking-wider transition-all duration-200 ${
-                    isActive
-                      ? "bg-rosepetal-wine text-white shadow-sm font-medium"
-                      : "bg-white/80 hover:bg-white text-rosepetal-muted border border-rosepetal-border"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-            <div className="space-y-6">
-              {filteredLookbook.slice(0, 3).map((item) => (
-                <div
-                  key={item.id}
-                  className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-sm bg-rosepetal-card"
-                >
-                  <Image src={item.image} alt={item.title} fill className="object-cover" />
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-6">
-              {filteredLookbook[3] && (
-                <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-sm bg-rosepetal-card">
-                  <Image src={filteredLookbook[3].image} alt="Lookbook" fill className="object-cover" />
-                </div>
-              )}
-
-              <div className="relative p-10 rounded-xl bg-gradient-to-br from-[#FCEAEB] to-[#F7DDE0] border border-rosepetal-border/80 shadow-inner flex flex-col items-center justify-center text-center space-y-3 my-4">
-                <span className="font-script-accent text-3xl sm:text-4xl text-rosepetal-wine">
-                  “Elegance is a state of mind.”
-                </span>
-                <div className="w-12 h-[1px] bg-rosepetal-wine/40" />
-                <span className="text-[10px] uppercase tracking-[0.25em] text-rosepetal-muted">
-                  Rosepetal Muse
-                </span>
-              </div>
-
-              {filteredLookbook[4] && (
-                <div className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-sm bg-rosepetal-card">
-                  <Image src={filteredLookbook[4].image} alt="Lookbook" fill className="object-cover" />
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-6">
-              {filteredLookbook.slice(5).map((item) => (
-                <div
-                  key={item.id}
-                  className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-sm bg-rosepetal-card"
-                >
-                  <Image src={item.image} alt={item.title} fill className="object-cover" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ============================================================== */}
       {/* 05. CUSTOM DESIGN PAGE SECTION                                  */}
