@@ -50,10 +50,10 @@ export const HERO_ARCHED_CATEGORIES = [
     href: "/collections?category=Lehengas",
   },
   {
-    id: "kurtis",
-    name: "KURTIS & SUITS",
+    id: "short-kurtis",
+    name: "SHORT KURTIS",
     subtitle: "Grace in Every Thread",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    image: "/short-kurti-new-photo.png",
     href: "/collections?category=Designer+Suits",
   },
   {
