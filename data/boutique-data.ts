@@ -131,6 +131,37 @@ export const SHOP_BY_CATEGORY_ITEMS = [
   },
 ];
 
+export const NEW_ARRIVALS_PRODUCTS = [
+  {
+    id: "blush-petal-lehenga",
+    name: "Blush Petal Lehenga",
+    price: "₹ 34,500",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Lehengas",
+  },
+  {
+    id: "mehendi-green-anarkali",
+    name: "Mehendi Green Anarkali",
+    price: "₹ 18,900",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Designer+Suits",
+  },
+  {
+    id: "ivory-dream-saree",
+    name: "Ivory Dream Saree",
+    price: "₹ 14,800",
+    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Sarees",
+  },
+  {
+    id: "rose-charm-dress",
+    name: "Rose Charm Dress",
+    price: "₹ 9,500",
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Dresses",
+  },
+];
+
 export const HOME_PILLARS = [
   {
     icon: "Sparkles",

@@ -26,6 +26,7 @@ import {
   HOME_PILLARS,
   HERO_ARCHED_CATEGORIES,
   SHOP_BY_CATEGORY_ITEMS,
+  NEW_ARRIVALS_PRODUCTS,
   CONTACT_INFO,
 } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
@@ -168,128 +169,129 @@ export default function MasterBoutiquePage() {
 
 
       {/* ============================================================== */}
-      {/* 05. CUSTOM DESIGN PAGE SECTION                                  */}
+      {/* 05. NEW ARRIVALS SECTION                                        */}
       {/* ============================================================== */}
-      <section id="step-05" className="relative bg-[#FCECEE]">
-        <div className="relative min-h-[70vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 my-4">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=1600"
-              alt="Handcrafted embroidery texture"
-              fill
-              className="object-cover brightness-[0.88]"
-            />
-            <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
-          </div>
-
-          <div className="relative z-10 w-full max-w-xl bg-white/95 backdrop-blur-md rounded-2xl p-8 sm:p-12 shadow-2xl border border-white/60 text-center space-y-4">
-            <h2 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-wine font-light">
-              Custom Designs
+      <section id="new-arrivals" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Header: Title & Subtitle on Left, VIEW ALL on Right */}
+        <div className="flex items-end justify-between mb-8 pb-3 border-b border-rosepetal-border/40">
+          <div>
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
+              New Arrivals
             </h2>
-            <p className="text-[11px] uppercase tracking-[0.25em] text-rosepetal-text/80 font-semibold">
-              YOUR VISION. OUR CRAFT.
-            </p>
-            <p className="text-xs sm:text-sm text-rosepetal-muted max-w-md mx-auto leading-relaxed font-sans font-light">
-              From concept to creation, we bring your dream outfit to life with personalized designs, fabrics and detailing.
-            </p>
-            <div className="pt-4">
-              <button
-                onClick={() => setIsConsultationOpen(true)}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs font-semibold tracking-[0.2em] uppercase rounded-sm shadow-md hover:shadow-lg transition-all group"
-              >
-                <span>START A CONSULTATION</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            </div>
+            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-muted mt-1 block">
+              FRESH STYLES, NEW STORIES
+            </span>
           </div>
+          <Link
+            href="/collections"
+            className="text-xs uppercase font-medium tracking-[0.2em] text-rosepetal-wine hover:text-rosepetal-wineHover flex items-center gap-1.5 transition-colors group"
+          >
+            <span>VIEW ALL</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
-        <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <h3 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
-              How It Works
-            </h3>
-            <div className="w-16 h-[1.5px] bg-rosepetal-wine/40 mx-auto mt-3" />
-          </div>
+        {/* Row 1: 4 Product Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+          {NEW_ARRIVALS_PRODUCTS.map((product) => {
+            const isFavorited = wishlist.includes(product.id);
+            return (
+              <div key={product.id} className="group flex flex-col text-left">
+                {/* Product Image */}
+                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-rosepetal-card border border-rosepetal-border/60 shadow-sm group-hover:shadow-md transition-all">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 25vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {/* Wishlist Heart Button */}
+                  <button
+                    type="button"
+                    onClick={() => toggleWishlist(product.id)}
+                    className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-rosepetal-muted hover:text-rosepetal-wine shadow-sm transition-all"
+                    aria-label="Wishlist"
+                  >
+                    <Heart
+                      className={`w-4 h-4 ${
+                        isFavorited ? "fill-rosepetal-wine text-rosepetal-wine" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="flex flex-col items-center text-center p-6 bg-white/60 rounded-xl border border-rosepetal-border/60 hover:shadow-md transition-all space-y-3">
-              <div className="w-12 h-12 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine mb-1">
-                <Sparkles className="w-6 h-6 stroke-[1.5]" />
+                {/* Title & Price */}
+                <div className="mt-3">
+                  <h3 className="font-serif-luxury text-sm font-semibold text-rosepetal-text group-hover:text-rosepetal-wine transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-xs font-semibold text-rosepetal-text/80 mt-0.5">
+                    {product.price}
+                  </p>
+                </div>
               </div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                1. SHARE YOUR IDEAS
-              </h4>
-              <p className="text-xs text-rosepetal-muted leading-relaxed font-sans font-light">
-                Tell us your style, occasion and preferences.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 bg-white/60 rounded-xl border border-rosepetal-border/60 hover:shadow-md transition-all space-y-3">
-              <div className="w-12 h-12 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine mb-1">
-                <PencilRuler className="w-6 h-6 stroke-[1.5]" />
-              </div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                2. DESIGN A PLAN
-              </h4>
-              <p className="text-xs text-rosepetal-muted leading-relaxed font-sans font-light">
-                Our team creates a personalised design for you.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 bg-white/60 rounded-xl border border-rosepetal-border/60 hover:shadow-md transition-all space-y-3">
-              <div className="w-12 h-12 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine mb-1">
-                <Scissors className="w-6 h-6 stroke-[1.5]" />
-              </div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                3. CRAFTED WITH CARE
-              </h4>
-              <p className="text-xs text-rosepetal-muted leading-relaxed font-sans font-light">
-                Skilled artisans bring your design to life.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 bg-white/60 rounded-xl border border-rosepetal-border/60 hover:shadow-md transition-all space-y-3">
-              <div className="w-12 h-12 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine mb-1">
-                <HeartHandshake className="w-6 h-6 stroke-[1.5]" />
-              </div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                4. YOUR PERFECT OUTFIT
-              </h4>
-              <p className="text-xs text-rosepetal-muted leading-relaxed font-sans font-light">
-                Cherish a one-of-a-kind creation, made just for you.
-              </p>
-            </div>
-          </div>
+            );
+          })}
         </div>
 
-        <div className="pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <div className="bg-[#FDE8EB] rounded-2xl border border-rosepetal-border overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-12 items-center">
-            <div className="md:col-span-5 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[260px]">
+        {/* Row 2: 2 Promotional Banners */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Banner 1: Bridal & Festive */}
+          <div className="relative rounded-2xl overflow-hidden bg-[#F8E7E9] border border-rosepetal-border/60 p-8 sm:p-10 flex flex-col justify-between min-h-[220px]">
+            <div className="z-10 max-w-[60%] space-y-2">
+              <h3 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text leading-tight">
+                For Your Special Days
+              </h3>
+              <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-rosepetal-muted">
+                BRIDAL & FESTIVE COLLECTION
+              </p>
+              <div className="pt-3">
+                <Link
+                  href="/collections?category=Bridal+Wear"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-sm shadow-sm transition-all"
+                >
+                  <span>SHOP NOW</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+            <div className="absolute right-0 top-0 bottom-0 w-[45%]">
               <Image
-                src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=800"
-                alt="Intricate zardozi embroidery"
+                src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600"
+                alt="For Your Special Days"
                 fill
-                className="object-cover"
+                className="object-cover object-center"
               />
             </div>
-            <div className="md:col-span-7 p-8 sm:p-12 text-center md:text-left space-y-4">
-              <h3 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-wine font-light leading-tight">
-                Let&apos;s Create <br />
-                Something Beautiful
+          </div>
+
+          {/* Banner 2: Bed & Bath */}
+          <div className="relative rounded-2xl overflow-hidden bg-[#F8E7E9] border border-rosepetal-border/60 p-8 sm:p-10 flex flex-col justify-between min-h-[220px]">
+            <div className="z-10 max-w-[60%] space-y-2">
+              <h3 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text leading-tight">
+                Comfort Looks Beautiful Too
               </h3>
-              <p className="text-xs sm:text-sm text-rosepetal-muted max-w-md font-sans font-light">
-                Book a personal design session with our master couturiers at our Banjara Hills studio or schedule a virtual appointment.
+              <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-rosepetal-muted">
+                BED & BATH COLLECTION
               </p>
-              <div className="pt-2">
-                <button
-                  onClick={() => setIsConsultationOpen(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs font-semibold tracking-[0.2em] uppercase rounded-sm shadow-md hover:shadow-lg transition-all group"
+              <div className="pt-3">
+                <Link
+                  href="/collections?category=Bed+Linens"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-sm shadow-sm transition-all"
                 >
-                  <span>BOOK AN APPOINTMENT</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                </button>
+                  <span>EXPLORE</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
+            </div>
+            <div className="absolute right-0 top-0 bottom-0 w-[45%]">
+              <Image
+                src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=600"
+                alt="Comfort Looks Beautiful Too"
+                fill
+                className="object-cover object-center"
+              />
             </div>
           </div>
         </div>
