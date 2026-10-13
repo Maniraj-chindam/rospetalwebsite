@@ -335,6 +335,36 @@ export default function MasterBoutiquePage() {
       </section>
 
       {/* ============================================================== */}
+      {/* 05C. WARM HUG HOME & LIVING QUOTE SECTION                      */}
+      {/* ============================================================== */}
+      <section id="warm-hug-section" className="pt-2 pb-12 sm:pt-4 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="relative rounded-2xl overflow-hidden shadow-sm border border-rosepetal-border/60 min-h-[260px] sm:min-h-[340px] lg:min-h-[380px] flex items-center bg-[#FAF0F2]">
+          {/* Edge-to-Edge High-Resolution Visual Artwork */}
+          <Image
+            src="/warm-hug-clean-bg.png"
+            alt="A home filled with beauty, feels like a warm hug"
+            fill
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="object-cover object-center"
+          />
+
+          {/* Soft ambient overlay */}
+          <div className="absolute inset-0 bg-white/10 backdrop-blur-[0.5px] pointer-events-none" />
+
+          {/* Crisp Code-Rendered Luxury Typography */}
+          <div className="relative sm:absolute sm:left-[19%] md:left-[22%] lg:left-[25%] sm:top-1/2 sm:-translate-y-1/2 z-10 w-full sm:w-auto p-6 sm:p-0">
+            <div className="max-w-md mx-auto sm:mx-0 text-center sm:text-left bg-white/40 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none p-6 sm:p-0 rounded-xl sm:rounded-none border border-white/50 sm:border-0 shadow-sm sm:shadow-none space-y-3">
+              <blockquote className="font-serif-luxury text-2xl sm:text-3xl md:text-4xl text-rosepetal-text leading-snug sm:leading-tight italic font-normal drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]">
+                &ldquo;A home filled with beauty,<br />
+                feels like a warm hug.&rdquo;
+              </blockquote>
+              <div className="w-16 h-0.5 bg-rosepetal-wine/40 rounded-full mx-auto sm:mx-0 mt-3" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
       {/* ============================================================== */}
       <section id="step-06" className="relative bg-[#FCECEE]">
