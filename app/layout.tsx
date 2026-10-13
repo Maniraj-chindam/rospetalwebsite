@@ -21,11 +21,13 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-[#FCECEE] text-rosepetal-text antialiased selection:bg-rosepetal-blush selection:text-rosepetal-wine">
         <BoutiqueProvider>
-          {/* Continuously falling delicate rose petals across the screen */}
+          {/* Continuously falling delicate rose petals in the background */}
           <FallingRosePetals />
           <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <main className="flex-grow relative z-10">{children}</main>
+          <div className="relative z-10">
+            <Footer />
+          </div>
           <ConsultationModal />
         </BoutiqueProvider>
       </body>

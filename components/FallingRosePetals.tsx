@@ -45,8 +45,27 @@ export default function FallingRosePetals() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-30 overflow-hidden select-none"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
+      {/* Background Soft Rose Watermark Silhouette (Left) */}
+      <div className="absolute top-[18%] -left-16 w-80 h-80 opacity-[0.06] text-rosepetal-wine pointer-events-none">
+        <svg viewBox="0 0 100 100" className="w-full h-full fill-none stroke-current stroke-[1.5]">
+          <circle cx="50" cy="50" r="45" strokeDasharray="3 3" />
+          <path d="M50 18 C35 32 35 48 50 62 C65 48 65 32 50 18 Z" />
+          <path d="M18 50 C32 35 48 35 62 50 C48 65 35 65 18 50 Z" />
+          <circle cx="50" cy="50" r="8" className="fill-current" />
+        </svg>
+      </div>
+
+      {/* Background Soft Rose Watermark Silhouette (Right) */}
+      <div className="absolute top-[60%] -right-16 w-96 h-96 opacity-[0.06] text-rosepetal-wine pointer-events-none">
+        <svg viewBox="0 0 100 100" className="w-full h-full fill-none stroke-current stroke-[1.5]">
+          <circle cx="50" cy="50" r="45" strokeDasharray="3 3" />
+          <path d="M50 18 C35 32 35 48 50 62 C65 48 65 32 50 18 Z" />
+          <path d="M18 50 C32 35 48 35 62 50 C48 65 35 65 18 50 Z" />
+          <circle cx="50" cy="50" r="8" className="fill-current" />
+        </svg>
+      </div>
       {petals.map((petal) => (
         <div
           key={petal.id}

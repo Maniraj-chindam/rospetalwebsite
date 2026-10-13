@@ -4,7 +4,7 @@ import React from "react";
 
 export default function FloatingPetals() {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-10">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
       {/* Petal 1 - Top Left */}
       <div className="absolute top-12 left-[8%] w-8 h-8 opacity-40 animate-float-slow">
         <svg viewBox="0 0 50 50" className="w-full h-full fill-[#E8A5AC]">
