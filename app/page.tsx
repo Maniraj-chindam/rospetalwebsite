@@ -237,31 +237,21 @@ export default function MasterBoutiquePage() {
 
         {/* Row 2: 2 Promotional Banners */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Banner 1: Bridal & Festive */}
-          <div className="relative rounded-2xl overflow-hidden bg-[#F8E7E9] border border-rosepetal-border/60 p-8 sm:p-10 flex flex-col justify-between min-h-[220px]">
-            <div className="z-10 max-w-[60%] space-y-2">
-              <h3 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text leading-tight">
-                For Your Special Days
-              </h3>
-              <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-rosepetal-muted">
-                BRIDAL & FESTIVE COLLECTION
-              </p>
-              <div className="pt-3">
-                <Link
-                  href="/collections?category=Bridal+Wear"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-sm shadow-sm transition-all"
-                >
-                  <span>SHOP NOW</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-            <div className="absolute right-0 top-0 bottom-0 w-[45%]">
+          {/* Banner 1: Elegant Dresses (Replaces 'For Your Special Days') */}
+          <div className="relative rounded-2xl overflow-hidden bg-[#F8E7E9] border border-rosepetal-border/60 shadow-sm group min-h-[220px]">
+            <div className="relative aspect-[1024/412] sm:aspect-auto sm:h-full min-h-[220px] w-full">
               <Image
-                src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600"
-                alt="For Your Special Days"
+                src="/elegant-dresses-new-banner.png"
+                alt="Elegant Dresses for Every Occasion - Premium Collection"
                 fill
-                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
+              />
+              {/* Clickable Action Link to Dresses Collection */}
+              <Link
+                href="/collections?category=Dresses"
+                className="absolute inset-0 z-10"
+                aria-label="Shop Dresses Collection"
               />
             </div>
           </div>
