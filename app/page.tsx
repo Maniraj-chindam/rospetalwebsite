@@ -153,10 +153,10 @@ export default function MasterBoutiquePage() {
         <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center mb-8">
             <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
-              FEATURED CATEGORIES
+              EXPLORE
             </span>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text mt-1">
-              Curated for Every Special Moment
+              Our Collections
             </h2>
           </div>
 
