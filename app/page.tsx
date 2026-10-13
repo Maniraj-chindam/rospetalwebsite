@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Sparkles,
@@ -149,51 +150,79 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* ---------------- 8 ARCHED CATEGORIES SHOWCASE ---------------- */}
-        <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="text-center mb-8">
-            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
-              EXPLORE
-            </span>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text mt-1">
-              Our Collections
-            </h2>
-          </div>
+        {/* ---------------- EXPLORE OUR COLLECTIONS (HD BACKDROP BANNER) ---------------- */}
+        <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          {/* Responsive container for HD banner */}
+          <div className="w-full overflow-x-auto scrollbar-none pb-2">
+            <div className="relative min-w-[760px] lg:min-w-0 w-full aspect-[1024/385] rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-rosepetal-border/50 bg-[#FCECEE]">
+              {/* Unmodified HD Reference Image */}
+              <Image
+                src="/explore-collections-bg.png"
+                alt="Explore Our Collections - A curated range for every you"
+                fill
+                priority
+                quality={100}
+                className="object-cover"
+                sizes="(max-width: 1280px) 100vw, 1280px"
+              />
 
-          {/* 6 Arched Category Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
-            {HERO_ARCHED_CATEGORIES.map((cat) => (
-              <div
-                key={cat.id}
+              {/* Hotzone: VIEW ALL -> Link */}
+              <Link
+                href="/collections"
+                className="absolute top-[17%] right-[4.5%] w-[12%] h-[12%] rounded-md cursor-pointer hover:bg-rosepetal-wine/10 focus:outline-none transition-colors"
+                title="View All Collections"
+                aria-label="View All Collections"
+              />
+
+              {/* Hotzone: 6 Category Cards Grid Overlay */}
+              <div className="absolute top-[34%] bottom-[6%] left-[5.5%] right-[5.5%] grid grid-cols-6 gap-[1.2%]">
+                {[
+                  { name: "Sarees", tab: "Sarees" },
+                  { name: "Lehengas", tab: "Lehengas" },
+                  { name: "Designer Suits", tab: "Designer Suits" },
+                  { name: "Bridal Wear", tab: "Bridal Wear" },
+                  { name: "Bed & Bath", tab: "All" },
+                  { name: "Accessories", tab: "Accessories" },
+                ].map((item) => (
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={() => {
+                      setActiveCollectionTab(item.tab);
+                      const el = document.getElementById("step-03");
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="group relative w-full h-full rounded-2xl cursor-pointer hover:bg-rosepetal-wine/5 hover:ring-2 hover:ring-rosepetal-wine/30 transition-all focus:outline-none"
+                    aria-label={`Explore ${item.name} Collection`}
+                    title={`Explore ${item.name}`}
+                  >
+                    <span className="sr-only">Explore {item.name}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Hotzone: Carousel Arrows */}
+              <button
+                type="button"
                 onClick={() => {
-                  setActiveCollectionTab(cat.name);
                   const el = document.getElementById("step-03");
                   el?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="group flex flex-col items-center text-center space-y-2 cursor-pointer"
-              >
-                {/* Signature Arched Card Shape */}
-                <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-xl overflow-hidden bg-rosepetal-card border border-rosepetal-border/60 shadow-sm group-hover:shadow-md transition-all duration-300">
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                    className="object-cover group-hover:scale-108 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
-                </div>
-
-                <div className="space-y-0.5">
-                  <h4 className="font-serif-luxury text-xs sm:text-sm font-semibold tracking-wider text-rosepetal-text group-hover:text-rosepetal-wine transition-colors uppercase">
-                    {cat.name}
-                  </h4>
-                  <p className="text-[10px] text-rosepetal-muted font-light leading-tight">
-                    {cat.subtitle}
-                  </p>
-                </div>
-              </div>
-            ))}
+                className="absolute left-[1.2%] top-[52%] -translate-y-1/2 w-[3.5%] aspect-square rounded-full cursor-pointer hover:bg-rosepetal-wine/10 transition-colors focus:outline-none"
+                aria-label="Previous Collection"
+                title="Previous"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("step-03");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="absolute right-[1.2%] top-[52%] -translate-y-1/2 w-[3.5%] aspect-square rounded-full cursor-pointer hover:bg-rosepetal-wine/10 transition-colors focus:outline-none"
+                aria-label="Next Collection"
+                title="Next"
+              />
+            </div>
           </div>
         </div>
       </section>
