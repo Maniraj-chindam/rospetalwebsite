@@ -298,6 +298,70 @@ export default function MasterBoutiquePage() {
       </section>
 
       {/* ============================================================== */}
+      {/* 05B. CRAFTED WITH HEART SECTION (MATCHING USER REFERENCE)      */}
+      {/* ============================================================== */}
+      <section id="crafted-with-heart" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="bg-[#F8E7E9]/80 rounded-2xl border border-rosepetal-border/60 overflow-hidden p-6 sm:p-10 lg:p-12 shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left: Artisan Craftsmanship Photo */}
+            <div className="lg:col-span-4">
+              <div className="relative aspect-[4/3] sm:aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-rosepetal-border/50">
+                <Image
+                  src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=800"
+                  alt="Artisan handcrafting intricate embroidery"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            </div>
+
+            {/* Center: Story & Call to Action */}
+            <div className="lg:col-span-5 space-y-4 text-left">
+              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-muted block">
+                MORE THAN FASHION
+              </span>
+              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-rosepetal-text leading-[1.15] font-normal">
+                Crafted with Heart,<br />
+                Worn with Pride
+              </h2>
+              <p className="text-xs sm:text-sm text-rosepetal-muted leading-relaxed font-sans font-light max-w-md">
+                Every piece at Rosepetal is thoughtfully designed and ethically crafted, bringing together traditional techniques and contemporary aesthetics. We work closely with skilled artisans to ensure every drape tells a story of culture, care and creativity.
+              </p>
+              <div className="pt-2">
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2.5 px-6 py-3 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-[0.2em] uppercase rounded-sm shadow-sm transition-all group"
+                >
+                  <span>OUR PROCESS</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: Rose Bloom & Cursive Script */}
+            <div className="lg:col-span-3 flex flex-col items-center lg:items-end justify-center text-center lg:text-right pt-4 lg:pt-0">
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 mb-1">
+                <Image
+                  src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&q=80&w=400"
+                  alt="Delicate Rose Blossom"
+                  fill
+                  sizes="150px"
+                  className="object-contain mix-blend-multiply drop-shadow-sm hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="font-script-accent text-3xl sm:text-4xl text-rosepetal-text/80 leading-[1.25] tracking-wide">
+                <p>Handcrafted</p>
+                <p>for your</p>
+                <p>beautiful</p>
+                <p>moments</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
       {/* ============================================================== */}
       <section id="step-06" className="relative bg-[#FCECEE]">
