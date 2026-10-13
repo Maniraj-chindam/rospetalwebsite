@@ -7,6 +7,8 @@ import { useBoutique } from "@/context/BoutiqueContext";
 export default function ConsultationModal() {
   const { isConsultationOpen, setIsConsultationOpen } = useBoutique();
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -18,14 +20,32 @@ export default function ConsultationModal() {
 
   if (!isConsultationOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      // Auto close after 3 seconds
-      setSubmitted(false);
-      setIsConsultationOpen(false);
-    }, 2800);
+    setLoading(true);
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/consultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error("Unable to complete booking. Please try again.");
+      }
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setIsConsultationOpen(false);
+      }, 2800);
+    } catch (err: any) {
+      setErrorMsg(err.message || "Failed to submit request.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -153,11 +173,18 @@ export default function ConsultationModal() {
                 />
               </div>
 
+              {errorMsg && (
+                <p className="text-xs text-red-600 bg-red-50 p-2 rounded border border-red-200">
+                  {errorMsg}
+                </p>
+              )}
+
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs uppercase font-medium tracking-[0.2em] rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                disabled={loading}
+                className="w-full py-3 px-4 bg-rosepetal-wine hover:bg-rosepetal-wineHover disabled:opacity-60 text-white text-xs uppercase font-medium tracking-[0.2em] rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
               >
-                Confirm Appointment Request →
+                {loading ? "Booking Appointment..." : "Confirm Appointment Request →"}
               </button>
             </form>
           </div>
