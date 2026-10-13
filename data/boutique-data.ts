@@ -46,7 +46,7 @@ export const HERO_ARCHED_CATEGORIES = [
     id: "lehengas",
     name: "LEHENGAS",
     subtitle: "For Your Special Days",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800",
+    image: "/lehengas-new-photo.jpg",
     href: "/collections?category=Lehengas",
   },
   {
