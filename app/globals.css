@@ -5,12 +5,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #FAF4F3;
+  --background: #FCECEE;
   --foreground: #292122;
 }
 
 body {
   background-color: var(--background);
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(254, 215, 226, 0.45) 0px, transparent 65%),
+    radial-gradient(at 85% 85%, rgba(253, 226, 233, 0.45) 0px, transparent 65%);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   overflow-x: hidden;

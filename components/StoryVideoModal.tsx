@@ -19,7 +19,7 @@ export default function StoryVideoModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative max-w-2xl w-full bg-[#FAF4F3] rounded-2xl overflow-hidden shadow-2xl border border-rosepetal-border"
+        className="relative max-w-2xl w-full bg-[#FCECEE] rounded-2xl overflow-hidden shadow-2xl border border-rosepetal-border"
       >
         <button
           onClick={onClose}

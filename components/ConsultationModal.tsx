@@ -50,7 +50,7 @@ export default function ConsultationModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-[#FAF4F3] border border-rosepetal-border rounded-2xl shadow-2xl p-6 sm:p-8 overflow-hidden">
+      <div className="relative w-full max-w-lg bg-[#FCECEE] border border-rosepetal-border rounded-2xl shadow-2xl p-6 sm:p-8 overflow-hidden">
         {/* Close Button */}
         <button
           onClick={() => setIsConsultationOpen(false)}

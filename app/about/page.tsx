@@ -9,7 +9,7 @@ export default function AboutPage() {
   return (
     <div className="relative overflow-hidden">
       {/* ----------------- 01. OUR STORY HERO ----------------- */}
-      <section className="relative min-h-[78vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FAF4F3] to-[#FAF4F3] pt-8 pb-16 px-4 sm:px-6 lg:px-8">
+      <section className="relative min-h-[78vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FCECEE] to-[#FCECEE] pt-8 pb-16 px-4 sm:px-6 lg:px-8">
         <FloatingPetals />
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

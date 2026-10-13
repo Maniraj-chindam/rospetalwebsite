@@ -10,16 +10,16 @@ const config: Config = {
     extend: {
       colors: {
         rosepetal: {
-          bg: "#FAF4F3",
-          surface: "#FDFBFB",
-          card: "#F4ECEB",
-          cardAlt: "#F7EEEC",
-          border: "#E9D9D7",
+          bg: "#FCECEE",
+          surface: "#FFF5F6",
+          card: "#FDE8EB",
+          cardAlt: "#FDF0F2",
+          border: "#F3D5D8",
           wine: "#681A2A",
           wineHover: "#53121F",
           wineLight: "#852638",
-          blush: "#E8C2C0",
-          blushLight: "#F8EBEA",
+          blush: "#E8A7AF",
+          blushLight: "#FCE5E8",
           gold: "#C5A880",
           text: "#292122",
           muted: "#786768",

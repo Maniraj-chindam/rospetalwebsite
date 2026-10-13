@@ -98,7 +98,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 01. HERO SECTION WITH EXACT USER IMAGE & 8 ARCHED CATEGORIES    */}
       {/* ============================================================== */}
-      <section id="step-01" className="relative border-b-8 border-rosepetal-border/60 bg-[#FAF4F3]">
+      <section id="step-01" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
 
         {/* ---------------- EXACT HERO BANNER ---------------- */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -230,7 +230,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 02. ABOUT PAGE SECTION                                          */}
       {/* ============================================================== */}
-      <section id="step-02" className="relative border-b-8 border-rosepetal-border/60 bg-[#FAF4F3]">
+      <section id="step-02" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
         <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
           <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
             02. ABOUT PAGE
@@ -240,7 +240,7 @@ export default function MasterBoutiquePage() {
           </span>
         </div>
 
-        <div className="relative min-h-[75vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FAF4F3] to-[#FAF4F3] pt-6 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="relative min-h-[75vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FCECEE] to-[#FCECEE] pt-6 pb-16 px-4 sm:px-6 lg:px-8">
           <FloatingPetals />
 
           <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -374,7 +374,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 03. COLLECTIONS PAGE SECTION                                    */}
       {/* ============================================================== */}
-      <section id="step-03" className="relative border-b-8 border-rosepetal-border/60 bg-[#FAF4F3]">
+      <section id="step-03" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
         <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
           <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
             03. COLLECTIONS PAGE
@@ -438,7 +438,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 04. LOOKBOOK PAGE SECTION                                       */}
       {/* ============================================================== */}
-      <section id="step-04" className="relative border-b-8 border-rosepetal-border/60 bg-[#FAF4F3]">
+      <section id="step-04" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
         <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
           <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
             04. LOOKBOOK PAGE
@@ -536,7 +536,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 05. CUSTOM DESIGN PAGE SECTION                                  */}
       {/* ============================================================== */}
-      <section id="step-05" className="relative border-b-8 border-rosepetal-border/60 bg-[#FAF4F3]">
+      <section id="step-05" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
         <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
           <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
             05. CUSTOM DESIGN PAGE
@@ -639,7 +639,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         <div className="pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <div className="bg-[#FAF0EE] rounded-2xl border border-rosepetal-border overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-12 items-center">
+          <div className="bg-[#FDE8EB] rounded-2xl border border-rosepetal-border overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-12 items-center">
             <div className="md:col-span-5 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[260px]">
               <Image
                 src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=800"
@@ -679,7 +679,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
       {/* ============================================================== */}
-      <section id="step-06" className="relative bg-[#FAF4F3]">
+      <section id="step-06" className="relative bg-[#FCECEE]">
         <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
           <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
             06. CONTACT PAGE
@@ -815,7 +815,7 @@ export default function MasterBoutiquePage() {
                       placeholder="Your Name"
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-md bg-[#FAF4F3] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
+                      className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
                     />
                   </div>
 
@@ -826,7 +826,7 @@ export default function MasterBoutiquePage() {
                       placeholder="Your Email"
                       value={contactForm.email}
                       onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-md bg-[#FAF4F3] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
+                      className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
                     />
                   </div>
 
@@ -837,7 +837,7 @@ export default function MasterBoutiquePage() {
                       placeholder="Your Message"
                       value={contactForm.message}
                       onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-md bg-[#FAF4F3] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors resize-none"
+                      className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors resize-none"
                     />
                   </div>
 

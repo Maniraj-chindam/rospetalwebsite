@@ -14,7 +14,7 @@ export default function Navbar() {
   const { wishlist, cartCount, isSearchOpen, setIsSearchOpen, searchQuery, setSearchQuery } = useBoutique();
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FAF4F3]/95 backdrop-blur-md border-b border-rosepetal-border/50 transition-all">
+    <header className="sticky top-0 z-50 bg-[#FCECEE]/95 backdrop-blur-md border-b border-rosepetal-border/50 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <RosepetalLogo />
@@ -120,7 +120,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="xl:hidden bg-[#FAF4F3] border-b border-rosepetal-border px-6 py-6 shadow-xl space-y-4 animate-in slide-in-from-top duration-200">
+        <div className="xl:hidden bg-[#FCECEE] border-b border-rosepetal-border px-6 py-6 shadow-xl space-y-4 animate-in slide-in-from-top duration-200">
           <nav className="flex flex-col space-y-3.5">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;

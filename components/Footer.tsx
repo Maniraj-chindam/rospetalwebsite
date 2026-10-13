@@ -5,7 +5,7 @@ import { CONTACT_INFO, NAV_LINKS } from "@/data/boutique-data";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F4ECEB] border-t border-rosepetal-border/70 text-rosepetal-text mt-20">
+    <footer className="bg-[#F8DCE0] border-t border-rosepetal-border/70 text-rosepetal-text mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Info */}

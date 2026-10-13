@@ -88,7 +88,7 @@ export default function ProductCard({ product }: { product: ProductItem }) {
       {/* Quick View Modal */}
       {isQuickViewOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
-          <div className="relative w-full max-w-2xl bg-[#FAF4F3] rounded-xl overflow-hidden shadow-2xl border border-rosepetal-border p-6 flex flex-col md:flex-row gap-6">
+          <div className="relative w-full max-w-2xl bg-[#FFF5F6] rounded-xl overflow-hidden shadow-2xl border border-rosepetal-border p-6 flex flex-col md:flex-row gap-6">
             <button
               onClick={() => setIsQuickViewOpen(false)}
               className="absolute top-4 right-4 text-rosepetal-muted hover:text-rosepetal-wine z-10"
