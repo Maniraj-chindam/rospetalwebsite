@@ -70,20 +70,6 @@ export const HERO_ARCHED_CATEGORIES = [
     image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&q=80&w=800",
     href: "/collections?category=Blankets+%26+Quilts",
   },
-  {
-    id: "home-decor",
-    name: "HOME DECOR",
-    subtitle: "Beautiful Living",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800",
-    href: "/collections?category=Home+Decor",
-  },
-  {
-    id: "gift-sets",
-    name: "GIFT SETS",
-    subtitle: "For Loved Ones",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800",
-    href: "/collections?category=Gift+Sets",
-  },
 ];
 
 export const HOME_PILLARS = [

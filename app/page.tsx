@@ -160,8 +160,8 @@ export default function MasterBoutiquePage() {
             </h2>
           </div>
 
-          {/* 8 Arched Category Cards Grid matching exact mockup layout */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
+          {/* 6 Arched Category Cards Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
             {HERO_ARCHED_CATEGORIES.map((cat) => (
               <div
                 key={cat.id}
@@ -178,7 +178,7 @@ export default function MasterBoutiquePage() {
                     src={cat.image}
                     alt={cat.name}
                     fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
                     className="object-cover group-hover:scale-108 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
