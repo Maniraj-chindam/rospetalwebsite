@@ -218,28 +218,12 @@ export default function MasterBoutiquePage() {
             ))}
           </div>
         </div>
-
-        {/* Section Label Tag at bottom matching mockup */}
-        <div className="py-4 text-center border-t border-rosepetal-border/40 bg-white/40">
-          <span className="font-serif-luxury text-sm tracking-[0.25em] uppercase text-rosepetal-wine/80 font-medium">
-            01. HOME PAGE
-          </span>
-        </div>
       </section>
 
       {/* ============================================================== */}
       {/* 02. ABOUT PAGE SECTION                                          */}
       {/* ============================================================== */}
-      <section id="step-02" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
-        <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
-            02. ABOUT PAGE
-          </span>
-          <span className="text-[11px] text-rosepetal-muted tracking-wider">
-            Rosepetal Designer Boutique
-          </span>
-        </div>
-
+      <section id="step-02" className="relative bg-[#FCECEE]">
         <div className="relative min-h-[75vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FCECEE] to-[#FCECEE] pt-6 pb-16 px-4 sm:px-6 lg:px-8">
           <FloatingPetals />
 
@@ -363,27 +347,12 @@ export default function MasterBoutiquePage() {
             </div>
           </div>
         </div>
-
-        <div className="py-4 text-center border-t border-rosepetal-border/40 bg-white/40">
-          <span className="font-serif-luxury text-sm tracking-[0.25em] uppercase text-rosepetal-wine/80 font-medium">
-            02. ABOUT PAGE
-          </span>
-        </div>
       </section>
 
       {/* ============================================================== */}
       {/* 03. COLLECTIONS PAGE SECTION                                    */}
       {/* ============================================================== */}
-      <section id="step-03" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
-        <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
-            03. COLLECTIONS PAGE
-          </span>
-          <span className="text-[11px] text-rosepetal-muted tracking-wider">
-            Rosepetal Designer Boutique
-          </span>
-        </div>
-
+      <section id="step-03" className="relative bg-[#FCECEE]">
         <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-10">
             <h2 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
@@ -427,27 +396,12 @@ export default function MasterBoutiquePage() {
             ))}
           </div>
         </div>
-
-        <div className="py-4 text-center border-t border-rosepetal-border/40 bg-white/40">
-          <span className="font-serif-luxury text-sm tracking-[0.25em] uppercase text-rosepetal-wine/80 font-medium">
-            03. COLLECTIONS PAGE
-          </span>
-        </div>
       </section>
 
       {/* ============================================================== */}
       {/* 04. LOOKBOOK PAGE SECTION                                       */}
       {/* ============================================================== */}
-      <section id="step-04" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
-        <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
-            04. LOOKBOOK PAGE
-          </span>
-          <span className="text-[11px] text-rosepetal-muted tracking-wider">
-            Rosepetal Designer Boutique
-          </span>
-        </div>
-
+      <section id="step-04" className="relative bg-[#FCECEE]">
         <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-8">
             <h2 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
@@ -525,27 +479,12 @@ export default function MasterBoutiquePage() {
             </div>
           </div>
         </div>
-
-        <div className="py-4 text-center border-t border-rosepetal-border/40 bg-white/40">
-          <span className="font-serif-luxury text-sm tracking-[0.25em] uppercase text-rosepetal-wine/80 font-medium">
-            04. LOOKBOOK PAGE
-          </span>
-        </div>
       </section>
 
       {/* ============================================================== */}
       {/* 05. CUSTOM DESIGN PAGE SECTION                                  */}
       {/* ============================================================== */}
-      <section id="step-05" className="relative border-b-8 border-rosepetal-border/60 bg-[#FCECEE]">
-        <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
-            05. CUSTOM DESIGN PAGE
-          </span>
-          <span className="text-[11px] text-rosepetal-muted tracking-wider">
-            Rosepetal Designer Boutique
-          </span>
-        </div>
-
+      <section id="step-05" className="relative bg-[#FCECEE]">
         <div className="relative min-h-[70vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 my-4">
           <div className="absolute inset-0 z-0">
             <Image
@@ -668,27 +607,12 @@ export default function MasterBoutiquePage() {
             </div>
           </div>
         </div>
-
-        <div className="py-4 text-center border-t border-rosepetal-border/40 bg-white/40">
-          <span className="font-serif-luxury text-sm tracking-[0.25em] uppercase text-rosepetal-wine/80 font-medium">
-            05. CUSTOM DESIGN PAGE
-          </span>
-        </div>
       </section>
 
       {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
       {/* ============================================================== */}
       <section id="step-06" className="relative bg-[#FCECEE]">
-        <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
-            06. CONTACT PAGE
-          </span>
-          <span className="text-[11px] text-rosepetal-muted tracking-wider">
-            Rosepetal Designer Boutique
-          </span>
-        </div>
-
         <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-14">
             <h2 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
@@ -863,11 +787,6 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        <div className="py-4 text-center border-t border-rosepetal-border/40 bg-white/40">
-          <span className="font-serif-luxury text-sm tracking-[0.25em] uppercase text-rosepetal-wine/80 font-medium">
-            06. CONTACT PAGE
-          </span>
-        </div>
       </section>
     </div>
   );
