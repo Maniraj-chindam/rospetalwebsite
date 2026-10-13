@@ -39,7 +39,7 @@ export const HERO_ARCHED_CATEGORIES = [
     id: "dresses",
     name: "DRESSES",
     subtitle: "Everyday to Extraordinary",
-    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800",
+    image: "/dresses-new-photo.png",
     href: "/collections?category=Dresses",
   },
   {
