@@ -3,7 +3,7 @@ export interface ProductItem {
   name: string;
   price: string;
   priceNum: number;
-  category: "Sarees" | "Lehengas" | "Designer Suits" | "Bridal Wear" | "Handlooms" | "Accessories";
+  category: "Sarees" | "Lehengas" | "Designer Suits" | "Bridal Wear" | "Handlooms" | "Accessories" | "Dresses" | "Kurtis & Suits" | "Bed Linens" | "Blankets & Quilts" | "Home Decor" | "Gift Sets";
   image: string;
   tag?: string;
   description?: string;
@@ -19,11 +19,71 @@ export interface LookbookItem {
 
 export const NAV_LINKS = [
   { name: "Home", href: "/" },
+  { name: "Shop", href: "/collections" },
+  { name: "Dresses", href: "/collections?category=Dresses" },
+  { name: "Bed & Bath", href: "/collections?category=Bed+Linens" },
+  { name: "Custom Orders", href: "/custom-design" },
   { name: "About", href: "/about" },
-  { name: "Collections", href: "/collections" },
-  { name: "Custom Design", href: "/custom-design" },
-  { name: "Gallery", href: "/lookbook" },
   { name: "Contact", href: "/contact" },
+];
+
+export const HERO_ARCHED_CATEGORIES = [
+  {
+    id: "sarees",
+    name: "SAREES",
+    subtitle: "Timeless Elegance",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Sarees",
+  },
+  {
+    id: "dresses",
+    name: "DRESSES",
+    subtitle: "Everyday to Extraordinary",
+    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Dresses",
+  },
+  {
+    id: "lehengas",
+    name: "LEHENGAS",
+    subtitle: "For Your Special Days",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Lehengas",
+  },
+  {
+    id: "kurtis",
+    name: "KURTIS & SUITS",
+    subtitle: "Grace in Every Thread",
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Designer+Suits",
+  },
+  {
+    id: "bed-linens",
+    name: "BED LINENS",
+    subtitle: "Comfort Redefined",
+    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Bed+Linens",
+  },
+  {
+    id: "blankets-quilts",
+    name: "BLANKETS & QUILTS",
+    subtitle: "Warmth for Every Season",
+    image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Blankets+%26+Quilts",
+  },
+  {
+    id: "home-decor",
+    name: "HOME DECOR",
+    subtitle: "Beautiful Living",
+    image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Home+Decor",
+  },
+  {
+    id: "gift-sets",
+    name: "GIFT SETS",
+    subtitle: "For Loved Ones",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800",
+    href: "/collections?category=Gift+Sets",
+  },
 ];
 
 export const HOME_PILLARS = [

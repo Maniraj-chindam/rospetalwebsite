@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   ArrowRight,
   Sparkles,
@@ -17,13 +16,15 @@ import {
   Mail,
   Calendar,
   CheckCircle2,
+  Play,
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
 import StepNavigator from "@/components/StepNavigator";
 import ProductCard from "@/components/ProductCard";
+import StoryVideoModal from "@/components/StoryVideoModal";
 import {
   HOME_PILLARS,
-  HOME_CATEGORIES,
+  HERO_ARCHED_CATEGORIES,
   ABOUT_PILLARS,
   PRODUCTS_CATALOG,
   LOOKBOOK_GALLERY,
@@ -45,6 +46,9 @@ const LOOKBOOK_TABS = ["All", "Festive", "Bridal", "Handloom", "Contemporary"];
 
 export default function MasterBoutiquePage() {
   const { setIsConsultationOpen } = useBoutique();
+
+  // Story video modal state
+  const [isStoryOpen, setIsStoryOpen] = useState(false);
 
   // Collections filtering state
   const [activeCollectionTab, setActiveCollectionTab] = useState("All");
@@ -92,71 +96,117 @@ export default function MasterBoutiquePage() {
       {/* Sticky Step Navigator Bar for instant jumping & mockup comparison */}
       <StepNavigator />
 
+      {/* Story Video Modal */}
+      <StoryVideoModal isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
+
       {/* ============================================================== */}
-      {/* 01. HOME PAGE SECTION                                           */}
+      {/* 01. HERO SECTION WITH EXACT USER IMAGE & 8 ARCHED CATEGORIES    */}
       {/* ============================================================== */}
       <section id="step-01" className="relative border-b-8 border-rosepetal-border/60 bg-[#FAF4F3]">
         {/* Section Step Header Tag */}
         <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
           <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
-            01. HOME PAGE
+            01. HERO & HOME PAGE
           </span>
           <span className="text-[11px] text-rosepetal-muted tracking-wider">
             Rosepetal Designer Boutique
           </span>
         </div>
 
-        {/* Hero Area */}
-        <div className="relative min-h-[80vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FAF4F3] to-[#FAF4F3] pt-6 pb-16 px-4 sm:px-6 lg:px-8">
-          <FloatingPetals />
+        {/* ---------------- EXACT HERO BANNER ---------------- */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-rosepetal-border/70 group">
+            {/* Direct High-Resolution Hero Image Added Without Any Changes */}
+            <div className="relative w-full aspect-[16/9] sm:aspect-[21/10] min-h-[380px] bg-[#FCEEED]">
+              <Image
+                src="/hero-rosepetal-banner.jpg"
+                alt="Rosepetal Boutique - Threads That Feel Like You"
+                fill
+                priority
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="object-cover object-top"
+              />
 
-          <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left Hero Text */}
-            <div className="lg:col-span-6 space-y-6 z-20 text-left">
-              <h1 className="font-serif-luxury text-4xl sm:text-5xl lg:text-6xl text-rosepetal-wine leading-[1.12] tracking-normal font-light">
-                Where Tradition <br />
-                Blooms in Style
-              </h1>
+              {/* Floating Petals Layer */}
+              <FloatingPetals />
 
-              <p className="text-sm sm:text-base text-rosepetal-muted max-w-md font-sans font-light leading-relaxed">
-                Designer sarees, handlooms, bridal wear and bespoke creations for every special you.
-              </p>
+              {/* Interactive Action Hotspots over the Banner */}
+              <div className="absolute inset-0 flex flex-col justify-between p-6 sm:p-10 pointer-events-none">
+                <div />
 
-              <div className="pt-2">
-                <button
-                  onClick={() => {
-                    const el = document.getElementById("step-03");
-                    el?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs font-semibold tracking-[0.2em] uppercase rounded-sm shadow-md hover:shadow-lg transition-all group"
-                >
-                  <span>EXPLORE COLLECTIONS</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
-              </div>
-            </div>
+                {/* Live Action Buttons pinned to match visual CTAs */}
+                <div className="pointer-events-auto flex flex-wrap items-center gap-4 pt-16 sm:pt-24 max-w-lg">
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById("step-03");
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs font-semibold tracking-[0.2em] uppercase rounded-sm shadow-lg hover:shadow-xl transition-all group"
+                  >
+                    <span>EXPLORE COLLECTIONS</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </button>
 
-            {/* Right Hero Visual with Arched Model Frame & Script Accent */}
-            <div className="lg:col-span-6 relative flex justify-center lg:justify-end items-center">
-              <div className="relative w-[320px] sm:w-[400px] h-[460px] sm:h-[530px] rounded-t-[180px] rounded-b-2xl overflow-hidden shadow-2xl border-4 border-white/80 bg-[#F5E6E5]">
-                <Image
-                  src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=1000"
-                  alt="Rosepetal Designer Saree Collection"
-                  fill
-                  priority
-                  className="object-cover object-top hover:scale-105 transition-transform duration-1000"
-                />
-              </div>
-
-              {/* Script Accent: "Sarees Stories You" */}
-              <div className="hidden sm:block absolute -right-6 lg:-right-4 top-1/4 select-none pointer-events-none text-right">
-                <div className="font-script-accent text-5xl lg:text-6xl text-rosepetal-wine/80 leading-none space-y-1">
-                  <div>Sarees</div>
-                  <div className="pl-6">Stories</div>
-                  <div className="pl-12">You</div>
+                  <button
+                    onClick={() => setIsStoryOpen(true)}
+                    className="inline-flex items-center gap-3 px-4 py-2.5 bg-white/90 hover:bg-white text-rosepetal-wine rounded-full shadow-md hover:shadow-lg transition-all group text-xs font-semibold uppercase tracking-wider backdrop-blur-sm"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-rosepetal-wine text-white flex items-center justify-center">
+                      <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                    </div>
+                    <span>WATCH OUR STORY</span>
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* ---------------- 8 ARCHED CATEGORIES SHOWCASE ---------------- */}
+        <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
+              FEATURED CATEGORIES
+            </span>
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text mt-1">
+              Curated for Every Special Moment
+            </h2>
+          </div>
+
+          {/* 8 Arched Category Cards Grid matching exact mockup layout */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
+            {HERO_ARCHED_CATEGORIES.map((cat) => (
+              <div
+                key={cat.id}
+                onClick={() => {
+                  setActiveCollectionTab(cat.name);
+                  const el = document.getElementById("step-03");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="group flex flex-col items-center text-center space-y-2 cursor-pointer"
+              >
+                {/* Signature Arched Card Shape */}
+                <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-xl overflow-hidden bg-rosepetal-card border border-rosepetal-border/60 shadow-sm group-hover:shadow-md transition-all duration-300">
+                  <Image
+                    src={cat.image}
+                    alt={cat.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12vw"
+                    className="object-cover group-hover:scale-108 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+                </div>
+
+                <div className="space-y-0.5">
+                  <h4 className="font-serif-luxury text-xs sm:text-sm font-semibold tracking-wider text-rosepetal-text group-hover:text-rosepetal-wine transition-colors uppercase">
+                    {cat.name}
+                  </h4>
+                  <p className="text-[10px] text-rosepetal-muted font-light leading-tight">
+                    {cat.subtitle}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -177,53 +227,6 @@ export default function MasterBoutiquePage() {
                 <p className="text-xs text-rosepetal-muted font-sans font-light">
                   {pillar.subtitle}
                 </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Our Collections Category Showcase */}
-        <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8 pb-3 border-b border-rosepetal-border/40">
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
-              Our Collections
-            </h2>
-            <button
-              onClick={() => {
-                const el = document.getElementById("step-03");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="text-xs uppercase font-medium tracking-[0.2em] text-rosepetal-wine hover:text-rosepetal-wineHover flex items-center gap-1.5 transition-colors group"
-            >
-              <span>VIEW ALL</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
-            {HOME_CATEGORIES.map((cat) => (
-              <div
-                key={cat.id}
-                onClick={() => {
-                  setActiveCollectionTab(cat.name);
-                  const el = document.getElementById("step-03");
-                  el?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="group flex flex-col items-center text-center space-y-3 cursor-pointer"
-              >
-                <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-rosepetal-card border border-rosepetal-border/60 shadow-sm group-hover:shadow-md transition-all duration-300">
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                    className="object-cover group-hover:scale-108 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
-                </div>
-                <span className="font-serif-luxury text-base text-rosepetal-text group-hover:text-rosepetal-wine transition-colors">
-                  {cat.name}
-                </span>
               </div>
             ))}
           </div>
@@ -250,12 +253,10 @@ export default function MasterBoutiquePage() {
           </span>
         </div>
 
-        {/* Story Area */}
         <div className="relative min-h-[75vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FAF4F3] to-[#FAF4F3] pt-6 pb-16 px-4 sm:px-6 lg:px-8">
           <FloatingPetals />
 
           <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Story Content */}
             <div className="lg:col-span-6 space-y-6 z-20 text-left">
               <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
                 OUR STORY
@@ -280,7 +281,6 @@ export default function MasterBoutiquePage() {
               </div>
             </div>
 
-            {/* Arched Portrait & Calligraphy Quote */}
             <div className="lg:col-span-6 relative flex justify-center lg:justify-end items-center">
               <div className="relative w-[320px] sm:w-[390px] h-[460px] sm:h-[520px] rounded-t-[180px] rounded-b-2xl overflow-hidden shadow-2xl border-4 border-white/80 bg-[#F5E6E5]">
                 <Image
@@ -291,7 +291,6 @@ export default function MasterBoutiquePage() {
                 />
               </div>
 
-              {/* Script Quote */}
               <div className="hidden sm:block absolute -right-4 lg:-right-10 top-1/4 select-none pointer-events-none text-right max-w-xs">
                 <p className="font-script-accent text-3xl sm:text-4xl lg:text-[42px] text-rosepetal-wine/85 leading-tight">
                   “Just like a rose, every woman blooms in her own time.”
@@ -301,7 +300,6 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* 4 Pillars */}
         <div className="border-y border-rosepetal-border/60 bg-white/60 backdrop-blur-sm py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             {ABOUT_PILLARS.map((pillar, idx) => (
@@ -323,7 +321,6 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* More Than Fashion */}
         <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-6">
@@ -364,13 +361,12 @@ export default function MasterBoutiquePage() {
                 </button>
               </div>
 
-              {/* Botanical Accent */}
               <div className="pt-6 flex items-center gap-5">
                 <div className="relative w-16 h-16 flex-shrink-0">
                   <svg viewBox="0 0 100 100" className="w-full h-full text-rosepetal-blush fill-current opacity-80">
                     <circle cx="50" cy="50" r="42" className="fill-[#F8DADB]" />
                     <path d="M50 20 C40 30 38 45 50 60 C62 45 60 30 50 20 Z" className="fill-[#E59CA5]" />
-                    <circle cx="50" cy="50" r="8" className="fill-rosepetal-wine" />
+                    <circle cx="50" cy="8" className="fill-rosepetal-wine" />
                   </svg>
                 </div>
                 <div className="font-script-accent text-3xl text-rosepetal-wine/90">
@@ -402,7 +398,6 @@ export default function MasterBoutiquePage() {
         </div>
 
         <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {/* Header */}
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-10">
             <h2 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
               Our Collections
@@ -415,7 +410,6 @@ export default function MasterBoutiquePage() {
             </p>
           </div>
 
-          {/* Filter Tabs */}
           <div className="flex items-center justify-center overflow-x-auto pb-4 mb-10 no-scrollbar">
             <div className="inline-flex items-center space-x-2 sm:space-x-6 border-b border-rosepetal-border/50 pb-2 px-2">
               {COLLECTION_TABS.map((cat) => {
@@ -440,7 +434,6 @@ export default function MasterBoutiquePage() {
             </div>
           </div>
 
-          {/* 8 Product Cards Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -478,7 +471,6 @@ export default function MasterBoutiquePage() {
             </p>
           </div>
 
-          {/* Pill Tabs */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-12 flex-wrap">
             {LOOKBOOK_TABS.map((cat) => {
               const isActive = activeLookbookTab === cat;
@@ -498,9 +490,7 @@ export default function MasterBoutiquePage() {
             })}
           </div>
 
-          {/* Masonry Collage */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-            {/* Column 1 */}
             <div className="space-y-6">
               {filteredLookbook.slice(0, 3).map((item) => (
                 <div
@@ -512,7 +502,6 @@ export default function MasterBoutiquePage() {
               ))}
             </div>
 
-            {/* Column 2 (with Quote Card) */}
             <div className="space-y-6">
               {filteredLookbook[3] && (
                 <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-sm bg-rosepetal-card">
@@ -520,7 +509,6 @@ export default function MasterBoutiquePage() {
                 </div>
               )}
 
-              {/* Quote Card (Matching Mockup) */}
               <div className="relative p-10 rounded-xl bg-gradient-to-br from-[#FCEAEB] to-[#F7DDE0] border border-rosepetal-border/80 shadow-inner flex flex-col items-center justify-center text-center space-y-3 my-4">
                 <span className="font-script-accent text-3xl sm:text-4xl text-rosepetal-wine">
                   “Elegance is a state of mind.”
@@ -538,7 +526,6 @@ export default function MasterBoutiquePage() {
               )}
             </div>
 
-            {/* Column 3 */}
             <div className="space-y-6">
               {filteredLookbook.slice(5).map((item) => (
                 <div
@@ -572,7 +559,6 @@ export default function MasterBoutiquePage() {
           </span>
         </div>
 
-        {/* Hero Card */}
         <div className="relative min-h-[70vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 my-4">
           <div className="absolute inset-0 z-0">
             <Image
@@ -606,7 +592,6 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* How It Works */}
         <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <h3 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
@@ -666,7 +651,6 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* Appointment Banner */}
         <div className="pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <div className="bg-[#FAF0EE] rounded-2xl border border-rosepetal-border overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-12 items-center">
             <div className="md:col-span-5 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[260px]">
@@ -732,7 +716,6 @@ export default function MasterBoutiquePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-6xl mx-auto">
-            {/* Details */}
             <div className="lg:col-span-5 space-y-8 relative">
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -798,7 +781,6 @@ export default function MasterBoutiquePage() {
                 </div>
               </div>
 
-              {/* Pink Floral Cluster Artwork */}
               <div className="relative pt-6 max-w-[280px]">
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-rosepetal-border/60">
                   <Image
@@ -811,7 +793,6 @@ export default function MasterBoutiquePage() {
               </div>
             </div>
 
-            {/* Form */}
             <div className="lg:col-span-7 bg-white/70 backdrop-blur-sm rounded-2xl p-8 sm:p-10 border border-rosepetal-border/80 shadow-md">
               <h3 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text mb-6">
                 Send Us a Message
