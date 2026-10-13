@@ -196,28 +196,6 @@ export default function MasterBoutiquePage() {
             ))}
           </div>
         </div>
-
-        {/* 4 Value Propositions Bar */}
-        <div className="border-y border-rosepetal-border/60 bg-white/60 backdrop-blur-sm py-10 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            {HOME_PILLARS.map((pillar, idx) => (
-              <div key={idx} className="flex flex-col items-center space-y-2">
-                <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/60 flex items-center justify-center text-rosepetal-wine mb-1">
-                  {idx === 0 && <Sparkles className="w-5 h-5 stroke-[1.5]" />}
-                  {idx === 1 && <Flower2 className="w-5 h-5 stroke-[1.5]" />}
-                  {idx === 2 && <Scissors className="w-5 h-5 stroke-[1.5]" />}
-                  {idx === 3 && <Globe className="w-5 h-5 stroke-[1.5]" />}
-                </div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-rosepetal-text">
-                  {pillar.title}
-                </h3>
-                <p className="text-xs text-rosepetal-muted font-sans font-light">
-                  {pillar.subtitle}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* ============================================================== */}
