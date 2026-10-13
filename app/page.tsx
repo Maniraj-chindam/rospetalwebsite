@@ -303,21 +303,22 @@ export default function MasterBoutiquePage() {
       <section id="crafted-with-heart" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="bg-[#F8E7E9]/80 rounded-2xl border border-rosepetal-border/60 overflow-hidden p-6 sm:p-10 lg:p-12 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            {/* Left: Artisan Craftsmanship Photo */}
-            <div className="lg:col-span-4">
-              <div className="relative aspect-[4/3] sm:aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-rosepetal-border/50">
-                <Image
-                  src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=800"
-                  alt="Artisan handcrafting intricate embroidery"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                  className="object-cover hover:scale-105 transition-transform duration-700"
+            {/* Left: Artisan Craftsmanship Video */}
+            <div className="lg:col-span-5">
+              <div className="relative aspect-[4/3] sm:aspect-square w-full rounded-2xl overflow-hidden shadow-md border border-rosepetal-border/60 bg-black/5">
+                <video
+                  src="/chandrika-hero-maker.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
             {/* Center: Story & Call to Action */}
-            <div className="lg:col-span-5 space-y-4 text-left">
+            <div className="lg:col-span-4 space-y-4 text-left">
               <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-muted block">
                 MORE THAN FASHION
               </span>
