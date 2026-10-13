@@ -316,9 +316,8 @@ export default function MasterBoutiquePage() {
           {/* Elegant Soft Contrast Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-white/85 backdrop-blur-[0.5px]" />
 
-          {/* Floating Content: Left Title & Right Rose Script */}
-          <div className="relative z-10 w-full p-8 sm:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
-            {/* Left: Section Title */}
+          {/* Floating Content: Section Title */}
+          <div className="relative z-10 w-full p-8 sm:p-14 lg:p-20">
             <div className="space-y-2 max-w-xl text-left">
               <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine block">
                 MORE THAN FASHION
@@ -327,25 +326,6 @@ export default function MasterBoutiquePage() {
                 Crafted with Heart,<br />
                 Worn with Pride
               </h2>
-            </div>
-
-            {/* Right: Rose Blossom & Handwritten Cursive Script */}
-            <div className="flex flex-col items-center md:items-end text-center md:text-right">
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 mb-1">
-                <Image
-                  src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&q=80&w=400"
-                  alt="Delicate Rose Blossom"
-                  fill
-                  sizes="150px"
-                  className="object-contain mix-blend-multiply drop-shadow-sm hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="font-script-accent text-3xl sm:text-4xl text-rosepetal-text leading-tight tracking-wide">
-                <p>Handcrafted</p>
-                <p>for your</p>
-                <p>beautiful</p>
-                <p>moments</p>
-              </div>
             </div>
           </div>
         </div>
