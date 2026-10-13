@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ConsultationModal from "@/components/ConsultationModal";
+import FallingRosePetals from "@/components/FallingRosePetals";
 import { BoutiqueProvider } from "@/context/BoutiqueContext";
 
 export const metadata: Metadata = {
@@ -20,6 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-[#FCECEE] text-rosepetal-text antialiased selection:bg-rosepetal-blush selection:text-rosepetal-wine">
         <BoutiqueProvider>
+          {/* Continuously falling delicate rose petals across the screen */}
+          <FallingRosePetals />
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
