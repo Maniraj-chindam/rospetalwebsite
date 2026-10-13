@@ -118,48 +118,63 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* ---------------- 6 ARCHED CATEGORIES (MATCHING 1ST IMAGE) ---------------- */}
-        <div className="pt-12 pb-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {/* Centered Heading */}
-          <div className="text-center mb-10">
-            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
-              EXPLORE
-            </span>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-rosepetal-text mt-1 font-normal">
-              Our Collections
-            </h2>
+        {/* ---------------- 6 ARCHED CATEGORIES WITH CUSTOM ARTWORK BACKGROUND ---------------- */}
+        <div className="relative overflow-hidden py-12 sm:py-16 my-2">
+          {/* Full Section Background Artwork */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/collections-arch-bg.png"
+              alt="Our Collections Background"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-[0.5px]" />
           </div>
 
-          {/* 6 Arched Category Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
-            {HERO_ARCHED_CATEGORIES.map((cat) => (
-              <Link
-                key={cat.id}
-                href={cat.href}
-                className="group flex flex-col items-center text-center space-y-2 cursor-pointer"
-              >
-                {/* Signature Arched Card Shape */}
-                <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-xl overflow-hidden bg-transparent border border-rosepetal-border/40 group-hover:shadow-md transition-all duration-300">
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                    className="object-cover group-hover:scale-108 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
-                </div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Centered Heading */}
+            <div className="text-center mb-10">
+              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
+                EXPLORE
+              </span>
+              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-rosepetal-text mt-1 font-normal">
+                Our Collections
+              </h2>
+            </div>
 
-                <div className="space-y-0.5 pt-1">
-                  <h4 className="font-serif-luxury text-xs sm:text-sm font-semibold tracking-wider text-rosepetal-text group-hover:text-rosepetal-wine transition-colors uppercase">
-                    {cat.name}
-                  </h4>
-                  <p className="text-[10px] text-rosepetal-muted font-light leading-tight">
-                    {cat.subtitle}
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {/* 6 Arched Category Cards Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+              {HERO_ARCHED_CATEGORIES.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={cat.href}
+                  className="group flex flex-col items-center text-center space-y-2 cursor-pointer"
+                >
+                  {/* Signature Arched Card Shape */}
+                  <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-xl overflow-hidden bg-white/30 backdrop-blur-sm border border-rosepetal-border/60 shadow-sm group-hover:shadow-md transition-all duration-300">
+                    <Image
+                      src={cat.image}
+                      alt={cat.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                      className="object-cover group-hover:scale-108 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
+                  </div>
+
+                  <div className="space-y-0.5 pt-1">
+                    <h4 className="font-serif-luxury text-xs sm:text-sm font-semibold tracking-wider text-rosepetal-text group-hover:text-rosepetal-wine transition-colors uppercase">
+                      {cat.name}
+                    </h4>
+                    <p className="text-[10px] text-rosepetal-muted font-light leading-tight">
+                      {cat.subtitle}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
