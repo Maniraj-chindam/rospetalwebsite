@@ -152,82 +152,60 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* ---------------- SHOP BY CATEGORY SECTION (MATCHING SCREENSHOT) ---------------- */}
+        {/* ---------------- 6 ARCHED CATEGORIES (MATCHING 1ST IMAGE) ---------------- */}
         <div className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {/* Header Row: Title & Subtitle on Left, VIEW ALL on Right */}
-          <div className="flex items-end justify-between mb-8 pb-3 border-b border-rosepetal-border/40">
-            <div>
-              <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
-                Shop by Category
-              </h2>
-              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-muted mt-1 block">
-                EXPLORE OUR WORLD
-              </span>
-            </div>
-            <Link
-              href="/collections"
-              className="text-xs uppercase font-medium tracking-[0.2em] text-rosepetal-wine hover:text-rosepetal-wineHover flex items-center gap-1.5 transition-colors group"
-            >
-              <span>VIEW ALL</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-            </Link>
+          {/* Centered Heading */}
+          <div className="text-center mb-10">
+            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
+              EXPLORE
+            </span>
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-rosepetal-text mt-1 font-normal">
+              Our Collections
+            </h2>
           </div>
 
-          {/* 8 Category Cards (2 Rows of 4) */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SHOP_BY_CATEGORY_ITEMS.map((cat) => {
-              const isFavorited = wishlist.includes(cat.id);
-              return (
-                <div
-                  key={cat.id}
-                  onClick={() => {
-                    setActiveCollectionTab(cat.name);
-                    const el = document.getElementById("step-03");
-                    el?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="group flex flex-col text-left cursor-pointer"
-                >
-                  {/* Rounded Rectangular Card Image */}
-                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-rosepetal-card border border-rosepetal-border/60 shadow-sm group-hover:shadow-md transition-all duration-300">
-                    <Image
-                      src={cat.image}
-                      alt={cat.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
-                  </div>
-
-                  {/* Card Title, Subtitle, and Wishlist Heart */}
-                  <div className="mt-3 flex items-start justify-between">
-                    <div>
-                      <h3 className="font-serif-luxury text-base text-rosepetal-text font-semibold group-hover:text-rosepetal-wine transition-colors">
-                        {cat.name}
-                      </h3>
-                      <p className="text-xs text-rosepetal-muted font-light">
-                        {cat.subtitle}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleWishlist(cat.id);
-                      }}
-                      className="p-1 text-rosepetal-muted hover:text-rosepetal-wine transition-colors"
-                      aria-label={`Add ${cat.name} to wishlist`}
-                    >
-                      <Heart
-                        className={`w-4 h-4 ${
-                          isFavorited ? "fill-rosepetal-wine text-rosepetal-wine" : ""
-                        }`}
-                      />
-                    </button>
-                  </div>
+          {/* 6 Arched Category Cards Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+            {HERO_ARCHED_CATEGORIES.map((cat) => (
+              <div
+                key={cat.id}
+                onClick={() => {
+                  const tabTarget =
+                    cat.name === "SAREES"
+                      ? "Sarees"
+                      : cat.name === "LEHENGAS"
+                      ? "Lehengas"
+                      : cat.name === "KURTIS & SUITS"
+                      ? "Designer Suits"
+                      : "All";
+                  setActiveCollectionTab(tabTarget);
+                  const el = document.getElementById("step-03");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="group flex flex-col items-center text-center space-y-2 cursor-pointer"
+              >
+                {/* Signature Arched Card Shape */}
+                <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-xl overflow-hidden bg-transparent border border-rosepetal-border/40 group-hover:shadow-md transition-all duration-300">
+                  <Image
+                    src={cat.image}
+                    alt={cat.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                    className="object-cover group-hover:scale-108 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
                 </div>
-              );
-            })}
+
+                <div className="space-y-0.5 pt-1">
+                  <h4 className="font-serif-luxury text-xs sm:text-sm font-semibold tracking-wider text-rosepetal-text group-hover:text-rosepetal-wine transition-colors uppercase">
+                    {cat.name}
+                  </h4>
+                  <p className="text-[10px] text-rosepetal-muted font-light leading-tight">
+                    {cat.subtitle}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
