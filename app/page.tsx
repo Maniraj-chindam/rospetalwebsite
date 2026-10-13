@@ -301,47 +301,36 @@ export default function MasterBoutiquePage() {
       {/* 05B. CRAFTED WITH HEART SECTION (MATCHING USER REFERENCE)      */}
       {/* ============================================================== */}
       <section id="crafted-with-heart" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="bg-[#F8E7E9]/80 rounded-2xl border border-rosepetal-border/60 overflow-hidden p-6 sm:p-10 lg:p-12 shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            {/* Left: Artisan Craftsmanship Video */}
-            <div className="lg:col-span-5">
-              <div className="relative aspect-[4/3] sm:aspect-square w-full rounded-2xl overflow-hidden shadow-md border border-rosepetal-border/60 bg-black/5">
-                <video
-                  src="/chandrika-hero-maker.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
+        <div className="relative rounded-2xl overflow-hidden shadow-lg border border-rosepetal-border/60 min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex items-center">
+          {/* Edge-to-Edge Full-Width Video */}
+          <video
+            src="/chandrika-hero-maker.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
 
-            {/* Center: Story & Call to Action */}
-            <div className="lg:col-span-4 space-y-4 text-left">
-              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-muted block">
+          {/* Elegant Soft Contrast Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-white/85 backdrop-blur-[0.5px]" />
+
+          {/* Floating Content: Left Title & Right Rose Script */}
+          <div className="relative z-10 w-full p-8 sm:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
+            {/* Left: Section Title */}
+            <div className="space-y-2 max-w-xl text-left">
+              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine block">
                 MORE THAN FASHION
               </span>
-              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-rosepetal-text leading-[1.15] font-normal">
+              <h2 className="font-serif-luxury text-3xl sm:text-5xl lg:text-6xl text-rosepetal-text leading-tight font-normal">
                 Crafted with Heart,<br />
                 Worn with Pride
               </h2>
-              <p className="text-xs sm:text-sm text-rosepetal-muted leading-relaxed font-sans font-light max-w-md">
-                Every piece at Rosepetal is thoughtfully designed and ethically crafted, bringing together traditional techniques and contemporary aesthetics. We work closely with skilled artisans to ensure every drape tells a story of culture, care and creativity.
-              </p>
-              <div className="pt-2">
-                <Link
-                  href="/about"
-                  className="inline-flex items-center gap-2.5 px-6 py-3 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-[0.2em] uppercase rounded-sm shadow-sm transition-all group"
-                >
-                  <span>OUR PROCESS</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
             </div>
 
-            {/* Right: Rose Bloom & Cursive Script */}
-            <div className="lg:col-span-3 flex flex-col items-center lg:items-end justify-center text-center lg:text-right pt-4 lg:pt-0">
+            {/* Right: Rose Blossom & Handwritten Cursive Script */}
+            <div className="flex flex-col items-center md:items-end text-center md:text-right">
               <div className="relative w-28 h-28 sm:w-32 sm:h-32 mb-1">
                 <Image
                   src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&q=80&w=400"
@@ -351,7 +340,7 @@ export default function MasterBoutiquePage() {
                   className="object-contain mix-blend-multiply drop-shadow-sm hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <div className="font-script-accent text-3xl sm:text-4xl text-rosepetal-text/80 leading-[1.25] tracking-wide">
+              <div className="font-script-accent text-3xl sm:text-4xl text-rosepetal-text leading-tight tracking-wide">
                 <p>Handcrafted</p>
                 <p>for your</p>
                 <p>beautiful</p>
