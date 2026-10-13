@@ -19,7 +19,6 @@ import {
   Play,
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
-import StepNavigator from "@/components/StepNavigator";
 import ProductCard from "@/components/ProductCard";
 import StoryVideoModal from "@/components/StoryVideoModal";
 import {
@@ -93,9 +92,6 @@ export default function MasterBoutiquePage() {
 
   return (
     <div className="relative">
-      {/* Sticky Step Navigator Bar for instant jumping & mockup comparison */}
-      <StepNavigator />
-
       {/* Story Video Modal */}
       <StoryVideoModal isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
 
@@ -103,15 +99,6 @@ export default function MasterBoutiquePage() {
       {/* 01. HERO SECTION WITH EXACT USER IMAGE & 8 ARCHED CATEGORIES    */}
       {/* ============================================================== */}
       <section id="step-01" className="relative border-b-8 border-rosepetal-border/60 bg-[#FAF4F3]">
-        {/* Section Step Header Tag */}
-        <div className="pt-6 px-4 max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-xs uppercase font-serif-luxury tracking-[0.25em] text-rosepetal-wine/90 bg-rosepetal-blushLight px-3 py-1 rounded border border-rosepetal-border/50">
-            01. HERO & HOME PAGE
-          </span>
-          <span className="text-[11px] text-rosepetal-muted tracking-wider">
-            Rosepetal Designer Boutique
-          </span>
-        </div>
 
         {/* ---------------- EXACT HERO BANNER ---------------- */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
