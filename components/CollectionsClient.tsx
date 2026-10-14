@@ -96,8 +96,8 @@ export default function CollectionsClient() {
 
   return (
     <div data-collection-shop-view className="w-full">
-      {/* 1. Full-Bleed Banner Section (Flush to Header, 0 side borders) */}
-      <section className="relative w-full overflow-hidden border-b border-rosepetal-border/50 bg-[#724552] min-h-[210px] h-[225px] sm:h-[250px] lg:h-[275px]">
+      {/* 1. Full-Bleed Banner Section (Flush to Header, 0 side borders, increased height to reveal vase and saree pleats) */}
+      <section className="relative w-full overflow-hidden bg-[#724552] min-h-[260px] h-[285px] sm:h-[315px] lg:h-[345px]">
         {/* Ultra-HD Background Image anchored to right so all 4 sarees are completely visible */}
         <Image
           src="/collections-banner-couture.png"
@@ -155,8 +155,8 @@ export default function CollectionsClient() {
         </div>
       </section>
 
-      {/* 2. Main Product Catalog & Filter Section */}
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      {/* 2. Main Product Catalog & Filter Section (Category pills directly under banner with 0 white gap) */}
+      <div className="mx-auto max-w-7xl px-4 pt-2 pb-6 sm:px-6 sm:pt-3 sm:pb-8 lg:px-8">
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">{CATEGORIES.map((category) => <button key={category} onClick={() => setActiveCategory(category)} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs transition-colors ${activeCategory === category && filterParam !== "wishlist" ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/70 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{category}</button>)}</div>
         <div className="mt-7 grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
           <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-rosepetal-border/70 bg-white/70 backdrop-blur-sm p-5 shadow-xs [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
