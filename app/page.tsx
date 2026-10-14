@@ -193,7 +193,7 @@ export default function MasterBoutiquePage() {
   }, [selectedShopAllId, shopAllExpanded]);
 
   return (
-    <div className="relative">
+    <div className="relative -mt-16 sm:-mt-20">
       {/* Story Video Modal */}
       <StoryVideoModal isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
 

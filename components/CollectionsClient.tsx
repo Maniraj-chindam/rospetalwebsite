@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { ArrowLeft, ChevronDown, SlidersHorizontal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
@@ -95,18 +96,59 @@ export default function CollectionsClient() {
 
   return (
     <main data-collection-shop-view className="mx-auto max-w-[1600px] px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-      <section className="overflow-hidden rounded-[1.75rem] border border-rosepetal-border/80 bg-[linear-gradient(100deg,#fff8f5_0%,#fce9e7_53%,#f3d6d5_100%)] px-6 py-8 shadow-[0_18px_50px_rgba(103,34,49,0.10)] sm:px-10 sm:py-10">
-        <button
-          type="button"
-          data-back-to-collections
-          onClick={goBack}
-          className="mb-5 inline-flex items-center gap-2 rounded-full border border-rosepetal-wine/20 bg-white/75 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-rosepetal-wine transition-colors hover:border-rosepetal-wine/45 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-          Back to Shop
-        </button>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.27em] text-rosepetal-wine">Rosepetal collection</p>
-        <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between"><div><h1 className="font-serif-luxury text-4xl text-rosepetal-text sm:text-5xl">{collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}</h1><p className="mt-3 max-w-2xl text-sm leading-relaxed text-rosepetal-muted">{collectionType ? `A curated Rosepetal edit for ${collectionType.toLowerCase()}.` : "Discover pieces chosen for celebrations, everyday elegance, and meaningful moments."}</p></div><div className="rounded-full border border-white/80 bg-white/75 px-4 py-2 text-xs text-rosepetal-muted"><span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover</div></div>
+      <section className="relative overflow-hidden rounded-[1.75rem] border border-rosepetal-border/60 shadow-[0_18px_50px_rgba(103,34,49,0.12)] min-h-[220px] sm:min-h-[260px] lg:min-h-[290px] flex flex-col justify-between p-6 sm:p-9 lg:p-11 bg-[#724552]">
+        {/* 1. HD Background Image */}
+        <Image
+          src="/collections-banner-couture.png"
+          alt="Rosepetal Boutique Couture Collections"
+          fill
+          priority
+          sizes="(max-width: 1280px) 100vw, 1600px"
+          className="object-cover object-right sm:object-center"
+        />
+
+        {/* 2. Delicate Gradient Scrim for Flawless Text Contrast */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#200A13]/90 via-[#200A13]/60 to-transparent sm:from-[#200A13]/85 sm:via-[#200A13]/35 sm:to-transparent"
+          aria-hidden="true"
+        />
+
+        {/* 3. Top Interactive Header Bar */}
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              data-back-to-collections
+              onClick={goBack}
+              className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/20 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-all hover:bg-white hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+              Back to Shop
+            </button>
+            <span className="hidden sm:inline-flex rounded-full border border-white/35 bg-white/10 px-3.5 py-1.5 text-[9.5px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+              Our Collection
+            </span>
+          </div>
+
+          <div className="rounded-full border border-white/60 bg-white/90 px-4 py-1.5 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
+            <span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover
+          </div>
+        </div>
+
+        {/* 4. Live Luxury Typography & Dynamic Category Header */}
+        <div className="relative z-10 mt-6 sm:mt-8 max-w-xl">
+          <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.28em] text-rosepetal-blush/90">
+            TIMELESS INDIAN ELEGANCE
+          </p>
+          <h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.05] mt-1.5 drop-shadow-xs">
+            {collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}
+          </h1>
+          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/90 font-light max-w-lg drop-shadow-xs">
+            {collectionType
+              ? `A curated Rosepetal edit for ${collectionType.toLowerCase()}.`
+              : "From classic sarees to intricate maggam work, find outfits that tell your story."}
+          </p>
+        </div>
       </section>
       <div className="mt-8 flex gap-2 overflow-x-auto pb-2 no-scrollbar">{CATEGORIES.map((category) => <button key={category} onClick={() => setActiveCategory(category)} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs transition-colors ${activeCategory === category && filterParam !== "wishlist" ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/70 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{category}</button>)}</div>
       <div className="mt-7 grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">

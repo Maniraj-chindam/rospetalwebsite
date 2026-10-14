@@ -13,9 +13,19 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const { wishlist, cartCount, isSearchOpen, setIsSearchOpen, searchQuery, setSearchQuery } = useBoutique();
   const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const closeOnOutsideClick = (event: MouseEvent) => {
@@ -49,10 +59,10 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className={`z-50 transition-all ${
-        isHomePage
-          ? "absolute inset-x-0 top-0 bg-transparent"
-          : "sticky top-0 border-b border-rosepetal-border/50 bg-[#FCECEE]/95 backdrop-blur-md"
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isHomePage && !isScrolled
+          ? "bg-transparent border-b border-transparent"
+          : "border-b border-rosepetal-border/50 bg-[#FCECEE]/95 backdrop-blur-md shadow-xs"
       }`}
     >
       <div className="max-w-[90rem] mx-auto flex h-16 sm:h-20 items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8">
