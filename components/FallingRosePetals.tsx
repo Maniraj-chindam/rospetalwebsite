@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 interface Petal {
   id: number;
   left: number; // percentage across screen (0 - 100)
-  size: number; // in px (14 - 32)
-  duration: number; // in seconds (9 - 18)
+  size: number; // in px (14 - 24)
+  duration: number; // in seconds (14 - 24)
   delay: number; // in seconds (0 - 8)
   drift: number; // sway distance in px (-60 to 60)
   rotation: number; // end rotation degrees
@@ -26,17 +26,17 @@ export default function FallingRosePetals() {
   const [petals, setPetals] = useState<Petal[]>([]);
 
   useEffect(() => {
-    // Generate a fixed set of diverse petals on client load
-    const count = 22;
+    // Keep the ambient layer intentionally light, so content stays in focus.
+    const count = 14;
     const generated: Petal[] = Array.from({ length: count }, (_, i) => ({
       id: i,
       left: Math.random() * 96 + 2, // 2% to 98%
-      size: Math.floor(Math.random() * 16) + 16, // 16px to 32px
-      duration: Math.random() * 7 + 9, // 9s to 16s fall duration
-      delay: Math.random() * 8, // staggered entrance
-      drift: (Math.random() - 0.5) * 120, // -60px to +60px sway
+      size: Math.floor(Math.random() * 10) + 14, // 14px to 24px
+      duration: Math.random() * 10 + 14, // 14s to 24s fall duration
+      delay: Math.random() * 12, // staggered entrance
+      drift: (Math.random() - 0.5) * 90, // -45px to +45px sway
       rotation: Math.floor(Math.random() * 360) + 180,
-      opacity: Math.random() * 0.35 + 0.35, // 0.35 to 0.70
+      opacity: Math.random() * 0.22 + 0.18, // 0.18 to 0.40
       color: PETAL_COLORS[i % PETAL_COLORS.length],
     }));
     setPetals(generated);
@@ -45,27 +45,9 @@ export default function FallingRosePetals() {
   return (
     <div
       aria-hidden="true"
+      data-falling-rose-petals
       className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
-      {/* Background Soft Rose Watermark Silhouette (Left) */}
-      <div className="absolute top-[18%] -left-16 w-80 h-80 opacity-[0.06] text-rosepetal-wine pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-none stroke-current stroke-[1.5]">
-          <circle cx="50" cy="50" r="45" strokeDasharray="3 3" />
-          <path d="M50 18 C35 32 35 48 50 62 C65 48 65 32 50 18 Z" />
-          <path d="M18 50 C32 35 48 35 62 50 C48 65 35 65 18 50 Z" />
-          <circle cx="50" cy="50" r="8" className="fill-current" />
-        </svg>
-      </div>
-
-      {/* Background Soft Rose Watermark Silhouette (Right) */}
-      <div className="absolute top-[60%] -right-16 w-96 h-96 opacity-[0.06] text-rosepetal-wine pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-none stroke-current stroke-[1.5]">
-          <circle cx="50" cy="50" r="45" strokeDasharray="3 3" />
-          <path d="M50 18 C35 32 35 48 50 62 C65 48 65 32 50 18 Z" />
-          <path d="M18 50 C32 35 48 35 62 50 C48 65 35 65 18 50 Z" />
-          <circle cx="50" cy="50" r="8" className="fill-current" />
-        </svg>
-      </div>
       {petals.map((petal) => (
         <div
           key={petal.id}

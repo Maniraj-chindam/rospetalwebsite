@@ -207,29 +207,23 @@ export default function MasterBoutiquePage() {
             {/* Supplied Rosepetal designer boutique hero image */}
             <div className="relative min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#1A0B10]">
               <Image
-                src="/rosepetal-designer-boutique-hero.png"
+                src="/rosepetal-custom-designer-hero.png"
                 alt="Rosepetal designer boutique collection"
                 fill
                 priority
                 sizes="100vw"
-                className="absolute inset-0 h-full w-full origin-center scale-[1.25] object-cover object-center"
+                className="absolute inset-0 h-full w-full object-cover object-center"
               />
 
               {/* Floating Petals Layer */}
               <FloatingPetals />
-
-              <div
-                data-hero-consultation-cover
-                aria-hidden="true"
-                className="pointer-events-none absolute left-[25.5%] top-[60.5%] z-10 h-[10%] w-[19%] bg-[linear-gradient(90deg,#f8ddd6_0%,#fce8e2_100%)]"
-              />
 
               {/* Interactive areas aligned with the buttons in the supplied artwork */}
               <div data-hero-image-actions className="absolute inset-0 z-20">
                 <Link
                   href="/collections"
                   aria-label="Explore collections"
-                  className="absolute left-[7%] top-[61%] h-[9%] w-[18%] rounded-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rosepetal-wine/60"
+                  className="absolute left-[14%] top-[58%] h-[9%] w-[20%] rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rosepetal-wine/60"
                 />
               </div>
 
