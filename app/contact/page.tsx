@@ -40,9 +40,9 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-3 mb-14">
+      <div className="text-center max-w-2xl mx-auto space-y-3 mb-7">
         <h1 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
           Get in Touch
         </h1>

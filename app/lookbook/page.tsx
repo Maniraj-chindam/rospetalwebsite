@@ -17,9 +17,9 @@ export default function LookbookPage() {
   });
 
   return (
-    <div className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-3 mb-8">
+      <div className="text-center max-w-2xl mx-auto space-y-3 mb-6">
         <h1 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
           Lookbook
         </h1>
@@ -29,7 +29,7 @@ export default function LookbookPage() {
       </div>
 
       {/* Pill Filter Tabs */}
-      <div className="flex items-center justify-center gap-2 sm:gap-3 mb-12 flex-wrap">
+      <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6 flex-wrap">
         {CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat;
           return (

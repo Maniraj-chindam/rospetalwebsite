@@ -34,7 +34,7 @@ export default function CustomDesignPage() {
   return (
     <div className="relative overflow-hidden">
       {/* ----------------- 01. HERO WITH CENTER CARD ----------------- */}
-      <section className="relative min-h-[75vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16">
+      <section className="relative min-h-[75vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* Atelier Embroidery Background */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -74,8 +74,8 @@ export default function CustomDesignPage() {
       </section>
 
       {/* ----------------- 02. HOW IT WORKS ----------------- */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-8">
           <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
             How It Works
           </h2>
@@ -106,7 +106,7 @@ export default function CustomDesignPage() {
       </section>
 
       {/* ----------------- 03. CONSULTATION / ATELIER BANNER ----------------- */}
-      <section className="pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      <section className="pb-8 sm:pb-10 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
         <div className="bg-[#FAF0EE] rounded-2xl border border-rosepetal-border overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-12 items-center">
           {/* Left Artisan Photo */}
           <div className="md:col-span-5 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[260px]">

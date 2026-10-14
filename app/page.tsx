@@ -268,7 +268,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         {/* ---------------- 8 ARCHED CATEGORIES ---------------- */}
-        <div className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
+        <div className="relative overflow-hidden pt-5 pb-4 sm:pt-7 sm:pb-6 lg:pt-8 lg:pb-7">
           <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
             {/* Centered Heading */}
             <div className="mb-3.5 sm:mb-5 text-center">
@@ -345,7 +345,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 04B. SHOP ALL LUXURY STOREFRONT                                */}
       {/* ============================================================== */}
-      <section id="shop-all" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+      <section id="shop-all" className="py-4 sm:py-6 lg:py-7 px-4 sm:px-6 lg:px-8">
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
           <div className="relative z-10 grid items-center gap-8 lg:min-h-[21rem] lg:grid-cols-[46%_54%] lg:gap-0">
@@ -493,7 +493,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       <section
         id="new-arrivals"
-        className="relative isolate mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20"
+        className="relative isolate mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-7"
       >
         {/* Header: Title & Subtitle on Left, VIEW ALL on Right */}
         <div className="relative z-10 mb-6 flex items-end justify-between border-b border-rosepetal-border/40 pb-2.5">
@@ -515,7 +515,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         {/* Row 1: 4 Product Cards */}
-        <div className="relative z-10 mb-8 grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">
+        <div className="relative z-10 mb-5 grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">
           {NEW_ARRIVALS_PRODUCTS.map((product) => {
             const isFavorited = wishlist.includes(product.id);
             return (
@@ -614,7 +614,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 05B. SHOP BY PRICE                                              */}
       {/* ============================================================== */}
-      <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24 py-12 sm:py-16 lg:py-20">
+      <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24 py-4 sm:py-6 lg:py-7">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="overflow-hidden px-4 sm:px-7 lg:px-9">
             <div className="mb-7 flex items-end justify-between gap-5 border-b border-rosepetal-wine/10 pb-5 sm:mb-8">
@@ -688,7 +688,7 @@ export default function MasterBoutiquePage() {
         <div className="pointer-events-none absolute -left-12 top-0 h-52 w-52 rounded-full border border-rosepetal-wine/10" aria-hidden="true" />
         <div className="pointer-events-none absolute -right-16 bottom-0 h-56 w-56 rounded-full border border-[#B07839]/15" aria-hidden="true" />
 
-        <div className="relative mx-auto max-w-7xl py-12 sm:py-16 lg:py-20">
+        <div className="relative mx-auto max-w-7xl py-5 sm:py-7 lg:py-8">
           <div className="mx-auto mb-7 max-w-3xl text-center">
             <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-rosepetal-wine">
               CUSTOMER STORIES
@@ -768,7 +768,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
       {/* ============================================================== */}
-      <section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-[#fbeded] py-12 sm:py-16 lg:py-20">
+      <section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-[#fbeded] py-5 sm:py-7 lg:py-8">
         <Image
           src="/contact-floral-backdrop.png"
           alt=""

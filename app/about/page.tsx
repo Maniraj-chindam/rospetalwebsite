@@ -9,7 +9,7 @@ export default function AboutPage() {
   return (
     <div className="relative overflow-hidden">
       {/* ----------------- 01. OUR STORY HERO ----------------- */}
-      <section className="relative min-h-[78vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FCECEE] to-[#FCECEE] pt-8 pb-16 px-4 sm:px-6 lg:px-8">
+      <section className="relative min-h-[78vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FCECEE] to-[#FCECEE] pt-6 pb-8 sm:pt-8 sm:pb-10 px-4 sm:px-6 lg:px-8">
         <FloatingPetals />
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -64,7 +64,7 @@ export default function AboutPage() {
       </section>
 
       {/* ----------------- 02. OUR 4 PILLARS ----------------- */}
-      <section className="border-y border-rosepetal-border/60 bg-white/60 backdrop-blur-sm py-12 px-4 sm:px-6 lg:px-8">
+      <section className="border-y border-rosepetal-border/60 bg-white/60 backdrop-blur-sm py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {ABOUT_PILLARS.map((pillar, idx) => {
             return (
@@ -88,7 +88,7 @@ export default function AboutPage() {
       </section>
 
       {/* ----------------- 03. MORE THAN FASHION / CRAFT SECTION ----------------- */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Artisan Hand-Embroidery Image */}
           <div className="lg:col-span-6">
