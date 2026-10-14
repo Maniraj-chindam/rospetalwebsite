@@ -5,7 +5,7 @@ export default function RosepetalLogo({ className = "" }: { className?: string }
   return (
     <Link href="/" className={`inline-flex items-center gap-3.5 group text-left ${className}`}>
       {/* Rose Geometric Floral Emblem */}
-      <div className="relative w-10 h-10 rounded-full border border-rosepetal-wine/40 flex items-center justify-center p-1.5 transition-all duration-300 group-hover:border-rosepetal-wine group-hover:bg-rosepetal-blushLight/50">
+      <div className="relative w-11 h-11 rounded-full border border-rosepetal-wine/40 flex items-center justify-center p-1.5 transition-all duration-300 group-hover:border-rosepetal-wine group-hover:bg-rosepetal-blushLight/50">
         <svg
           viewBox="0 0 100 100"
           className="w-full h-full text-rosepetal-wine stroke-current fill-none stroke-[2.5]"
@@ -27,10 +27,10 @@ export default function RosepetalLogo({ className = "" }: { className?: string }
       </div>
 
       <div className="flex flex-col">
-        <span className="font-serif-luxury text-2xl font-normal tracking-wide text-rosepetal-wine group-hover:text-rosepetal-wineHover transition-colors leading-tight">
+        <span className="font-serif-luxury text-3xl font-medium tracking-wide text-rosepetal-wine group-hover:text-rosepetal-wineHover transition-colors leading-tight">
           Rosepetal
         </span>
-        <span className="text-[9px] uppercase tracking-[0.26em] text-rosepetal-muted font-medium -mt-0.5">
+        <span className="text-[10.5px] uppercase tracking-[0.28em] text-rosepetal-muted font-semibold -mt-0.5">
           Designer Boutique
         </span>
       </div>
