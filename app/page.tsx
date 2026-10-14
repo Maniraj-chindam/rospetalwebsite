@@ -768,7 +768,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
       {/* ============================================================== */}
-      <section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-[#fbeded] py-5 sm:py-7 lg:py-8">
+      <section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-[#fbeded] py-6 sm:py-8">
         <Image
           src="/contact-floral-backdrop.png"
           alt=""

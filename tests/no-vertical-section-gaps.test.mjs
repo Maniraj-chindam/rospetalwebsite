@@ -12,6 +12,6 @@ test("home page sections use consistent, harmonic luxury vertical section spacin
   assert.match(page, /<section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24 py-4 sm:py-6 lg:py-7">/);
   assert.match(page, /<section id="customer-reviews" className="relative scroll-mt-20 overflow-hidden/);
   assert.match(page, /relative mx-auto max-w-7xl py-5 sm:py-7 lg:py-8/);
-  assert.match(page, /<section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-\[#fbeded\] py-5 sm:py-7 lg:py-8">/);
+  assert.match(page, /<section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-\[#fbeded\] py-6 sm:py-8">/);
   assert.match(page, /shopAllExpanded \? "min-h-0 bg-white px-5 py-7 sm:px-8 sm:py-9" : "min-h-0 p-0"/);
 });

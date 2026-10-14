@@ -95,16 +95,16 @@ export default function CollectionsClient() {
   );
 
   return (
-    <main data-collection-shop-view className="mx-auto max-w-[1600px] px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-      <section className="relative overflow-hidden rounded-[1.75rem] border border-rosepetal-border/60 shadow-[0_18px_50px_rgba(103,34,49,0.12)] min-h-[220px] sm:min-h-[260px] lg:min-h-[290px] flex flex-col justify-between p-6 sm:p-9 lg:p-11 bg-[#724552]">
+    <main data-collection-shop-view className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <section className="relative overflow-hidden rounded-[1.75rem] border border-rosepetal-border/60 shadow-[0_18px_50px_rgba(103,34,49,0.12)] min-h-[200px] sm:h-[217px] sm:min-h-[217px] sm:max-h-[225px] flex flex-col justify-between px-5 py-4 sm:px-8 sm:py-5 lg:px-9 lg:py-5 bg-[#724552]">
         {/* 1. HD Background Image */}
         <Image
           src="/collections-banner-couture.png"
           alt="Rosepetal Boutique Couture Collections"
           fill
           priority
-          sizes="(max-width: 1280px) 100vw, 1600px"
-          className="object-cover object-right sm:object-center"
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          className="object-cover object-[center_35%]"
         />
 
         {/* 2. Delicate Gradient Scrim for Flawless Text Contrast */}
@@ -120,7 +120,7 @@ export default function CollectionsClient() {
               type="button"
               data-back-to-collections
               onClick={goBack}
-              className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/20 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-all hover:bg-white hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/20 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-all hover:bg-white hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
               Back to Shop
@@ -130,20 +130,20 @@ export default function CollectionsClient() {
             </span>
           </div>
 
-          <div className="rounded-full border border-white/60 bg-white/90 px-4 py-1.5 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
+          <div className="rounded-full border border-white/60 bg-white/90 px-3.5 py-1 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
             <span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover
           </div>
         </div>
 
         {/* 4. Live Luxury Typography & Dynamic Category Header */}
-        <div className="relative z-10 mt-6 sm:mt-8 max-w-xl">
-          <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.28em] text-rosepetal-blush/90">
+        <div className="relative z-10 max-w-xl">
+          <p className="text-[9.5px] sm:text-[10.5px] font-semibold uppercase tracking-[0.28em] text-rosepetal-blush/90">
             TIMELESS INDIAN ELEGANCE
           </p>
-          <h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.05] mt-1.5 drop-shadow-xs">
+          <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[42px] text-white font-normal leading-tight mt-1 drop-shadow-xs">
             {collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}
           </h1>
-          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/90 font-light max-w-lg drop-shadow-xs">
+          <p className="mt-1 text-xs leading-relaxed text-white/90 font-light max-w-lg drop-shadow-xs line-clamp-1 sm:line-clamp-none">
             {collectionType
               ? `A curated Rosepetal edit for ${collectionType.toLowerCase()}.`
               : "From classic sarees to intricate maggam work, find outfits that tell your story."}
