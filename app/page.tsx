@@ -193,7 +193,7 @@ export default function MasterBoutiquePage() {
   }, [selectedShopAllId, shopAllExpanded]);
 
   return (
-    <div className="relative -mt-16 sm:-mt-20">
+    <div className="relative">
       {/* Story Video Modal */}
       <StoryVideoModal isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
 
@@ -234,14 +234,8 @@ export default function MasterBoutiquePage() {
               {/* Left-Aligned Live Typography & Call to Action */}
               <div className="relative z-20 flex min-h-[90svh] sm:min-h-[calc(100svh-5rem)] items-center">
                 <div className="max-w-2xl px-5 sm:px-12 lg:px-20 py-20 sm:py-28">
-                  {/* Eyebrow Badge */}
-                  <div className="inline-flex items-center gap-2 rounded-full border border-rosepetal-wine/25 bg-white/70 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-rosepetal-wine backdrop-blur-xs shadow-xs">
-                    <Sparkles className="w-3 h-3 text-rosepetal-wine" />
-                    <span>ROSEPETAL DESIGNER BOUTIQUE · BANJARA HILLS</span>
-                  </div>
-
                   {/* Main Heading */}
-                  <h1 className="mt-4 font-serif-luxury text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] text-rosepetal-text drop-shadow-xs">
+                  <h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] text-rosepetal-text drop-shadow-xs">
                     Where Heritage Craft Meets Modern <span className="italic text-rosepetal-wine">Couture</span>
                   </h1>
 
@@ -251,26 +245,15 @@ export default function MasterBoutiquePage() {
                   </p>
 
                   {/* Actions Bar */}
-                  <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
+                  <div className="mt-7 flex items-center">
                     {/* SHOP NOW Button */}
                     <Link
                       href="/collections"
-                      className="inline-flex min-h-[48px] sm:min-h-[50px] items-center gap-2.5 rounded-full bg-rosepetal-wine px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:bg-rosepetal-wineHover hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+                      className="inline-flex min-h-[48px] sm:min-h-[50px] items-center gap-2.5 rounded-full bg-rosepetal-wine px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:bg-rosepetal-wineHover hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
                     >
                       <span>SHOP NOW</span>
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-
-                    {/* Watch Story Video Modal Button */}
-                    <button
-                      type="button"
-                      onClick={() => setIsStoryOpen(true)}
-                      className="inline-flex min-h-[48px] sm:min-h-[50px] items-center gap-2 rounded-full border border-rosepetal-wine/30 bg-white/75 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.15em] text-rosepetal-wine backdrop-blur-md shadow-xs transition-all hover:bg-white hover:border-rosepetal-wine active:scale-95"
-                      aria-label="Watch Story"
-                    >
-                      <Play className="h-3.5 w-3.5 fill-current" />
-                      <span>Watch Story</span>
-                    </button>
                   </div>
 
                   {/* Trust Badges */}

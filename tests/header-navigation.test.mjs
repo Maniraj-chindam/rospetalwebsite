@@ -66,7 +66,7 @@ test("header exposes the requested collection menus and their options", async ()
     previousPosition = position;
   }
   assert.match(header, /whitespace-nowrap/);
-  assert.match(header, /bg-transparent/);
+  assert.match(header, /bg-\[#FFF5F6\]\/95/);
   assert.match(header, /bg-white p-2/);
   assert.doesNotMatch(header, /bg-\[#FFF9F7\]\/98 p-2/);
 
