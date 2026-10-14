@@ -268,7 +268,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         {/* ---------------- 8 ARCHED CATEGORIES ---------------- */}
-        <div className="relative overflow-hidden pt-16 pb-0 sm:pt-20 sm:pb-0">
+        <div className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
           <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
             {/* Centered Heading */}
             <div className="mb-3.5 sm:mb-5 text-center">
@@ -345,8 +345,8 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 04B. SHOP ALL LUXURY STOREFRONT                                */}
       {/* ============================================================== */}
-      <section id="shop-all" className="px-4 sm:px-6 lg:px-8">
-        <div className="relative mx-auto max-w-7xl px-5 pb-0 pt-0 sm:px-8 sm:pb-0 sm:pt-0 lg:px-12 lg:pt-0">
+      <section id="shop-all" className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
           <div className="relative z-10 grid items-center gap-8 lg:min-h-[21rem] lg:grid-cols-[46%_54%] lg:gap-0">
             <div className="max-w-xl py-1 sm:py-3 lg:pr-5">
@@ -493,7 +493,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       <section
         id="new-arrivals"
-        className="relative isolate mx-auto max-w-7xl px-4 pb-0 pt-0 sm:px-6 sm:pb-0 sm:pt-0 lg:px-8"
+        className="relative isolate mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20"
       >
         {/* Header: Title & Subtitle on Left, VIEW ALL on Right */}
         <div className="relative z-10 mb-6 flex items-end justify-between border-b border-rosepetal-border/40 pb-2.5">
@@ -614,9 +614,9 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 05B. SHOP BY PRICE                                              */}
       {/* ============================================================== */}
-      <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24">
+      <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24 py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden px-4 pb-0 pt-0 sm:px-7 sm:pb-0 sm:pt-0 lg:px-9">
+          <div className="overflow-hidden px-4 sm:px-7 lg:px-9">
             <div className="mb-7 flex items-end justify-between gap-5 border-b border-rosepetal-wine/10 pb-5 sm:mb-8">
               <div>
                 <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.28em] text-rosepetal-wine">
@@ -688,7 +688,7 @@ export default function MasterBoutiquePage() {
         <div className="pointer-events-none absolute -left-12 top-0 h-52 w-52 rounded-full border border-rosepetal-wine/10" aria-hidden="true" />
         <div className="pointer-events-none absolute -right-16 bottom-0 h-56 w-56 rounded-full border border-[#B07839]/15" aria-hidden="true" />
 
-        <div className="relative mx-auto max-w-7xl py-10 sm:py-14">
+        <div className="relative mx-auto max-w-7xl py-12 sm:py-16 lg:py-20">
           <div className="mx-auto mb-7 max-w-3xl text-center">
             <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-rosepetal-wine">
               CUSTOMER STORIES
@@ -768,7 +768,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
       {/* ============================================================== */}
-      <section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-[#fbeded] py-8 sm:py-12">
+      <section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-[#fbeded] py-12 sm:py-16 lg:py-20">
         <Image
           src="/contact-floral-backdrop.png"
           alt=""
