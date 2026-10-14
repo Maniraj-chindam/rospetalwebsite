@@ -206,21 +206,25 @@ export default function MasterBoutiquePage() {
         <div className="w-full">
           <div className="relative overflow-hidden group">
             {/* Supplied Rosepetal designer boutique hero image */}
-            <div className="relative min-h-[85svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#1A0B10]">
+            <div className="relative min-h-[88svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#1A0B10]">
               <Image
                 src="/rosepetal-custom-designer-hero.png"
-                alt="Rosepetal designer boutique collection"
+                alt="Custom Designer Wear for Every Occasion - Rosepetal Boutique"
                 fill
                 priority
                 sizes="100vw"
-                className="absolute inset-0 h-full w-full object-cover object-[65%_center] sm:object-center"
+                className="absolute inset-0 h-full w-full object-cover object-[68%_center] sm:object-center"
               />
+
+              {/* Gradient Scrims for Contrast */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#1A0B10]/35 via-transparent to-transparent z-10" aria-hidden="true" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-[#200D13]/92 via-[#200D13]/45 to-transparent z-10 sm:hidden" aria-hidden="true" />
 
               {/* Floating Petals Layer */}
               <FloatingPetals />
 
-              {/* Interactive areas aligned with the buttons in the supplied artwork */}
-              <div data-hero-image-actions className="absolute inset-0 z-20">
+              {/* Desktop interactive area aligned with the button in the supplied artwork */}
+              <div data-hero-image-actions className="hidden sm:block absolute inset-0 z-20">
                 <Link
                   href="/collections"
                   aria-label="Explore collections"
@@ -228,22 +232,35 @@ export default function MasterBoutiquePage() {
                 />
               </div>
 
-              {/* Mobile Explicit Call to Action Bar */}
-              <div className="sm:hidden absolute inset-x-0 bottom-6 z-30 flex items-center justify-center gap-2.5 px-4 pointer-events-auto">
-                <Link
-                  href="/collections"
-                  className="flex-1 py-3 px-5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-full shadow-lg text-center flex items-center justify-center gap-2 active:scale-95 transition-all"
-                >
-                  <span>Explore Collections</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-                <button
-                  onClick={() => setIsStoryOpen(true)}
-                  className="p-3 bg-white/95 text-rosepetal-wine rounded-full shadow-lg backdrop-blur-sm active:scale-90 transition-all flex items-center justify-center"
-                  aria-label="Watch Story"
-                >
-                  <Play className="w-4 h-4 fill-current ml-0.5" />
-                </button>
+              {/* Mobile Dedicated Live Typography & Call to Action Bar */}
+              <div className="sm:hidden absolute inset-x-0 bottom-6 z-30 flex flex-col items-center text-center px-4 pointer-events-auto">
+                <p className="text-[10px] uppercase tracking-[0.28em] font-semibold text-rosepetal-blush/90 drop-shadow-xs">
+                  DISCOVER YOUR SIGNATURE LOOK
+                </p>
+                <h1 className="font-serif-luxury text-2xl text-white font-normal leading-snug mt-1.5 mb-3.5 drop-shadow-sm max-w-xs">
+                  Custom Designer Wear for <span className="font-script-accent text-3xl text-rosepetal-blushLight">Every</span> Occasion.
+                </h1>
+
+                <div className="w-full flex items-center justify-center gap-2.5 max-w-xs">
+                  <Link
+                    href="/collections"
+                    className="flex-1 min-h-[48px] py-3.5 px-5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-full shadow-lg text-center flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  >
+                    <span>Explore Collections</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <button
+                    onClick={() => setIsStoryOpen(true)}
+                    className="min-w-[48px] min-h-[48px] p-3.5 bg-white/95 text-rosepetal-wine rounded-full shadow-lg backdrop-blur-sm active:scale-90 transition-all flex items-center justify-center"
+                    aria-label="Watch Story"
+                  >
+                    <Play className="w-4 h-4 fill-current ml-0.5" />
+                  </button>
+                </div>
+
+                <span className="mt-3 text-[9.5px] uppercase tracking-[0.2em] font-medium text-white/70">
+                  Handcrafted Couture • Banjara Hills, Hyderabad
+                </span>
               </div>
 
             </div>
