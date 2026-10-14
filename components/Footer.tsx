@@ -5,8 +5,20 @@ import { CONTACT_INFO, NAV_LINKS } from "@/data/boutique-data";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F8DCE0] border-t border-rosepetal-border/70 text-rosepetal-text mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="relative isolate overflow-hidden text-rosepetal-text">
+      <video
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label="Rosepetal boutique collection reel"
+      >
+        <source src="/rosepetal-footer-reel.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 z-[1] bg-[#fff8f5]/80" aria-hidden="true" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Info */}
           <div className="space-y-4 md:col-span-1">

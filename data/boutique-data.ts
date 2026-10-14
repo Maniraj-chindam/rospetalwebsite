@@ -27,6 +27,81 @@ export const NAV_LINKS = [
   { name: "Contact", href: "/contact" },
 ];
 
+export interface HeaderNavItem {
+  name: string;
+  href: string;
+  menuId?: string;
+  children?: Array<{ name: string; href: string; shopAllId?: string }>;
+}
+
+export interface ShopAllCategoryCard {
+  id: string;
+  group: "Designer Dresses" | "Handloom Collection" | "Designer Frocks" | "Lehenga Collection";
+  name: string;
+  image: string;
+  href: string;
+}
+
+export const SHOP_ALL_CATEGORY_CARDS: ShopAllCategoryCard[] = [
+  { id: "customized-designer-dresses", group: "Designer Dresses", name: "Customized Designer Dresses", image: "/libas-dress-01.jpg", href: "/collections?category=Dresses&type=Customized+Designer+Dresses" },
+  { id: "embroidered-designer-dresses", group: "Designer Dresses", name: "Embroidered Designer Dresses", image: "/libas-dress-02.jpg", href: "/collections?category=Dresses&type=Embroidered+Designer+Dresses" },
+  { id: "maggam-work-dresses", group: "Designer Dresses", name: "Maggam Work Dresses", image: "/libas-dress-03.jpg", href: "/collections?category=Dresses&type=Maggam+Work+Dresses" },
+  { id: "a-line-designer-dresses", group: "Designer Dresses", name: "A-Line Designer Dresses", image: "/libas-dress-04.jpg", href: "/collections?category=Dresses&type=A-Line+Designer+Dresses" },
+  { id: "straight-cut-designer-dresses", group: "Designer Dresses", name: "Straight-Cut Designer Dresses", image: "/libas-dress-05.jpg", href: "/collections?category=Dresses&type=Straight-Cut+Designer+Dresses" },
+  { id: "designer-kurtas-kurtis", group: "Designer Dresses", name: "Designer Kurtas & Kurtis", image: "/libas-dress-06.jpg", href: "/collections?category=Dresses&type=Designer+Kurtas+%26+Kurtis" },
+  { id: "handloom-designer-dresses", group: "Handloom Collection", name: "Handloom Designer Dresses", image: "/thridha-handloom-01.webp", href: "/collections?category=Handlooms&type=Handloom+Designer+Dresses" },
+  { id: "gadwal-pattu-dresses", group: "Handloom Collection", name: "Gadwal Pattu Dresses", image: "/thridha-handloom-02.webp", href: "/collections?category=Handlooms&type=Gadwal+Pattu+Dresses" },
+  { id: "narayanpet-handloom-dresses", group: "Handloom Collection", name: "Narayanpet Handloom Dresses", image: "/thridha-handloom-03.webp", href: "/collections?category=Handlooms&type=Narayanpet+Handloom+Dresses" },
+  { id: "mangalagiri-pattu-dresses", group: "Handloom Collection", name: "Mangalagiri Pattu Dresses", image: "/thridha-handloom-04.webp", href: "/collections?category=Handlooms&type=Mangalagiri+Pattu+Dresses" },
+  { id: "jamdani-dresses", group: "Handloom Collection", name: "Jamdani Dresses", image: "/thridha-handloom-05.webp", href: "/collections?category=Handlooms&type=Jamdani+Dresses" },
+  { id: "kalamkari-dresses", group: "Handloom Collection", name: "Kalamkari Dresses", image: "/thridha-handloom-06.webp", href: "/collections?category=Handlooms&type=Kalamkari+Dresses" },
+  { id: "chanderi-cotton-dresses", group: "Handloom Collection", name: "Chanderi Cotton Dresses", image: "/thridha-handloom-07.webp", href: "/collections?category=Handlooms&type=Chanderi+Cotton+Dresses" },
+  { id: "kota-silk-dresses", group: "Handloom Collection", name: "Kota Silk Dresses", image: "/thridha-handloom-08.webp", href: "/collections?category=Handlooms&type=Kota+Silk+Dresses" },
+  { id: "designer-long-frocks", group: "Designer Frocks", name: "Designer Long Frocks", image: "/libas-dress-07.jpg", href: "/collections?category=Dresses&type=Designer+Long+Frocks" },
+  { id: "customized-designer-frocks", group: "Designer Frocks", name: "Customized Designer Frocks", image: "/libas-dress-08.jpg", href: "/collections?category=Dresses&type=Customized+Designer+Frocks" },
+  { id: "pen-kalamkari-designer-lehengas", group: "Lehenga Collection", name: "Pen Kalamkari Designer Lehengas", image: "/lehengas-new-photo.jpg", href: "/collections?category=Lehengas&type=Pen+Kalamkari+Designer+Lehengas" },
+  { id: "gadwal-pattu-lehengas", group: "Lehenga Collection", name: "Gadwal Pattu Lehengas", image: "/thridha-handloom-02.webp", href: "/collections?category=Lehengas&type=Gadwal+Pattu+Lehengas" },
+  { id: "kanchipuram-pattu-lehengas", group: "Lehenga Collection", name: "Kanchipuram Pattu Lehengas", image: "/shop-all-featured-lehenga.png", href: "/collections?category=Lehengas&type=Kanchipuram+Pattu+Lehengas" },
+  { id: "mangalagiri-pattu-lehengas", group: "Lehenga Collection", name: "Mangalagiri Pattu Lehengas", image: "/thridha-handloom-04.webp", href: "/collections?category=Lehengas&type=Mangalagiri+Pattu+Lehengas" },
+  { id: "narayanpet-handloom-lehengas", group: "Lehenga Collection", name: "Narayanpet Handloom Lehengas", image: "/thridha-handloom-03.webp", href: "/collections?category=Lehengas&type=Narayanpet+Handloom+Lehengas" },
+];
+
+const shopAllHeaderChildren = (group: ShopAllCategoryCard["group"]) =>
+  SHOP_ALL_CATEGORY_CARDS.filter((card) => card.group === group).map((card) => ({
+    name: card.name,
+    href: `/?shopAll=${card.id}#shop-all`,
+    shopAllId: card.id,
+  }));
+
+export const HEADER_NAV_LINKS: HeaderNavItem[] = [
+  { name: "Home", href: "/" },
+  { name: "Shop", href: "/collections" },
+  {
+    name: "Designer Dresses",
+    href: "/collections?category=Dresses",
+    menuId: "designer-dresses-menu",
+    children: shopAllHeaderChildren("Designer Dresses"),
+  },
+  {
+    name: "Handloom Collection",
+    href: "/collections?category=Handlooms",
+    menuId: "handloom-collection-menu",
+    children: shopAllHeaderChildren("Handloom Collection"),
+  },
+  {
+    name: "Designer Frocks",
+    href: "/collections?category=Dresses",
+    menuId: "designer-frocks-menu",
+    children: shopAllHeaderChildren("Designer Frocks"),
+  },
+  {
+    name: "Lehenga Collection",
+    href: "/collections?category=Lehengas",
+    menuId: "lehenga-collection-menu",
+    children: shopAllHeaderChildren("Lehenga Collection"),
+  },
+];
+
 export const HERO_ARCHED_CATEGORIES = [
   {
     id: "sarees",
@@ -48,6 +123,20 @@ export const HERO_ARCHED_CATEGORIES = [
     subtitle: "For Your Special Days",
     image: "/lehengas-new-photo.jpg",
     href: "/collections?category=Lehengas",
+  },
+  {
+    id: "designer-frocks",
+    name: "DESIGNER FROCKS",
+    subtitle: "Made to Make an Entrance",
+    image: "/libas-dress-07.jpg",
+    href: "/collections?category=Dresses&type=Designer+Long+Frocks",
+  },
+  {
+    id: "designer-dresses",
+    name: "DESIGNER DRESSES",
+    subtitle: "Everyday to Extraordinary",
+    image: "/libas-dress-01.jpg",
+    href: "/collections?category=Dresses&type=Customized+Designer+Dresses",
   },
   {
     id: "short-kurtis",
@@ -133,31 +222,35 @@ export const SHOP_BY_CATEGORY_ITEMS = [
 
 export const NEW_ARRIVALS_PRODUCTS = [
   {
-    id: "blush-petal-lehenga",
-    name: "Blush Petal Lehenga",
+    id: "blush-mirrorwork-lehenga",
+    name: "Blush Mirrorwork Lehenga",
     price: "₹ 34,500",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800",
+    image: "/lehengas-new-photo.jpg",
+    imagePosition: "object-center",
     href: "/collections?category=Lehengas",
   },
   {
-    id: "mehendi-green-anarkali",
-    name: "Mehendi Green Anarkali",
-    price: "₹ 18,900",
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
-    href: "/collections?category=Designer+Suits",
-  },
-  {
-    id: "ivory-dream-saree",
-    name: "Ivory Dream Saree",
+    id: "heritage-silk-saree",
+    name: "Heritage Silk Saree",
     price: "₹ 14,800",
-    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800",
+    image: "/heritage-silk-saree-green.png",
+    imagePosition: "object-top",
     href: "/collections?category=Sarees",
   },
   {
-    id: "rose-charm-dress",
-    name: "Rose Charm Dress",
+    id: "black-floral-short-kurti",
+    name: "Black Floral Short Kurti",
+    price: "₹ 1,499",
+    image: "/short-kurti-new-photo.png",
+    imagePosition: "object-center",
+    href: "/collections?category=Designer+Suits",
+  },
+  {
+    id: "plum-evening-dress",
+    name: "Plum Evening Dress",
     price: "₹ 9,500",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    image: "/dress_1.jpg",
+    imagePosition: "object-center",
     href: "/collections?category=Dresses",
   },
 ];
@@ -216,12 +309,6 @@ export const HOME_CATEGORIES = [
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800",
     href: "/collections?category=Handlooms",
   },
-  {
-    id: "accessories",
-    name: "Accessories",
-    image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800",
-    href: "/collections?category=Accessories",
-  },
 ];
 
 export const ABOUT_PILLARS = [
@@ -249,12 +336,48 @@ export const ABOUT_PILLARS = [
 
 export const PRODUCTS_CATALOG: ProductItem[] = [
   {
+    id: "black-floral-short-kurti-catalog",
+    name: "Black Floral Short Kurti",
+    price: "₹ 1,499",
+    priceNum: 1499,
+    category: "Designer Suits",
+    image: "/libas-dress-01.jpg",
+    description: "An easy everyday short kurti with a delicate floral print and comfortable tailored fit.",
+  },
+  {
+    id: "plum-evening-dress-catalog",
+    name: "Plum Evening Dress",
+    price: "₹ 9,500",
+    priceNum: 9500,
+    category: "Dresses",
+    image: "/libas-dress-02.jpg",
+    description: "A graceful plum occasion dress with a clean silhouette and refined evening finish.",
+  },
+  {
+    id: "heritage-silk-saree-catalog",
+    name: "Heritage Silk Saree",
+    price: "₹ 14,800",
+    priceNum: 14800,
+    category: "Sarees",
+    image: "/thridha-handloom-01.webp",
+    description: "A timeless green silk saree finished with a traditional gold woven border.",
+  },
+  {
+    id: "blush-mirrorwork-lehenga-catalog",
+    name: "Blush Mirrorwork Lehenga",
+    price: "₹ 34,500",
+    priceNum: 34500,
+    category: "Lehengas",
+    image: "/lehengas-new-photo.jpg",
+    description: "A blush celebration lehenga detailed with luminous mirrorwork and a graceful festive flare.",
+  },
+  {
     id: "prod-1",
     name: "Rose Blush Saree",
     price: "₹ 12,500",
     priceNum: 12500,
     category: "Sarees",
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
+    image: "/thridha-handloom-02.webp",
     description: "Pure organza drape in delicate rose blush with hand-embroidered floral motifs and scalloped border.",
   },
   {
@@ -263,7 +386,7 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
     price: "₹ 14,000",
     priceNum: 14000,
     category: "Sarees",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800",
+    image: "/thridha-handloom-03.webp",
     description: "Rich emerald silk weave with antique gold zari jaal pattern and regal contrast pallu.",
   },
   {
@@ -272,7 +395,7 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
     price: "₹ 15,200",
     priceNum: 15200,
     category: "Designer Suits",
-    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800",
+    image: "/libas-dress-03.jpg",
     description: "Ivory raw silk ensemble adorned with resham work, pearl detailing and sheer dupatta.",
   },
   {
@@ -281,7 +404,7 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
     price: "₹ 16,900",
     priceNum: 16900,
     category: "Bridal Wear",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    image: "/libas-dress-04.jpg",
     description: "Opulent velvet and brocade lehenga set in deep maroon embellished with heavy zardozi handcraft.",
   },
   {
@@ -290,7 +413,7 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
     price: "₹ 11,800",
     priceNum: 11800,
     category: "Handlooms",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800",
+    image: "/thridha-handloom-04.webp",
     description: "Powder blue handwoven chanderi saree highlighted with delicate silver thread work.",
   },
   {
@@ -308,7 +431,7 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
     price: "₹ 12,900",
     priceNum: 12900,
     category: "Sarees",
-    image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&q=80&w=800",
+    image: "/thridha-handloom-05.webp",
     description: "Warm coral and sunset ombre tones woven on banarasi tissue silk with glistening zari border.",
   },
   {
