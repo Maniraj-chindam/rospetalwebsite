@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ConsultationModal from "@/components/ConsultationModal";
 import FallingRosePetals from "@/components/FallingRosePetals";
+import MobileBottomDock from "@/components/MobileBottomDock";
 import { BoutiqueProvider } from "@/context/BoutiqueContext";
 
 export const metadata: Metadata = {
@@ -24,10 +25,11 @@ export default function RootLayout({
           <Navbar />
           <FallingRosePetals />
           <main className="flex-grow relative z-10">{children}</main>
-          <div className="relative z-10">
+          <div className="relative z-10 pb-16 sm:pb-0">
             <Footer />
           </div>
           <ConsultationModal />
+          <MobileBottomDock />
         </BoutiqueProvider>
       </body>
     </html>
