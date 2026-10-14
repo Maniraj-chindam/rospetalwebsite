@@ -95,71 +95,79 @@ export default function CollectionsClient() {
   );
 
   return (
-    <main data-collection-shop-view className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-      <section className="relative overflow-hidden rounded-[1.75rem] border border-rosepetal-border/60 shadow-[0_18px_50px_rgba(103,34,49,0.12)] min-h-[200px] sm:h-[217px] sm:min-h-[217px] sm:max-h-[225px] flex flex-col justify-between px-5 py-4 sm:px-8 sm:py-5 lg:px-9 lg:py-5 bg-[#724552]">
-        {/* 1. HD Background Image */}
+    <div data-collection-shop-view className="w-full">
+      {/* 1. Full-Bleed Banner Section (Flush to Header, 0 side borders) */}
+      <section className="relative w-full overflow-hidden border-b border-rosepetal-border/50 bg-[#724552] min-h-[210px] h-[225px] sm:h-[250px] lg:h-[275px]">
+        {/* Ultra-HD Background Image anchored to right so all 4 sarees are completely visible */}
         <Image
           src="/collections-banner-couture.png"
           alt="Rosepetal Boutique Couture Collections"
           fill
           priority
-          sizes="(max-width: 1280px) 100vw, 1280px"
-          className="object-cover object-[center_35%]"
+          sizes="100vw"
+          className="object-cover object-right sm:object-[100%_center]"
         />
 
-        {/* 2. Delicate Gradient Scrim for Flawless Text Contrast */}
+        {/* Delicate Gradient Scrim for Flawless Text Contrast */}
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#200A13]/90 via-[#200A13]/60 to-transparent sm:from-[#200A13]/85 sm:via-[#200A13]/35 sm:to-transparent"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#200A13]/90 via-[#200A13]/55 to-transparent sm:from-[#200A13]/85 sm:via-[#200A13]/30 sm:to-transparent"
           aria-hidden="true"
         />
 
-        {/* 3. Top Interactive Header Bar */}
-        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              data-back-to-collections
-              onClick={goBack}
-              className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/20 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-all hover:bg-white hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-              Back to Shop
-            </button>
-            <span className="hidden sm:inline-flex rounded-full border border-white/35 bg-white/10 px-3.5 py-1.5 text-[9.5px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
-              Our Collection
-            </span>
+        {/* Inner Centered Container for Luxury Typography & Controls */}
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-between px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          {/* Top Interactive Header Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                data-back-to-collections
+                onClick={goBack}
+                className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/20 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-all hover:bg-white hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                Back to Shop
+              </button>
+              <span className="hidden sm:inline-flex rounded-full border border-white/35 bg-white/10 px-3.5 py-1.5 text-[9.5px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+                Our Collection
+              </span>
+            </div>
+
+            <div className="rounded-full border border-white/60 bg-white/90 px-3.5 py-1 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
+              <span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover
+            </div>
           </div>
 
-          <div className="rounded-full border border-white/60 bg-white/90 px-3.5 py-1 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
-            <span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover
+          {/* Live Luxury Typography & Dynamic Category Header */}
+          <div className="max-w-xl">
+            <p className="text-[9.5px] sm:text-[10.5px] font-semibold uppercase tracking-[0.28em] text-rosepetal-blush/90">
+              TIMELESS INDIAN ELEGANCE
+            </p>
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[42px] text-white font-normal leading-tight mt-1 drop-shadow-xs">
+              {collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}
+            </h1>
+            <p className="mt-1 text-xs leading-relaxed text-white/90 font-light max-w-lg drop-shadow-xs line-clamp-1 sm:line-clamp-none">
+              {collectionType
+                ? `A curated Rosepetal edit for ${collectionType.toLowerCase()}.`
+                : "From classic sarees to intricate maggam work, find outfits that tell your story."}
+            </p>
           </div>
-        </div>
-
-        {/* 4. Live Luxury Typography & Dynamic Category Header */}
-        <div className="relative z-10 max-w-xl">
-          <p className="text-[9.5px] sm:text-[10.5px] font-semibold uppercase tracking-[0.28em] text-rosepetal-blush/90">
-            TIMELESS INDIAN ELEGANCE
-          </p>
-          <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[42px] text-white font-normal leading-tight mt-1 drop-shadow-xs">
-            {collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}
-          </h1>
-          <p className="mt-1 text-xs leading-relaxed text-white/90 font-light max-w-lg drop-shadow-xs line-clamp-1 sm:line-clamp-none">
-            {collectionType
-              ? `A curated Rosepetal edit for ${collectionType.toLowerCase()}.`
-              : "From classic sarees to intricate maggam work, find outfits that tell your story."}
-          </p>
         </div>
       </section>
-      <div className="mt-8 flex gap-2 overflow-x-auto pb-2 no-scrollbar">{CATEGORIES.map((category) => <button key={category} onClick={() => setActiveCategory(category)} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs transition-colors ${activeCategory === category && filterParam !== "wishlist" ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/70 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{category}</button>)}</div>
-      <div className="mt-7 grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-rosepetal-border/70 bg-white/70 backdrop-blur-sm p-5 shadow-xs [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
-          {filterContent}
-        </aside>
-        <div>
-          <div className="mb-6 flex flex-col gap-3 border-b border-rosepetal-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between"><p className="font-serif-luxury text-xl text-rosepetal-text">There {filteredProducts.length === 1 ? "is" : "are"} {filteredProducts.length} {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit</p><div className="flex items-center gap-3"><details className="relative lg:hidden"><summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-rosepetal-border bg-white px-4 py-2 text-xs text-rosepetal-text"><SlidersHorizontal className="h-3.5 w-3.5" /> Filters</summary><div className="absolute right-0 z-20 mt-3 w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-rosepetal-border bg-[#fff9f7] p-5 shadow-xl">{filterContent}</div></details><label className="flex items-center gap-2 text-sm text-rosepetal-muted">Sort by <select aria-label="Sort by" value={sort} onChange={(event) => setSort(event.target.value)} className="rounded-lg border border-rosepetal-border bg-white px-3 py-2 text-sm text-rosepetal-text focus:outline-none focus:ring-2 focus:ring-rosepetal-wine/30"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name: A–Z</option></select></label></div></div>
-          {filteredProducts.length > 0 ? <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">{filteredProducts.map((product) => <div key={product.id} data-collection-product-card><ProductCard product={product} /></div>)}</div> : <div className="rounded-2xl border border-dashed border-rosepetal-border bg-white/60 p-12 text-center"><h2 className="font-serif-luxury text-2xl text-rosepetal-text">No pieces match these filters.</h2><button onClick={resetFilters} className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white">Clear filters</button></div>}
+
+      {/* 2. Main Product Catalog & Filter Section */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">{CATEGORIES.map((category) => <button key={category} onClick={() => setActiveCategory(category)} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs transition-colors ${activeCategory === category && filterParam !== "wishlist" ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/70 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{category}</button>)}</div>
+        <div className="mt-7 grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+          <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-rosepetal-border/70 bg-white/70 backdrop-blur-sm p-5 shadow-xs [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
+            {filterContent}
+          </aside>
+          <div>
+            <div className="mb-6 flex flex-col gap-3 border-b border-rosepetal-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between"><p className="font-serif-luxury text-xl text-rosepetal-text">There {filteredProducts.length === 1 ? "is" : "are"} {filteredProducts.length} {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit</p><div className="flex items-center gap-3"><details className="relative lg:hidden"><summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-rosepetal-border bg-white px-4 py-2 text-xs text-rosepetal-text"><SlidersHorizontal className="h-3.5 w-3.5" /> Filters</summary><div className="absolute right-0 z-20 mt-3 w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-rosepetal-border bg-[#fff9f7] p-5 shadow-xl">{filterContent}</div></details><label className="flex items-center gap-2 text-sm text-rosepetal-muted">Sort by <select aria-label="Sort by" value={sort} onChange={(event) => setSort(event.target.value)} className="rounded-lg border border-rosepetal-border bg-white px-3 py-2 text-sm text-rosepetal-text focus:outline-none focus:ring-2 focus:ring-rosepetal-wine/30"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name: A–Z</option></select></label></div></div>
+            {filteredProducts.length > 0 ? <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">{filteredProducts.map((product) => <div key={product.id} data-collection-product-card><ProductCard product={product} /></div>)}</div> : <div className="rounded-2xl border border-dashed border-rosepetal-border bg-white/60 p-12 text-center"><h2 className="font-serif-luxury text-2xl text-rosepetal-text">No pieces match these filters.</h2><button onClick={resetFilters} className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white">Clear filters</button></div>}
+          </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
