@@ -32,3 +32,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scratch / browser dumps
+1.png.html
+1.png_files/
+home-collection-*.png
+warm-hug-video-preview.png
+

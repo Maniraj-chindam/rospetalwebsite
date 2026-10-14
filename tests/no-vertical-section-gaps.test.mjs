@@ -6,7 +6,9 @@ test("home page sections use a continuous background without outer vertical gaps
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
 
   assert.match(page, /<div className="w-full">/);
-  assert.doesNotMatch(page, /py-16 sm:py-20 my-2/);
+  assert.match(page, /pt-16 pb-0 sm:pt-20 sm:pb-0/);
+  assert.match(page, /relative mx-auto max-w-7xl px-5 pb-0 pt-0/);
+  assert.match(page, /relative isolate mx-auto max-w-7xl px-4 pb-0 pt-0/);
   assert.match(page, /<section id="shop-all" className="px-4 sm:px-6 lg:px-8">/);
   assert.match(page, /<section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24">/);
   assert.match(page, /<section id="customer-reviews" className="relative scroll-mt-20 overflow-hidden/);

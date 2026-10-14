@@ -232,7 +232,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         {/* ---------------- 8 ARCHED CATEGORIES ---------------- */}
-        <div className="relative overflow-hidden py-16 sm:py-20">
+        <div className="relative overflow-hidden pt-16 pb-0 sm:pt-20 sm:pb-0">
           <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
             {/* Centered Heading */}
             <div className="mb-12 text-center">
@@ -310,7 +310,7 @@ export default function MasterBoutiquePage() {
       {/* 04B. SHOP ALL LUXURY STOREFRONT                                */}
       {/* ============================================================== */}
       <section id="shop-all" className="px-4 sm:px-6 lg:px-8">
-        <div className="relative mx-auto max-w-7xl px-5 pb-6 pt-8 sm:px-8 sm:pb-7 sm:pt-10 lg:px-12 lg:pt-12">
+        <div className="relative mx-auto max-w-7xl px-5 pb-0 pt-0 sm:px-8 sm:pb-0 sm:pt-0 lg:px-12 lg:pt-0">
 
           <div className="relative z-10 grid items-center gap-8 lg:min-h-[21rem] lg:grid-cols-[46%_54%] lg:gap-0">
             <div className="max-w-xl py-1 sm:py-3 lg:pr-5">
@@ -457,7 +457,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       <section
         id="new-arrivals"
-        className="relative isolate mx-auto max-w-7xl px-4 pb-8 pt-6 sm:px-6 sm:pb-10 sm:pt-8 lg:px-8"
+        className="relative isolate mx-auto max-w-7xl px-4 pb-0 pt-0 sm:px-6 sm:pb-0 sm:pt-0 lg:px-8"
       >
         {/* Header: Title & Subtitle on Left, VIEW ALL on Right */}
         <div className="relative z-10 mb-6 flex items-end justify-between border-b border-rosepetal-border/40 pb-2.5">
@@ -580,7 +580,7 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden px-4 py-8 sm:px-7 sm:py-10 lg:px-9">
+          <div className="overflow-hidden px-4 pb-0 pt-0 sm:px-7 sm:pb-0 sm:pt-0 lg:px-9">
             <div className="mb-7 flex items-end justify-between gap-5 border-b border-rosepetal-wine/10 pb-5 sm:mb-8">
               <div>
                 <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.28em] text-rosepetal-wine">
