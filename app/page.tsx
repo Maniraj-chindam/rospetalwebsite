@@ -254,7 +254,7 @@ export default function MasterBoutiquePage() {
         <div className="relative overflow-hidden pt-16 pb-0 sm:pt-20 sm:pb-0">
           <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
             {/* Centered Heading */}
-            <div className="mb-8 sm:mb-12 text-center">
+            <div className="mb-3.5 sm:mb-5 text-center">
               <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
                 EXPLORE
               </span>
@@ -276,13 +276,13 @@ export default function MasterBoutiquePage() {
 
               <div
                 ref={collectionCarouselRef}
-                className="flex snap-x snap-mandatory gap-3.5 sm:gap-5 overflow-x-auto scroll-smooth pb-3 px-2 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="flex snap-x snap-mandatory gap-2 sm:gap-3 overflow-x-auto scroll-smooth pb-3 px-2 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               >
                 {HERO_ARCHED_CATEGORIES.map((cat) => (
                   <Link
                     key={cat.id}
                     href={cat.href}
-                    className="group flex w-[9.25rem] sm:w-[13.5rem] lg:w-[15rem] shrink-0 snap-start cursor-pointer flex-col items-center space-y-2 text-center"
+                    className="group flex w-[9.25rem] sm:w-[13.5rem] lg:w-[15rem] shrink-0 snap-start cursor-pointer flex-col items-center space-y-1.5 text-center"
                   >
                     {/* Signature Arched Card Shape */}
                     <div className="relative w-full aspect-[4/5] overflow-hidden rounded-t-full rounded-b-xl transition-all duration-300">
@@ -296,7 +296,7 @@ export default function MasterBoutiquePage() {
                       <div className="absolute inset-0 bg-black/5 transition-colors group-hover:bg-black/0" />
                     </div>
 
-                    <div className="space-y-0.5 pt-1">
+                    <div className="space-y-0.5 pt-0.5">
                       <h4 className="font-serif-luxury text-[13px] sm:text-sm font-semibold tracking-wider text-rosepetal-text transition-colors group-hover:text-rosepetal-wine uppercase">
                         {cat.name}
                       </h4>
