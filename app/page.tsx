@@ -202,65 +202,86 @@ export default function MasterBoutiquePage() {
       {/* ============================================================== */}
       <section id="step-01" className="relative bg-transparent">
 
-        {/* ---------------- EXACT HERO BANNER ---------------- */}
+        {/* ---------------- NEW ULTRA-HD HERO BANNER ---------------- */}
         <div className="w-full">
           <div className="relative overflow-hidden group">
-            {/* Supplied Rosepetal designer boutique hero image */}
-            <div className="relative min-h-[88svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#1A0B10]">
+            <div className="relative min-h-[90svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#FCECEE]">
+              {/* Ultra-HD Hero Image */}
               <Image
-                src="/rosepetal-custom-designer-hero.png"
-                alt="Custom Designer Wear for Every Occasion - Rosepetal Boutique"
+                src="/hero-rosepetal-bridal-silk.jpg"
+                alt="Rosepetal Boutique - Handcrafted Bridal Silks & Couture Wear"
                 fill
                 priority
                 sizes="100vw"
-                className="absolute inset-0 h-full w-full object-cover object-[68%_center] sm:object-center"
+                className="absolute inset-0 h-full w-full object-cover object-[78%_center] sm:object-right md:object-center"
               />
 
-              {/* Gradient Scrims for Contrast */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#1A0B10]/35 via-transparent to-transparent z-10" aria-hidden="true" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-[#200D13]/92 via-[#200D13]/45 to-transparent z-10 sm:hidden" aria-hidden="true" />
+              {/* Delicate silk gradient scrim to guarantee flawless text contrast on the left */}
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FCECEE]/95 via-[#FCECEE]/70 to-transparent sm:max-w-3xl lg:max-w-4xl"
+                aria-hidden="true"
+              />
+
+              {/* Mobile bottom shadow scrim */}
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#FCECEE]/90 via-[#FCECEE]/40 to-transparent sm:hidden"
+                aria-hidden="true"
+              />
 
               {/* Floating Petals Layer */}
               <FloatingPetals />
 
-              {/* Desktop interactive area aligned with the button in the supplied artwork */}
-              <div data-hero-image-actions className="hidden sm:block absolute inset-0 z-20">
-                <Link
-                  href="/collections"
-                  aria-label="Explore collections"
-                  className="absolute left-[14%] top-[58%] h-[9%] w-[20%] rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rosepetal-wine/60"
-                />
-              </div>
+              {/* Left-Aligned Live Typography & Call to Action */}
+              <div className="relative z-20 flex min-h-[90svh] sm:min-h-[calc(100svh-5rem)] items-center">
+                <div className="max-w-2xl px-5 sm:px-12 lg:px-20 py-20 sm:py-28">
+                  {/* Eyebrow Badge */}
+                  <div className="inline-flex items-center gap-2 rounded-full border border-rosepetal-wine/25 bg-white/70 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-rosepetal-wine backdrop-blur-xs shadow-xs">
+                    <Sparkles className="w-3 h-3 text-rosepetal-wine" />
+                    <span>ROSEPETAL DESIGNER BOUTIQUE · BANJARA HILLS</span>
+                  </div>
 
-              {/* Mobile Dedicated Live Typography & Call to Action Bar */}
-              <div className="sm:hidden absolute inset-x-0 bottom-6 z-30 flex flex-col items-center text-center px-4 pointer-events-auto">
-                <p className="text-[10px] uppercase tracking-[0.28em] font-semibold text-rosepetal-blush/90 drop-shadow-xs">
-                  DISCOVER YOUR SIGNATURE LOOK
-                </p>
-                <h1 className="font-serif-luxury text-2xl text-white font-normal leading-snug mt-1.5 mb-3.5 drop-shadow-sm max-w-xs">
-                  Custom Designer Wear for <span className="font-script-accent text-3xl text-rosepetal-blushLight">Every</span> Occasion.
-                </h1>
+                  {/* Main Heading */}
+                  <h1 className="mt-4 font-serif-luxury text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] text-rosepetal-text drop-shadow-xs">
+                    Where Heritage Craft Meets Modern <span className="italic text-rosepetal-wine">Couture</span>
+                  </h1>
 
-                <div className="w-full flex items-center justify-center gap-2.5 max-w-xs">
-                  <Link
-                    href="/collections"
-                    className="flex-1 min-h-[48px] py-3.5 px-5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[11px] font-semibold tracking-wider uppercase rounded-full shadow-lg text-center flex items-center justify-center gap-2 active:scale-95 transition-all"
-                  >
-                    <span>Explore Collections</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                  <button
-                    onClick={() => setIsStoryOpen(true)}
-                    className="min-w-[48px] min-h-[48px] p-3.5 bg-white/95 text-rosepetal-wine rounded-full shadow-lg backdrop-blur-sm active:scale-90 transition-all flex items-center justify-center"
-                    aria-label="Watch Story"
-                  >
-                    <Play className="w-4 h-4 fill-current ml-0.5" />
-                  </button>
+                  {/* Description */}
+                  <p className="mt-4 max-w-lg text-xs sm:text-base leading-relaxed text-rosepetal-muted font-sans font-light">
+                    Discover masterfully handwoven silks, intricate bridal zardozi embroidery, and bespoke silhouettes crafted for life’s most cherished celebrations.
+                  </p>
+
+                  {/* Actions Bar */}
+                  <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
+                    {/* SHOP NOW Button */}
+                    <Link
+                      href="/collections"
+                      className="inline-flex min-h-[48px] sm:min-h-[50px] items-center gap-2.5 rounded-full bg-rosepetal-wine px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:bg-rosepetal-wineHover hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+                    >
+                      <span>SHOP NOW</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+
+                    {/* Watch Story Video Modal Button */}
+                    <button
+                      type="button"
+                      onClick={() => setIsStoryOpen(true)}
+                      className="inline-flex min-h-[48px] sm:min-h-[50px] items-center gap-2 rounded-full border border-rosepetal-wine/30 bg-white/75 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.15em] text-rosepetal-wine backdrop-blur-md shadow-xs transition-all hover:bg-white hover:border-rosepetal-wine active:scale-95"
+                      aria-label="Watch Story"
+                    >
+                      <Play className="h-3.5 w-3.5 fill-current" />
+                      <span>Watch Story</span>
+                    </button>
+                  </div>
+
+                  {/* Trust Badges */}
+                  <p className="mt-8 text-[10px] sm:text-[10.5px] uppercase tracking-[0.2em] font-medium text-rosepetal-text/70 flex flex-wrap items-center gap-2">
+                    <span>Handcrafted in Hyderabad</span>
+                    <span>•</span>
+                    <span>Custom Orders Welcome</span>
+                    <span>•</span>
+                    <span>Worldwide Shipping</span>
+                  </p>
                 </div>
-
-                <span className="mt-3 text-[9.5px] uppercase tracking-[0.2em] font-medium text-white/70">
-                  Handcrafted Couture • Banjara Hills, Hyderabad
-                </span>
               </div>
 
             </div>
