@@ -55,7 +55,7 @@ export default function Navbar() {
           : "sticky top-0 border-b border-rosepetal-border/50 bg-[#FCECEE]/95 backdrop-blur-md"
       }`}
     >
-      <div className="max-w-[90rem] mx-auto flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[90rem] mx-auto flex h-16 sm:h-20 items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <RosepetalLogo />
 
@@ -139,11 +139,11 @@ export default function Navbar() {
         </nav>
 
         {/* Right Utility Icons & Shop Now Button */}
-        <div className="flex shrink-0 items-center space-x-3 sm:space-x-4">
+        <div className="flex shrink-0 items-center space-x-1 sm:space-x-4">
           {/* Search Trigger */}
           <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="text-rosepetal-text/75 hover:text-rosepetal-wine transition-colors p-1"
+            className="text-rosepetal-text/75 hover:text-rosepetal-wine transition-colors p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
             aria-label="Search"
           >
             <Search className="w-5 h-5 stroke-[1.7]" />
@@ -152,11 +152,11 @@ export default function Navbar() {
           {/* Wishlist Link with Badge */}
           <Link
             href="/collections?filter=wishlist"
-            className="relative text-rosepetal-text/75 hover:text-rosepetal-wine transition-colors p-1"
+            className="relative text-rosepetal-text/75 hover:text-rosepetal-wine transition-colors p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
             aria-label="Wishlist"
           >
             <Heart className="w-5 h-5 stroke-[1.7]" />
-            <span className="absolute -top-1 -right-1.5 bg-rosepetal-wine text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
+            <span className="absolute top-1 right-0 sm:-top-1 sm:-right-1.5 bg-rosepetal-wine text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
               {wishlist.length}
             </span>
           </Link>
@@ -169,10 +169,10 @@ export default function Navbar() {
               aria-label="Shopping bag"
               aria-expanded={isCartOpen}
               aria-controls="shopping-bag-summary"
-              className="relative p-1 text-rosepetal-text/75 transition-colors hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine"
+              className="relative p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50 text-rosepetal-text/75 transition-colors hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine"
             >
               <ShoppingBag className="w-5 h-5 stroke-[1.7]" />
-              <span className="absolute -top-1 -right-1.5 bg-rosepetal-wine text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
+              <span className="absolute top-1 right-0 sm:-top-1 sm:-right-1.5 bg-rosepetal-wine text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
                 {cartCount}
               </span>
             </button>
@@ -211,7 +211,7 @@ export default function Navbar() {
           {/* Mobile menu hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden text-rosepetal-text hover:text-rosepetal-wine p-1"
+            className="xl:hidden text-rosepetal-text hover:text-rosepetal-wine p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
             aria-label="Toggle navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

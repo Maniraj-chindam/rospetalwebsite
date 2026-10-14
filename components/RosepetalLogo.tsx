@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export default function RosepetalLogo({ className = "" }: { className?: string }) {
   return (
-    <Link href="/" className={`inline-flex items-center gap-3.5 group text-left ${className}`}>
+    <Link href="/" className={`inline-flex items-center gap-2.5 sm:gap-3.5 group text-left ${className}`}>
       {/* Rose Geometric Floral Emblem */}
-      <div className="relative w-11 h-11 rounded-full border border-rosepetal-wine/40 flex items-center justify-center p-1.5 transition-all duration-300 group-hover:border-rosepetal-wine group-hover:bg-rosepetal-blushLight/50">
+      <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-rosepetal-wine/40 flex items-center justify-center p-1 sm:p-1.5 transition-all duration-300 group-hover:border-rosepetal-wine group-hover:bg-rosepetal-blushLight/50 shrink-0">
         <svg
           viewBox="0 0 100 100"
           className="w-full h-full text-rosepetal-wine stroke-current fill-none stroke-[2.5]"
@@ -27,10 +27,10 @@ export default function RosepetalLogo({ className = "" }: { className?: string }
       </div>
 
       <div className="flex flex-col">
-        <span className="font-serif-luxury text-3xl font-medium tracking-wide text-rosepetal-wine group-hover:text-rosepetal-wineHover transition-colors leading-tight">
+        <span className="font-serif-luxury text-2xl sm:text-3xl font-medium tracking-wide text-rosepetal-wine group-hover:text-rosepetal-wineHover transition-colors leading-tight">
           Rosepetal
         </span>
-        <span className="text-[10.5px] uppercase tracking-[0.28em] text-rosepetal-muted font-semibold -mt-0.5">
+        <span className="text-[9px] sm:text-[10.5px] uppercase tracking-[0.24em] sm:tracking-[0.28em] text-rosepetal-muted font-semibold -mt-0.5">
           Designer Boutique
         </span>
       </div>
