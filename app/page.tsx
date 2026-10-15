@@ -205,65 +205,65 @@ export default function MasterBoutiquePage() {
         {/* ---------------- NEW ULTRA-HD HERO BANNER ---------------- */}
         <div className="w-full">
           <div className="relative overflow-hidden group">
-            <div className="relative min-h-[90svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#FCECEE]">
-              {/* Ultra-HD Hero Image */}
+            <div className="relative min-h-[82svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#FCECEE]">
+              {/* Ultra-HD Hero Image: object-[80%_15%] on mobile frames saree pleats and embroidered blouse in top zone */}
               <Image
                 src="/hero-rosepetal-bridal-silk.jpg"
                 alt="Rosepetal Boutique - Handcrafted Bridal Silks & Couture Wear"
                 fill
                 priority
                 sizes="100vw"
-                className="absolute inset-0 h-full w-full object-cover object-[78%_center] sm:object-right md:object-center"
+                className="absolute inset-0 h-full w-full object-cover object-[80%_15%] sm:object-right md:object-center"
               />
 
-              {/* Delicate silk gradient scrim to guarantee flawless text contrast on the left */}
+              {/* Delicate silk gradient scrim for tablet and desktop */}
               <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FCECEE]/95 via-[#FCECEE]/70 to-transparent sm:max-w-3xl lg:max-w-4xl"
+                className="pointer-events-none absolute inset-0 hidden sm:block bg-gradient-to-r from-[#FCECEE]/95 via-[#FCECEE]/70 to-transparent sm:max-w-3xl lg:max-w-4xl"
                 aria-hidden="true"
               />
 
-              {/* Mobile bottom shadow scrim */}
+              {/* Mobile vertical gradient scrim: transitions smoothly into bottom half for text legibility without clouding top artwork */}
               <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#FCECEE]/90 via-[#FCECEE]/40 to-transparent sm:hidden"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[#FCECEE] via-[#FCECEE]/90 via-55% to-transparent sm:hidden"
                 aria-hidden="true"
               />
 
               {/* Floating Petals Layer */}
               <FloatingPetals />
 
-              {/* Left-Aligned Live Typography & Call to Action */}
-              <div className="relative z-20 flex min-h-[90svh] sm:min-h-[calc(100svh-5rem)] items-center">
-                <div className="max-w-2xl px-5 sm:px-12 lg:px-20 py-20 sm:py-28">
-                  {/* Main Heading */}
-                  <h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] text-rosepetal-text drop-shadow-xs">
+              {/* Live Typography & Call to Action: Bottom-anchored on mobile, centered on desktop */}
+              <div className="relative z-20 flex min-h-[82svh] sm:min-h-[calc(100svh-5rem)] items-end sm:items-center">
+                <div className="w-full max-w-2xl px-5 pb-10 pt-4 sm:px-12 sm:py-28 lg:px-20">
+                  {/* Main Heading: Responsive text-[22px] on mobile with natural break and zero clipping */}
+                  <h1 className="font-serif-luxury text-[22px] sm:text-5xl lg:text-6xl font-normal leading-[1.2] sm:leading-[1.08] text-rosepetal-text drop-shadow-xs max-w-sm sm:max-w-none">
                     Where Heritage Craft Meets Modern <span className="italic text-rosepetal-wine">Couture</span>
                   </h1>
 
-                  {/* Description */}
-                  <p className="mt-4 max-w-lg text-xs sm:text-base leading-relaxed text-rosepetal-muted font-sans font-light">
+                  {/* Description: Balanced max-width on mobile */}
+                  <p className="mt-2.5 max-w-[18.5rem] sm:max-w-lg text-[11px] sm:text-base leading-relaxed text-rosepetal-muted font-sans font-light">
                     Discover masterfully handwoven silks, intricate bridal zardozi embroidery, and bespoke silhouettes crafted for life’s most cherished celebrations.
                   </p>
 
                   {/* Actions Bar */}
-                  <div className="mt-7 flex items-center">
+                  <div className="mt-4 sm:mt-5 flex items-center">
                     {/* SHOP NOW Button */}
                     <Link
                       href="/collections"
-                      className="inline-flex min-h-[48px] sm:min-h-[50px] items-center gap-2.5 rounded-full bg-rosepetal-wine px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:bg-rosepetal-wineHover hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+                      className="inline-flex min-h-[44px] sm:min-h-[50px] items-center gap-2 rounded-full bg-rosepetal-wine px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md transition-all hover:bg-rosepetal-wineHover hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
                     >
                       <span>SHOP NOW</span>
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </Link>
                   </div>
 
-                  {/* Trust Badges */}
-                  <p className="mt-8 text-[10px] sm:text-[10.5px] uppercase tracking-[0.2em] font-medium text-rosepetal-text/70 flex flex-wrap items-center gap-2">
+                  {/* Trust Badges: Safe wrap with max-w */}
+                  <div className="mt-5 text-[9px] sm:text-[10.5px] uppercase tracking-[0.14em] font-medium text-rosepetal-text/75 flex flex-wrap items-center gap-x-2 gap-y-1 max-w-[19rem] sm:max-w-none">
                     <span>Handcrafted in Hyderabad</span>
                     <span>•</span>
                     <span>Custom Orders Welcome</span>
                     <span>•</span>
                     <span>Worldwide Shipping</span>
-                  </p>
+                  </div>
                 </div>
               </div>
 
