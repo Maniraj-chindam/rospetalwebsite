@@ -47,11 +47,11 @@ test("Shop All presents the approved storefront before New Arrivals", async () =
   assert.doesNotMatch(categoryNav, />Bed &amp; Bath</);
 
   for (const image of [
-    "%2Fshop-all-featured-saree.png",
-    "%2Fshop-all-featured-lehenga.png",
-    "%2Fshop-all-featured-dress.png",
+    "shop-all-featured-saree.png",
+    "shop-all-featured-lehenga.png",
+    "shop-all-featured-dress.png",
   ]) {
-    assert.match(sectionHtml, new RegExp(image));
+    assert.match(sectionHtml, new RegExp(`(?:%2F|\\/)${image}`));
   }
 
   const approvedCategoryCards = [

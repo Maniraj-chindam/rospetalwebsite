@@ -350,7 +350,20 @@ export default function MasterBoutiquePage() {
       {/* 04B. SHOP ALL LUXURY STOREFRONT                                */}
       {/* ============================================================== */}
       <section id="shop-all" className="py-4 sm:py-6 lg:py-7 px-4 sm:px-6 lg:px-8">
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+        <div className="relative isolate mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-rosepetal-border/50 bg-[#FFF5F6]/80 px-5 py-6 sm:px-8 sm:py-8 lg:px-12 lg:py-10 shadow-[0_16px_40px_rgba(103,34,49,0.06)]">
+          {/* Luxury Saree Backdrop */}
+          <Image
+            src="/shop-all-couture-backdrop.png"
+            alt="Rosepetal Boutique Saree Couture Backdrop"
+            fill
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="-z-10 object-cover object-right pointer-events-none"
+            priority={false}
+          />
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#FFF5F6]/95 via-[#FFF5F6]/75 to-[#FFF5F6]/25 sm:from-[#FFF5F6]/95 sm:via-[#FFF5F6]/65 sm:to-transparent"
+            aria-hidden="true"
+          />
 
           <div className="relative z-10 grid items-center gap-8 lg:min-h-[21rem] lg:grid-cols-[46%_54%] lg:gap-0">
             <div className="max-w-xl py-1 sm:py-3 lg:pr-5">
