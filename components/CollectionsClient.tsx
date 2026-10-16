@@ -155,16 +155,84 @@ export default function CollectionsClient() {
         </div>
       </section>
 
-      {/* 2. Main Product Catalog & Filter Section (Category pills directly under banner with 0 white gap) */}
-      <div className="mx-auto max-w-7xl px-4 pt-2 pb-6 sm:px-6 sm:pt-3 sm:pb-8 lg:px-8">
-        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">{CATEGORIES.map((category) => <button key={category} onClick={() => setActiveCategory(category)} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs transition-colors ${activeCategory === category && filterParam !== "wishlist" ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/70 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{category}</button>)}</div>
+      {/* 2. Main Product Catalog & Filter Section */}
+      <div className="mx-auto max-w-7xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-12 lg:px-8">
+        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+          {CATEGORIES.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs font-medium transition-all ${
+                activeCategory === category && filterParam !== "wishlist"
+                  ? "border-white bg-white text-rosepetal-wine shadow-md"
+                  : "border-white/30 bg-white/20 text-white hover:bg-white/40 backdrop-blur-sm"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
         <div className="mt-7 grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-rosepetal-border/70 bg-white/70 backdrop-blur-sm p-5 shadow-xs [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
+          <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/40 bg-white/90 backdrop-blur-md p-5 shadow-lg [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
             {filterContent}
           </aside>
           <div>
-            <div className="mb-6 flex flex-col gap-3 border-b border-rosepetal-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between"><p className="font-serif-luxury text-xl text-rosepetal-text">There {filteredProducts.length === 1 ? "is" : "are"} {filteredProducts.length} {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit</p><div className="flex items-center gap-3"><details className="relative lg:hidden"><summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-rosepetal-border bg-white px-4 py-2 text-xs text-rosepetal-text"><SlidersHorizontal className="h-3.5 w-3.5" /> Filters</summary><div className="absolute right-0 z-20 mt-3 w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-rosepetal-border bg-[#fff9f7] p-5 shadow-xl">{filterContent}</div></details><label className="flex items-center gap-2 text-sm text-rosepetal-muted">Sort by <select aria-label="Sort by" value={sort} onChange={(event) => setSort(event.target.value)} className="rounded-lg border border-rosepetal-border bg-white px-3 py-2 text-sm text-rosepetal-text focus:outline-none focus:ring-2 focus:ring-rosepetal-wine/30"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name: A–Z</option></select></label></div></div>
-            {filteredProducts.length > 0 ? <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">{filteredProducts.map((product) => <div key={product.id} data-collection-product-card><ProductCard product={product} /></div>)}</div> : <div className="rounded-2xl border border-dashed border-rosepetal-border bg-white/60 p-12 text-center"><h2 className="font-serif-luxury text-2xl text-rosepetal-text">No pieces match these filters.</h2><button onClick={resetFilters} className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white">Clear filters</button></div>}
+            <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="font-serif-luxury text-xl text-white">
+                There {filteredProducts.length === 1 ? "is" : "are"}{" "}
+                <span className="font-semibold text-[#FDE8C5]">{filteredProducts.length}</span>{" "}
+                {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit
+              </p>
+              <div className="flex items-center gap-3">
+                <details className="relative lg:hidden">
+                  <summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-white/40 bg-white/90 px-4 py-2 text-xs text-rosepetal-text shadow-sm">
+                    <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
+                  </summary>
+                  <div className="absolute right-0 z-20 mt-3 w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-rosepetal-border bg-[#fff9f7] p-5 shadow-xl">
+                    {filterContent}
+                  </div>
+                </details>
+                <label className="flex items-center gap-2 text-sm text-rose-100">
+                  Sort by{" "}
+                  <select
+                    aria-label="Sort by"
+                    value={sort}
+                    onChange={(event) => setSort(event.target.value)}
+                    className="rounded-lg border border-white/40 bg-white/90 px-3 py-1.5 text-sm text-rosepetal-text focus:outline-none focus:ring-2 focus:ring-white"
+                  >
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: low to high</option>
+                    <option value="price-high">Price: high to low</option>
+                    <option value="name">Name: A–Z</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            {filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+                {filteredProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    data-collection-product-card
+                    className="rounded-2xl bg-white/95 p-3 sm:p-3.5 shadow-md border border-white/60 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-white/30 bg-white/90 backdrop-blur-md p-12 text-center shadow-lg">
+                <h2 className="font-serif-luxury text-2xl text-rosepetal-text">
+                  No pieces match these filters.
+                </h2>
+                <button
+                  onClick={resetFilters}
+                  className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white"
+                >
+                  Clear filters
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

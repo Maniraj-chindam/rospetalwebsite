@@ -25,6 +25,13 @@ const config: Config = {
           muted: "#786768",
           subtle: "#A39293",
         },
+        deepPink: {
+          glow: "#FA6EA0",
+          vibrant: "#F73C7F",
+          DEFAULT: "#D81558",
+          rich: "#8A0238",
+          dark: "#680227",
+        },
       },
       fontFamily: {
         serif: ["var(--font-cormorant)", "Cormorant Garamond", "Playfair Display", "Georgia", "serif"],

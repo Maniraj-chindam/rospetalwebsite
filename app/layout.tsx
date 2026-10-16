@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-[#FCECEE] text-rosepetal-text antialiased selection:bg-rosepetal-blush selection:text-rosepetal-wine">
+      <body className="min-h-screen flex flex-col bg-rosepetal-deep-pink text-rosepetal-text antialiased selection:bg-rosepetal-blush selection:text-rosepetal-wine">
         <BoutiqueProvider>
           <Navbar />
           <FallingRosePetals />

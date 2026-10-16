@@ -15,11 +15,11 @@ interface Petal {
 }
 
 const PETAL_COLORS = [
-  "#E89DA6", // soft dusty rose
-  "#F2A9B2", // bright blush pink
-  "#DE8893", // deep rose petal
-  "#F7BFCE", // light pastel pink
-  "#E48796", // petal edge pink
+  "#FFE4E8", // luminous soft rose
+  "#FFD1DC", // light blush petal
+  "#FFF0F3", // pale rose pearl
+  "#FFB7C5", // vibrant light blossom
+  "#FCE4EC", // delicate silk petal
 ];
 
 export default function FallingRosePetals() {

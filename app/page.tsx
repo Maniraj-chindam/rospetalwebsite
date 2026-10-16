@@ -205,7 +205,7 @@ export default function MasterBoutiquePage() {
         {/* ---------------- NEW ULTRA-HD HERO BANNER ---------------- */}
         <div className="w-full">
           <div className="relative overflow-hidden group">
-            <div className="relative min-h-[82svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#FCECEE]">
+            <div className="relative min-h-[82svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#680227]">
               {/* Ultra-HD Hero Image: object-[80%_15%] on mobile frames saree pleats and embroidered blouse in top zone */}
               <Image
                 src="/hero-rosepetal-bridal-silk.jpg"
@@ -216,15 +216,15 @@ export default function MasterBoutiquePage() {
                 className="absolute inset-0 h-full w-full object-cover object-[80%_15%] sm:object-right md:object-center"
               />
 
-              {/* Delicate silk gradient scrim for tablet and desktop */}
+              {/* Delicate silk gradient scrim for tablet and desktop matching deep pink theme */}
               <div
-                className="pointer-events-none absolute inset-0 hidden sm:block bg-gradient-to-r from-[#FCECEE]/95 via-[#FCECEE]/70 to-transparent sm:max-w-3xl lg:max-w-4xl"
+                className="pointer-events-none absolute inset-0 hidden sm:block bg-gradient-to-r from-[#680227]/95 via-[#8A0238]/70 to-transparent sm:max-w-3xl lg:max-w-4xl"
                 aria-hidden="true"
               />
 
-              {/* Mobile vertical gradient scrim: transitions smoothly into bottom half for text legibility without clouding top artwork */}
+              {/* Mobile vertical gradient scrim matching deep pink palette */}
               <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[#FCECEE] via-[#FCECEE]/90 via-55% to-transparent sm:hidden"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[#680227] via-[#8A0238]/90 via-55% to-transparent sm:hidden"
                 aria-hidden="true"
               />
 
@@ -235,12 +235,12 @@ export default function MasterBoutiquePage() {
               <div className="relative z-20 flex min-h-[82svh] sm:min-h-[calc(100svh-5rem)] items-end sm:items-center">
                 <div className="w-full max-w-2xl px-5 pb-10 pt-4 sm:px-12 sm:py-28 lg:px-20">
                   {/* Main Heading: Responsive text-[22px] on mobile with natural break and zero clipping */}
-                  <h1 className="font-serif-luxury text-[22px] sm:text-5xl lg:text-6xl font-normal leading-[1.2] sm:leading-[1.08] text-rosepetal-text drop-shadow-xs max-w-sm sm:max-w-none">
-                    Where Heritage Craft Meets Modern <span className="italic text-rosepetal-wine">Couture</span>
+                  <h1 className="font-serif-luxury text-[22px] sm:text-5xl lg:text-6xl font-normal leading-[1.2] sm:leading-[1.08] text-white drop-shadow-sm max-w-sm sm:max-w-none">
+                    Where Heritage Craft Meets Modern <span className="italic text-[#FDE8C5]">Couture</span>
                   </h1>
 
                   {/* Description: Balanced max-width on mobile */}
-                  <p className="mt-2.5 max-w-[18.5rem] sm:max-w-lg text-[11px] sm:text-base leading-relaxed text-rosepetal-muted font-sans font-light">
+                  <p className="mt-2.5 max-w-[18.5rem] sm:max-w-lg text-[11px] sm:text-base leading-relaxed text-rose-100 font-sans font-light">
                     Discover masterfully handwoven silks, intricate bridal zardozi embroidery, and bespoke silhouettes crafted for life’s most cherished celebrations.
                   </p>
 
@@ -249,7 +249,7 @@ export default function MasterBoutiquePage() {
                     {/* SHOP NOW Button */}
                     <Link
                       href="/collections"
-                      className="inline-flex min-h-[44px] sm:min-h-[50px] items-center gap-2 rounded-full bg-rosepetal-wine px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-md transition-all hover:bg-rosepetal-wineHover hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+                      className="inline-flex min-h-[44px] sm:min-h-[50px] items-center gap-2 rounded-full bg-rosepetal-wine hover:bg-rosepetal-wineHover border border-white/20 px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
                     >
                       <span>SHOP NOW</span>
                       <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -257,7 +257,7 @@ export default function MasterBoutiquePage() {
                   </div>
 
                   {/* Trust Badges: Safe wrap with max-w */}
-                  <div className="mt-5 text-[9px] sm:text-[10.5px] uppercase tracking-[0.14em] font-medium text-rosepetal-text/75 flex flex-wrap items-center gap-x-2 gap-y-1 max-w-[19rem] sm:max-w-none">
+                  <div className="mt-5 text-[9px] sm:text-[10.5px] uppercase tracking-[0.14em] font-medium text-rose-200/90 flex flex-wrap items-center gap-x-2 gap-y-1 max-w-[19rem] sm:max-w-none">
                     <span>Handcrafted in Hyderabad</span>
                     <span>•</span>
                     <span>Custom Orders Welcome</span>
@@ -276,10 +276,10 @@ export default function MasterBoutiquePage() {
           <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
             {/* Centered Heading */}
             <div className="mb-3.5 sm:mb-5 text-center">
-              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
+              <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-[#FDE8C5]">
                 EXPLORE
               </span>
-              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-rosepetal-text mt-1 font-normal">
+              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-white mt-1 font-normal drop-shadow-sm">
                 Our Collections
               </h2>
             </div>
@@ -290,7 +290,7 @@ export default function MasterBoutiquePage() {
                 type="button"
                 onClick={() => scrollCollections("left")}
                 aria-label="Scroll collections left"
-                className="hidden sm:inline-flex absolute left-0 top-[42%] z-10 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-rosepetal-border bg-[#FFF9F7]/95 text-rosepetal-wine shadow-md transition hover:bg-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine sm:h-11 sm:w-11"
+                className="hidden sm:inline-flex absolute left-0 top-[42%] z-10 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-white/95 text-rosepetal-wine shadow-lg transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine sm:h-11 sm:w-11"
               >
                 <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
               </button>
@@ -306,7 +306,7 @@ export default function MasterBoutiquePage() {
                     className="group flex w-[9.25rem] sm:w-[13.5rem] lg:w-[15rem] shrink-0 snap-start cursor-pointer flex-col items-center space-y-1.5 text-center"
                   >
                     {/* Signature Arched Card Shape */}
-                    <div className="relative w-full aspect-[4/5] overflow-hidden rounded-t-full rounded-b-xl transition-all duration-300">
+                    <div className="relative w-full aspect-[4/5] overflow-hidden rounded-t-full rounded-b-xl transition-all duration-300 ring-1 ring-white/10 group-hover:ring-white/30">
                       <Image
                         src={cat.image}
                         alt={cat.name}
@@ -318,10 +318,10 @@ export default function MasterBoutiquePage() {
                     </div>
 
                     <div className="space-y-0.5 pt-0.5">
-                      <h4 className="font-serif-luxury text-[13px] sm:text-sm font-semibold tracking-wider text-rosepetal-text transition-colors group-hover:text-rosepetal-wine uppercase">
+                      <h4 className="font-serif-luxury text-[13px] sm:text-sm font-semibold tracking-wider text-white transition-colors group-hover:text-[#FDE8C5] uppercase">
                         {cat.name}
                       </h4>
-                      <p className="text-[10px] font-light leading-tight text-rosepetal-muted">
+                      <p className="text-[10px] font-light leading-tight text-rose-200/90">
                         {cat.subtitle}
                       </p>
                     </div>
@@ -333,7 +333,7 @@ export default function MasterBoutiquePage() {
                 type="button"
                 onClick={() => scrollCollections("right")}
                 aria-label="Scroll collections right"
-                className="hidden sm:inline-flex absolute right-0 top-[42%] z-10 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-rosepetal-border bg-[#FFF9F7]/95 text-rosepetal-wine shadow-md transition hover:bg-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine sm:h-11 sm:w-11"
+                className="hidden sm:inline-flex absolute right-0 top-[42%] z-10 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-white/95 text-rosepetal-wine shadow-lg transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine sm:h-11 sm:w-11"
               >
                 <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
               </button>
@@ -513,18 +513,18 @@ export default function MasterBoutiquePage() {
         className="relative isolate mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-7"
       >
         {/* Header: Title & Subtitle on Left, VIEW ALL on Right */}
-        <div className="relative z-10 mb-6 flex items-end justify-between border-b border-rosepetal-border/40 pb-2.5">
+        <div className="relative z-10 mb-6 flex items-end justify-between border-b border-white/20 pb-2.5">
           <div>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white font-normal drop-shadow-sm">
               New Arrivals
             </h2>
-            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-muted mt-1 block">
+            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-[#FDE8C5] mt-1 block">
               FRESH STYLES, NEW STORIES
             </span>
           </div>
           <Link
             href="/collections"
-            className="text-xs uppercase font-medium tracking-[0.2em] text-rosepetal-wine hover:text-rosepetal-wineHover flex items-center gap-1.5 transition-colors group"
+            className="text-xs uppercase font-medium tracking-[0.2em] text-[#FDE8C5] hover:text-white flex items-center gap-1.5 transition-colors group"
           >
             <span>VIEW ALL</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -538,7 +538,7 @@ export default function MasterBoutiquePage() {
             return (
               <div key={product.id} className="group flex flex-col text-left">
                 {/* Product Image */}
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl transition-all group-hover:-translate-y-1">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl ring-1 ring-white/10 group-hover:ring-white/30 transition-all group-hover:-translate-y-1">
                   <Link href={product.href} aria-label={`View ${product.name}`} className="absolute inset-0">
                     <Image
                       src={product.image}
@@ -566,10 +566,10 @@ export default function MasterBoutiquePage() {
 
                 {/* Title & Price */}
                 <Link href={product.href} className="mt-2.5 sm:mt-3 block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">
-                  <h3 className="font-serif-luxury text-[13px] sm:text-sm font-semibold text-rosepetal-text group-hover:text-rosepetal-wine transition-colors line-clamp-1">
+                  <h3 className="font-serif-luxury text-[13px] sm:text-sm font-semibold text-white group-hover:text-[#FDE8C5] transition-colors line-clamp-1">
                     {product.name}
                   </h3>
-                  <p className="text-[11px] sm:text-xs font-semibold text-rosepetal-text/80 mt-0.5">
+                  <p className="text-[11px] sm:text-xs font-semibold text-rose-200 mt-0.5">
                     {product.price}
                   </p>
                 </Link>
@@ -634,18 +634,18 @@ export default function MasterBoutiquePage() {
       <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24 py-4 sm:py-6 lg:py-7">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="overflow-hidden px-4 sm:px-7 lg:px-9">
-            <div className="mb-7 flex items-end justify-between gap-5 border-b border-rosepetal-wine/10 pb-5 sm:mb-8">
+            <div className="mb-7 flex items-end justify-between gap-5 border-b border-white/20 pb-5 sm:mb-8">
               <div>
-                <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.28em] text-rosepetal-wine">
+                <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.28em] text-[#FDE8C5]">
                   FIND YOUR PERFECT PICK
                 </span>
-                <h2 className="font-serif-luxury text-3xl font-normal text-rosepetal-text sm:text-4xl lg:text-5xl">
+                <h2 className="font-serif-luxury text-3xl font-normal text-white sm:text-4xl lg:text-5xl drop-shadow-sm">
                   Shop by Price
                 </h2>
               </div>
               <Link
                 href="/collections"
-                className="group hidden items-center gap-2 pb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-rosepetal-wine sm:inline-flex"
+                className="group hidden items-center gap-2 pb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#FDE8C5] hover:text-white sm:inline-flex"
               >
                 View All
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
@@ -657,7 +657,7 @@ export default function MasterBoutiquePage() {
                 <article
                   key={card.title}
                   data-price-card
-                  className="group relative min-h-[260px] sm:min-h-[350px] lg:min-h-[430px] overflow-hidden rounded-[1.15rem] sm:rounded-[1.25rem]"
+                  className="group relative min-h-[260px] sm:min-h-[350px] lg:min-h-[430px] overflow-hidden rounded-[1.15rem] sm:rounded-[1.25rem] ring-1 ring-white/10 group-hover:ring-white/30"
                 >
                   <Image
                     src={card.image}
@@ -689,7 +689,7 @@ export default function MasterBoutiquePage() {
 
             <Link
               href="/collections"
-              className="mt-5 inline-flex min-h-[44px] items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-rosepetal-wine sm:hidden active:opacity-75"
+              className="mt-5 inline-flex min-h-[44px] items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#FDE8C5] hover:text-white sm:hidden active:opacity-75"
             >
               View All
               <ArrowRight className="h-3.5 w-3.5" />
