@@ -20,10 +20,10 @@ export default function LookbookPage() {
     <div className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3 mb-6">
-        <h1 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
+        <h1 className="font-serif-luxury text-4xl sm:text-5xl text-white font-normal drop-shadow-sm">
           Lookbook
         </h1>
-        <p className="text-[11px] uppercase tracking-[0.25em] text-rosepetal-wine font-semibold">
+        <p className="text-[11px] uppercase tracking-[0.25em] text-[#FDE8C5] font-semibold">
           REAL WOMEN. REAL MOMENTS. TIMELESS STYLE
         </p>
       </div>
@@ -38,8 +38,8 @@ export default function LookbookPage() {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2 rounded-full text-xs tracking-wider transition-all duration-200 ${
                 isActive
-                  ? "bg-rosepetal-wine text-white shadow-sm font-medium"
-                  : "bg-white/80 hover:bg-white text-rosepetal-muted border border-rosepetal-border"
+                  ? "bg-white text-rosepetal-wine shadow-md font-semibold"
+                  : "bg-white/20 hover:bg-white/35 text-white border border-white/30 backdrop-blur-sm"
               }`}
             >
               {cat}

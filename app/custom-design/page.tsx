@@ -74,21 +74,21 @@ export default function CustomDesignPage() {
       </section>
 
       {/* ----------------- 02. HOW IT WORKS ----------------- */}
-      <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-text font-normal">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white font-normal drop-shadow-sm">
             How It Works
           </h2>
-          <div className="w-16 h-[1.5px] bg-rosepetal-wine/40 mx-auto mt-3" />
+          <div className="w-16 h-[1.5px] bg-[#FDE8C5] mx-auto mt-3" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {HOW_IT_WORKS.map((item, idx) => {
             const Icon = item.Icon;
             return (
               <div
                 key={idx}
-                className="flex flex-col items-center text-center p-6 bg-white/60 rounded-xl border border-rosepetal-border/60 hover:shadow-md transition-all space-y-3"
+                className="flex flex-col items-center text-center p-6 bg-white/90 backdrop-blur-md rounded-2xl border border-white/60 hover:shadow-xl transition-all space-y-3"
               >
                 <div className="w-12 h-12 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine mb-1">
                   <Icon className="w-6 h-6 stroke-[1.5]" />

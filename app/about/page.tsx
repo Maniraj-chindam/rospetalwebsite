@@ -9,10 +9,10 @@ export default function AboutPage() {
   return (
     <div className="relative overflow-hidden">
       {/* ----------------- 01. OUR STORY HERO ----------------- */}
-      <section className="relative min-h-[78vh] flex items-center bg-gradient-to-b from-[#F9ECEB] via-[#FCECEE] to-[#FCECEE] pt-6 pb-8 sm:pt-8 sm:pb-10 px-4 sm:px-6 lg:px-8">
+      <section className="relative min-h-[75vh] flex items-center pt-6 pb-8 sm:pt-10 sm:pb-12 px-4 sm:px-6 lg:px-8">
         <FloatingPetals />
 
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-12 border border-white/60 shadow-xl">
           {/* Left Story Content */}
           <div className="lg:col-span-6 space-y-6 z-20 text-left">
             <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-rosepetal-wine">
@@ -64,32 +64,34 @@ export default function AboutPage() {
       </section>
 
       {/* ----------------- 02. OUR 4 PILLARS ----------------- */}
-      <section className="border-y border-rosepetal-border/60 bg-white/60 backdrop-blur-sm py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-          {ABOUT_PILLARS.map((pillar, idx) => {
-            return (
-              <div key={idx} className="flex flex-col items-center space-y-2">
-                <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/60 flex items-center justify-center text-rosepetal-wine mb-1">
-                  {idx === 0 && <Flower2 className="w-5 h-5 stroke-[1.5]" />}
-                  {idx === 1 && <Scissors className="w-5 h-5 stroke-[1.5]" />}
-                  {idx === 2 && <Users className="w-5 h-5 stroke-[1.5]" />}
-                  {idx === 3 && <HeartHandshake className="w-5 h-5 stroke-[1.5]" />}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-4">
+        <div className="rounded-2xl border border-white/60 bg-white/85 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 lg:px-8 shadow-lg">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            {ABOUT_PILLARS.map((pillar, idx) => {
+              return (
+                <div key={idx} className="flex flex-col items-center space-y-2">
+                  <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/60 flex items-center justify-center text-rosepetal-wine mb-1">
+                    {idx === 0 && <Flower2 className="w-5 h-5 stroke-[1.5]" />}
+                    {idx === 1 && <Scissors className="w-5 h-5 stroke-[1.5]" />}
+                    {idx === 2 && <Users className="w-5 h-5 stroke-[1.5]" />}
+                    {idx === 3 && <HeartHandshake className="w-5 h-5 stroke-[1.5]" />}
+                  </div>
+                  <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-rosepetal-text">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-xs text-rosepetal-muted font-sans font-light">
+                    {pillar.subtitle}
+                  </p>
                 </div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-rosepetal-text">
-                  {pillar.title}
-                </h3>
-                <p className="text-xs text-rosepetal-muted font-sans font-light">
-                  {pillar.subtitle}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* ----------------- 03. MORE THAN FASHION / CRAFT SECTION ----------------- */}
-      <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-12 border border-white/60 shadow-xl">
           {/* Left Artisan Hand-Embroidery Image */}
           <div className="lg:col-span-6">
             <div className="relative aspect-[4/3] sm:aspect-[16/11] rounded-2xl overflow-hidden shadow-xl border-4 border-white/80 bg-rosepetal-card">

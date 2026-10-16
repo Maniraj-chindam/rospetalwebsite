@@ -40,26 +40,26 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-3 mb-7">
-        <h1 className="font-serif-luxury text-4xl sm:text-5xl text-rosepetal-text font-normal">
+      <div className="text-center max-w-2xl mx-auto space-y-3 mb-8">
+        <h1 className="font-serif-luxury text-4xl sm:text-5xl text-white font-normal drop-shadow-sm">
           Get in Touch
         </h1>
 
-        <p className="text-[11px] uppercase tracking-[0.25em] text-rosepetal-wine font-semibold">
+        <p className="text-[11px] uppercase tracking-[0.25em] text-[#FDE8C5] font-semibold">
           WE&apos;D LOVE TO HEAR FROM YOU
         </p>
 
-        <p className="text-xs sm:text-sm text-rosepetal-muted max-w-lg mx-auto leading-relaxed font-sans font-light">
+        <p className="text-xs sm:text-sm text-rose-100 max-w-lg mx-auto leading-relaxed font-sans font-light">
           Whether you have a question, a custom order request, or just want to say hello — we&apos;re here for you.
         </p>
       </div>
 
       {/* Main Grid: Details on Left, Form on Right (matching mockup) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
         {/* Left Column: Contact Details & Floral Accent */}
-        <div className="lg:col-span-5 space-y-8 relative">
+        <div className="lg:col-span-5 space-y-8 relative bg-white/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/60 shadow-md">
           <div className="space-y-6">
             {/* Studio Address */}
             <div className="flex items-start gap-4">
