@@ -1,228 +1,66 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { MapPin, Phone, Mail, Calendar, ArrowRight, CheckCircle2 } from "lucide-react";
-import { CONTACT_INFO } from "@/data/boutique-data";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { sendEnquiry } from "@/lib/enquiry";
 
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [piece, setPiece] = useState("");
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "success">("idle");
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrorMsg("");
+  useEffect(() => {
+    const selectedPiece = new URLSearchParams(window.location.search).get("piece");
+    if (selectedPiece) setPiece(selectedPiece.slice(0, 120));
+  }, []);
 
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus("sending");
+    setError("");
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        throw new Error("Unable to send message. Please try again.");
-      }
-
-      setSubmitted(true);
-    } catch (err: any) {
-      setErrorMsg(err.message || "Failed to send message.");
-    } finally {
-      setLoading(false);
+      await sendEnquiry({ type: piece ? "piece" : "contact", ...form, piece: piece || undefined });
+      setStatus("success");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Your enquiry could not be sent. Please try again.");
+      setStatus("idle");
     }
   };
 
   return (
-    <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-3 mb-8">
-        <h1 className="font-serif-luxury text-4xl sm:text-5xl text-white font-normal drop-shadow-sm">
-          Get in Touch
-        </h1>
-
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[#FDE8C5] font-semibold">
-          WE&apos;D LOVE TO HEAR FROM YOU
-        </p>
-
-        <p className="text-xs sm:text-sm text-rose-100 max-w-lg mx-auto leading-relaxed font-sans font-light">
-          Whether you have a question, a custom order request, or just want to say hello — we&apos;re here for you.
-        </p>
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-20">
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#FDE8C5]">Rosepetal Designer Boutique</p>
+        <h1 className="mt-3 font-serif-luxury text-4xl text-white sm:text-6xl">Start a conversation</h1>
+        <p className="mt-4 text-sm leading-relaxed text-rose-100 sm:text-base">Ask about a style, a custom piece or a consultation. Share the details below and we will respond after reviewing your enquiry.</p>
       </div>
-
-      {/* Main Grid: Details on Left, Form on Right (matching mockup) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
-        {/* Left Column: Contact Details & Floral Accent */}
-        <div className="lg:col-span-5 space-y-8 relative bg-white/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/60 shadow-md">
-          <div className="space-y-6">
-            {/* Studio Address */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                <MapPin className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                  Our Studio
-                </h4>
-                <p className="text-xs text-rosepetal-muted leading-relaxed font-sans">
-                  {CONTACT_INFO.studio}
-                </p>
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                <Phone className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                  Call Us
-                </h4>
-                <a
-                  href={`tel:${CONTACT_INFO.phone}`}
-                  className="text-xs text-rosepetal-muted hover:text-rosepetal-wine transition-colors font-sans"
-                >
-                  {CONTACT_INFO.phone}
-                </a>
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                <Mail className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                  Email Us
-                </h4>
-                <a
-                  href={`mailto:${CONTACT_INFO.email}`}
-                  className="text-xs text-rosepetal-muted hover:text-rosepetal-wine transition-colors font-sans"
-                >
-                  {CONTACT_INFO.email}
-                </a>
-              </div>
-            </div>
-
-            {/* Visiting Hours */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                <Calendar className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                  Visit by Appointment
-                </h4>
-                <p className="text-xs text-rosepetal-muted leading-relaxed font-sans">
-                  {CONTACT_INFO.hours}
-                </p>
-              </div>
-            </div>
+      <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-rosepetal-border bg-[#FFF9F7] p-6 shadow-xl sm:p-10">
+        {status === "success" ? (
+          <div role="status" className="py-12 text-center">
+            <CheckCircle2 className="mx-auto h-11 w-11 text-rosepetal-wine" aria-hidden="true" />
+            <h2 className="mt-4 font-serif-luxury text-3xl text-rosepetal-text">Enquiry received</h2>
+            <p className="mt-3 text-sm leading-relaxed text-rosepetal-muted">Thank you, {form.name}. Your message has been submitted. The boutique will follow up using the details you supplied.</p>
+            <button type="button" onClick={() => { setStatus("idle"); setForm({ name: "", email: "", phone: "", message: "" }); setPiece(""); }} className="mt-6 min-h-11 rounded-lg px-4 text-sm font-semibold text-rosepetal-wine underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine">Send another enquiry</button>
           </div>
-
-          {/* Floral Bouquet Artwork (matching the pink floral cluster in the mockup) */}
-          <div className="relative pt-6 max-w-[280px]">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-rosepetal-border/60">
-              <Image
-                src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=600"
-                alt="Soft pink blooming roses bouquet"
-                fill
-                className="object-cover"
-              />
+        ) : (
+          <form onSubmit={submit} className="space-y-5">
+            <h2 className="font-serif-luxury text-2xl text-rosepetal-text">Your enquiry</h2>
+            {piece && <div className="rounded-lg border border-rosepetal-border bg-rosepetal-blushLight/30 p-3 text-sm text-rosepetal-text">About: <strong>{piece}</strong></div>}
+            <div><label htmlFor="contact-name" className="mb-2 block text-sm font-medium text-rosepetal-text">Full name *</label><input id="contact-name" name="name" autoComplete="name" required maxLength={100} value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="min-h-12 w-full rounded-lg border border-rosepetal-border bg-white px-4 text-base text-rosepetal-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine" /></div>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div><label htmlFor="contact-email" className="mb-2 block text-sm font-medium text-rosepetal-text">Email *</label><input id="contact-email" name="email" type="email" autoComplete="email" required maxLength={150} value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} className="min-h-12 w-full rounded-lg border border-rosepetal-border bg-white px-4 text-base text-rosepetal-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine" /></div>
+              <div><label htmlFor="contact-phone" className="mb-2 block text-sm font-medium text-rosepetal-text">Phone (optional)</label><input id="contact-phone" name="phone" type="tel" autoComplete="tel" maxLength={30} value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} className="min-h-12 w-full rounded-lg border border-rosepetal-border bg-white px-4 text-base text-rosepetal-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine" /></div>
             </div>
-          </div>
-        </div>
-
-        {/* Right Column: Send Us a Message Form */}
-        <div className="lg:col-span-7 bg-white/70 backdrop-blur-sm rounded-2xl p-8 sm:p-10 border border-rosepetal-border/80 shadow-md">
-          <h3 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text mb-6">
-            Send Us a Message
-          </h3>
-
-          {submitted ? (
-            <div className="py-12 text-center space-y-4 animate-in fade-in duration-300">
-              <div className="w-14 h-14 bg-rosepetal-wine/10 text-rosepetal-wine rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-8 h-8" />
-              </div>
-              <h4 className="font-serif-luxury text-2xl text-rosepetal-wine">
-                Message Received
-              </h4>
-              <p className="text-xs text-rosepetal-muted max-w-sm mx-auto leading-relaxed">
-                Thank you for reaching out, <strong className="text-rosepetal-text">{form.name}</strong>. Our customer relations team will respond within 24 hours.
-              </p>
-              <button
-                onClick={() => {
-                  setSubmitted(false);
-                  setForm({ name: "", email: "", message: "" });
-                }}
-                className="text-xs uppercase tracking-wider text-rosepetal-wine underline pt-2 font-medium"
-              >
-                Send another message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <input
-                  type="text"
-                  required
-                  placeholder="Your Name"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
-                />
-              </div>
-
-              <div>
-                <input
-                  type="email"
-                  required
-                  placeholder="Your Email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
-                />
-              </div>
-
-              <div>
-                <textarea
-                  rows={5}
-                  required
-                  placeholder="Your Message"
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors resize-none"
-                />
-              </div>
-
-              {errorMsg && (
-                <p className="text-xs text-red-600 bg-red-50 p-2.5 rounded border border-red-200">
-                  {errorMsg}
-                </p>
-              )}
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full sm:w-auto px-8 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover disabled:opacity-60 text-white text-xs uppercase font-medium tracking-[0.2em] rounded-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group"
-                >
-                  <span>{loading ? "SENDING..." : "SEND MESSAGE"}</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
+            <div><label htmlFor="contact-message" className="mb-2 block text-sm font-medium text-rosepetal-text">How can we help? *</label><textarea id="contact-message" name="message" rows={5} required maxLength={3000} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} className="w-full rounded-lg border border-rosepetal-border bg-white px-4 py-3 text-base text-rosepetal-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine" /></div>
+            {error && <p role="alert" className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
+            <button type="submit" disabled={status === "sending"} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-rosepetal-wine px-6 text-sm font-semibold text-white disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">{status === "sending" ? "Sending…" : "Send enquiry"}<ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
+            <p className="text-xs leading-relaxed text-rosepetal-muted">We use your details only to respond to this enquiry. Please do not include payment information.</p>
+          </form>
+        )}
       </div>
+      <div className="mt-8 text-center"><Link href="/collections" className="text-sm font-medium text-white underline underline-offset-4">Browse styles</Link></div>
     </div>
   );
 }

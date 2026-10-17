@@ -1,4 +1,5 @@
 {
+  "emulators": { "hosting": { "port": 3103 } },
   "hosting": {
     "public": "out",
     "ignore": [

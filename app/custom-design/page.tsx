@@ -13,17 +13,17 @@ const HOW_IT_WORKS = [
   },
   {
     step: "2. DESIGN A PLAN",
-    desc: "Our team creates a personalised design for you.",
+    desc: "We discuss the design and details with you.",
     Icon: PencilRuler,
   },
   {
     step: "3. CRAFTED WITH CARE",
-    desc: "Skilled artisans bring your design to life.",
+    desc: "The boutique confirms the process and timeline with you.",
     Icon: Scissors,
   },
   {
     step: "4. YOUR PERFECT OUTFIT",
-    desc: "Cherish a one-of-a-kind creation, made just for you.",
+    desc: "Review the finished piece and care guidance.",
     Icon: HeartHandshake,
   },
 ];
@@ -38,8 +38,8 @@ export default function CustomDesignPage() {
         {/* Atelier Embroidery Background */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=1600"
-            alt="Handcrafted embroidery texture"
+            src="/libas-dress-04.jpg"
+            alt="Pink floral occasion dress"
             fill
             priority
             className="object-cover brightness-[0.88]"
@@ -111,8 +111,8 @@ export default function CustomDesignPage() {
           {/* Left Artisan Photo */}
           <div className="md:col-span-5 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[260px]">
             <Image
-              src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=800"
-              alt="Intricate zardozi embroidery"
+              src="/thridha-handloom-03.webp"
+              alt="Plum saree with patterned gold border"
               fill
               className="object-cover"
             />
@@ -125,7 +125,7 @@ export default function CustomDesignPage() {
               Something Beautiful
             </h3>
             <p className="text-xs sm:text-sm text-rosepetal-muted max-w-md font-sans font-light">
-              Book a personal design session with our master couturiers at our Banjara Hills studio or schedule a virtual appointment.
+              Tell us about your design idea and preferred date. The boutique will discuss available options with you.
             </p>
             <div className="pt-2">
               <button
