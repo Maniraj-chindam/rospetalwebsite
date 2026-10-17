@@ -66,7 +66,7 @@ export default function Navbar() {
         <RosepetalLogo />
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 xl:flex 2xl:gap-5">
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 2xl:flex 2xl:gap-5">
           {HEADER_NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
 
@@ -217,7 +217,7 @@ export default function Navbar() {
           {/* Mobile menu hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden text-rosepetal-text hover:text-rosepetal-wine p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
+            className="2xl:hidden text-rosepetal-text hover:text-rosepetal-wine p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
             aria-label="Toggle navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -252,7 +252,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="xl:hidden bg-[#FCECEE] border-b border-rosepetal-border px-6 py-6 shadow-xl space-y-4 animate-in slide-in-from-top duration-200">
+        <div className="2xl:hidden bg-[#FCECEE] border-b border-rosepetal-border px-6 py-6 shadow-xl space-y-4 animate-in slide-in-from-top duration-200">
           <nav className="flex flex-col space-y-3.5">
             {HEADER_NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;

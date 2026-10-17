@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { Heart, ShoppingBag, Eye, X, Check } from "lucide-react";
 import { ProductItem } from "@/data/boutique-data";
@@ -50,16 +51,16 @@ export default function ProductCard({ product }: { product: ProductItem }) {
           </button>
 
           {/* Quick Actions Hover Overlay */}
-          <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+          <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center gap-1.5 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-2 opacity-100 transition-opacity duration-300 sm:flex-row sm:gap-2 sm:p-3 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
             <button
               onClick={() => setIsQuickViewOpen(true)}
-              className="px-3 py-1.5 bg-white/90 hover:bg-white text-rosepetal-wine rounded text-xs font-medium flex items-center gap-1 shadow-sm transition-all"
+              className="flex w-full items-center justify-center gap-1 rounded bg-white/90 px-2 py-1.5 text-[10px] font-medium text-rosepetal-wine shadow-sm transition-all hover:bg-white sm:w-auto sm:px-3 sm:text-xs"
             >
               <Eye className="w-3.5 h-3.5" /> Quick View
             </button>
             <button
               onClick={handleAddToCart}
-              className="px-3 py-1.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white rounded text-xs font-medium flex items-center gap-1 shadow-sm transition-all"
+              className="flex w-full items-center justify-center gap-1 rounded bg-rosepetal-wine px-2 py-1.5 text-[10px] font-medium text-white shadow-sm transition-all hover:bg-rosepetal-wineHover sm:w-auto sm:px-3 sm:text-xs"
             >
               {added ? (
                 <>
@@ -86,8 +87,8 @@ export default function ProductCard({ product }: { product: ProductItem }) {
       </div>
 
       {/* Quick View Modal */}
-      {isQuickViewOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
+      {isQuickViewOpen && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" role="dialog" aria-modal="true" aria-label={`${product.name} quick view`}>
           <div className="relative w-full max-w-2xl bg-[#FFF5F6] rounded-xl overflow-hidden shadow-2xl border border-rosepetal-border p-6 flex flex-col md:flex-row gap-6">
             <button
               onClick={() => setIsQuickViewOpen(false)}
@@ -150,7 +151,8 @@ export default function ProductCard({ product }: { product: ProductItem }) {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
