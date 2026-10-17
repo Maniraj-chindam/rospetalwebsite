@@ -15,11 +15,11 @@ interface Petal {
 }
 
 const PETAL_COLORS = [
-  "#FFE4E8", // luminous soft rose
-  "#FFD1DC", // light blush petal
-  "#FFF0F3", // pale rose pearl
-  "#FFB7C5", // vibrant light blossom
-  "#FCE4EC", // delicate silk petal
+  "#D78DA2", // muted rose
+  "#CC7D96", // deep blush
+  "#DE9CAF", // dusty pink
+  "#C57590", // rich rose
+  "#D388A0", // soft berry
 ];
 
 export default function FallingRosePetals() {
@@ -80,11 +80,11 @@ export default function FallingRosePetals() {
             <path
               d="M20 5 C13 14 8 26 12 37 C15 44 24 47 28 42 C24 34 22 22 20 5 Z"
               fill="#FFFFFF"
-              opacity="0.25"
+              opacity="0.14"
             />
             <path
               d="M20 8 Q19 28 24 42"
-              stroke="#B35B68"
+              stroke="#8E3F5A"
               strokeWidth="0.75"
               strokeLinecap="round"
               opacity="0.3"
