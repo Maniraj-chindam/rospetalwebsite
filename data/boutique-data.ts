@@ -2,6 +2,11 @@ export interface ProductItem {
   id: string;
   name: string;
   price: string;
+  // Set these only after the boutique confirms the sellable SKU, price and stock.
+  sku?: string;
+  pricePaise?: number;
+  variants?: { size: string; stock: number }[];
+  verifiedForSale?: boolean;
   category: "Sarees" | "Lehengas" | "Dresses" | "Designer Suits";
   image: string;
   description: string;
@@ -11,6 +16,11 @@ export interface ProductItem {
   care: string;
   delivery: string;
 }
+
+export const BOUTIQUE_PHONE = {
+  display: "+91 91823 18862",
+  href: "tel:+919182318862",
+};
 
 export const NAV_LINKS = [
   { name: "Home", href: "/" },

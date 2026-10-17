@@ -4,16 +4,28 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Eye, X, ArrowRight } from "lucide-react";
+import { Heart, Eye, X, ArrowRight, ShoppingBag } from "lucide-react";
 import { ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
+import { formatINR, isPurchasable, isVerifiedForSale } from "@/lib/commerce";
 
 export default function ProductCard({ product }: { product: ProductItem }) {
-  const { wishlist, toggleWishlist } = useBoutique();
+  const { wishlist, toggleWishlist, addToBag } = useBoutique();
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [added, setAdded] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const isFavorited = wishlist.includes(product.id);
   const enquiryHref = `/contact?piece=${encodeURIComponent(product.name)}`;
+  const purchasable = isPurchasable(product);
+  const verifiedForSale = isVerifiedForSale(product);
+  const activeVariant = product.variants?.find((variant) => variant.size === selectedSize);
+
+  const addSelectedSize = () => {
+    if (!purchasable || !activeVariant || activeVariant.stock < 1) return;
+    addToBag(product.id, selectedSize);
+    setAdded(true);
+  };
 
   useEffect(() => {
     if (!isQuickViewOpen) return;
@@ -42,12 +54,12 @@ export default function ProductCard({ product }: { product: ProductItem }) {
           </button>
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 sm:flex-row">
             <button type="button" onClick={() => setIsQuickViewOpen(true)} className="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded bg-white px-2 text-xs font-medium text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine"><Eye className="h-4 w-4" aria-hidden="true" /> Details</button>
-            <Link href={enquiryHref} className="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded bg-rosepetal-wine px-2 text-center text-xs font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"><ArrowRight className="h-4 w-4" aria-hidden="true" /> Enquire</Link>
+            {purchasable ? <button type="button" onClick={() => { setAdded(false); setIsQuickViewOpen(true); }} className="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded bg-rosepetal-wine px-2 text-center text-xs font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"><ShoppingBag className="h-4 w-4" aria-hidden="true" /> Choose size</button> : <Link href={enquiryHref} className="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded bg-rosepetal-wine px-2 text-center text-xs font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"><ArrowRight className="h-4 w-4" aria-hidden="true" /> {verifiedForSale ? "Ask about stock" : "Enquire"}</Link>}
           </div>
         </div>
         <div className="mt-3 space-y-1">
           <h3 className="font-serif-luxury text-base font-normal text-rosepetal-text">{product.name}</h3>
-          <p className="text-sm text-rosepetal-muted">{product.price}</p>
+          <p className="text-sm text-rosepetal-muted">{verifiedForSale ? formatINR(product.pricePaise!) : product.price}{verifiedForSale && !purchasable ? " · Sold out" : ""}</p>
         </div>
       </div>
       {isQuickViewOpen && createPortal(
@@ -58,7 +70,7 @@ export default function ProductCard({ product }: { product: ProductItem }) {
             <div className="flex-1 pt-4 md:pt-0">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rosepetal-wine">{product.category}</p>
               <h3 className="mt-2 font-serif-luxury text-3xl text-rosepetal-text">{product.name}</h3>
-              <p className="mt-2 text-sm text-rosepetal-wine">{product.price}</p>
+              <p className="mt-2 text-sm text-rosepetal-wine">{verifiedForSale ? formatINR(product.pricePaise!) : product.price}{verifiedForSale && !purchasable ? " · Sold out" : ""}</p>
               <p className="mt-4 text-sm leading-relaxed text-rosepetal-text">{product.description}</p>
               <dl className="mt-5 space-y-2 border-t border-rosepetal-border pt-4 text-sm text-rosepetal-text">
                 <div><dt className="inline font-semibold">Fabric: </dt><dd className="inline">{product.fabric}</dd></div>
@@ -66,7 +78,15 @@ export default function ProductCard({ product }: { product: ProductItem }) {
                 <div><dt className="inline font-semibold">Care: </dt><dd className="inline">{product.care}</dd></div>
                 <div><dt className="inline font-semibold">Delivery: </dt><dd className="inline">{product.delivery}</dd></div>
               </dl>
-              <Link href={enquiryHref} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded bg-rosepetal-wine px-4 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">Enquire about this piece <ArrowRight className="h-4 w-4" /></Link>
+              {purchasable ? <div className="mt-6 space-y-4">
+                <fieldset>
+                  <legend className="mb-2 text-sm font-semibold text-rosepetal-text">Choose a size</legend>
+                  <div className="flex flex-wrap gap-2">{product.variants!.map((variant) => <button key={variant.size} type="button" disabled={variant.stock < 1} aria-label={`${variant.size}${variant.stock < 1 ? ", sold out" : ""}`} aria-pressed={selectedSize === variant.size} onClick={() => { setSelectedSize(variant.size); setAdded(false); }} className={`min-h-11 min-w-11 rounded-md border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine ${selectedSize === variant.size ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-text"} disabled:cursor-not-allowed disabled:opacity-40`}>{variant.size}</button>)}</div>
+                </fieldset>
+                <p aria-live="polite" className="text-xs text-rosepetal-muted">{activeVariant ? `${activeVariant.stock} ${activeVariant.stock === 1 ? "piece" : "pieces"} currently available in size ${selectedSize}. Availability is rechecked before payment.` : "Choose an available size to continue."}</p>
+                <button type="button" disabled={!activeVariant || activeVariant.stock < 1} onClick={addSelectedSize} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded bg-rosepetal-wine px-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"><ShoppingBag className="h-4 w-4" aria-hidden="true" /> Add to bag</button>
+                {added && <p role="status" className="text-sm text-rosepetal-wine">Added to your bag. <Link href="/bag" className="font-semibold underline underline-offset-4">View bag</Link></p>}
+              </div> : <Link href={enquiryHref} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded bg-rosepetal-wine px-4 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">Enquire about this piece <ArrowRight className="h-4 w-4" /></Link>}
             </div>
           </div>
         </div>, document.body)}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import RosepetalLogo from "./RosepetalLogo";
 import { NAV_LINKS } from "@/data/boutique-data";
+import { BOUTIQUE_PHONE } from "@/data/boutique-data";
 
 export default function Footer() {
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -141,6 +142,7 @@ export default function Footer() {
               }`}
             >
               <p className="text-rosepetal-muted leading-relaxed">Questions about a piece or a custom design? Send us an enquiry and the boutique will follow up.</p>
+              <a href={BOUTIQUE_PHONE.href} className="inline-block py-2 text-sm font-semibold text-rosepetal-wine underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine">{BOUTIQUE_PHONE.display}</a>
               <Link href="/contact" className="inline-flex min-h-11 items-center rounded-lg bg-rosepetal-wine px-4 font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine">Contact the boutique</Link>
             </div>
           </div>

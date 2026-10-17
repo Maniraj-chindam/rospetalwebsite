@@ -3,12 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Sparkles, Heart, Mail } from "lucide-react";
+import { Home, Sparkles, ShoppingBag, Mail } from "lucide-react";
 import { useBoutique } from "@/context/BoutiqueContext";
 
 export default function MobileBottomDock() {
   const pathname = usePathname();
-  const { wishlist } = useBoutique();
+  const { bag } = useBoutique();
+  const bagCount = bag.reduce((total, item) => total + item.quantity, 0);
 
   const navItems = [
     {
@@ -24,11 +25,11 @@ export default function MobileBottomDock() {
       isActive: pathname === "/collections",
     },
     {
-      name: "Wishlist",
-      href: "/collections?filter=wishlist",
-      icon: Heart,
-      isActive: false,
-      badge: wishlist.length > 0 ? wishlist.length : null,
+      name: "Bag",
+      href: "/bag",
+      icon: ShoppingBag,
+      isActive: pathname === "/bag" || pathname === "/checkout",
+      badge: bagCount > 0 ? bagCount : null,
     },
     {
       name: "Contact",

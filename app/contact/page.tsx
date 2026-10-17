@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { sendEnquiry } from "@/lib/enquiry";
+import { BOUTIQUE_PHONE } from "@/data/boutique-data";
 
 export default function ContactPage() {
   const [piece, setPiece] = useState("");
@@ -35,6 +36,7 @@ export default function ContactPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#FDE8C5]">Rosepetal Designer Boutique</p>
         <h1 className="mt-3 font-serif-luxury text-4xl text-white sm:text-6xl">Start a conversation</h1>
         <p className="mt-4 text-sm leading-relaxed text-rose-100 sm:text-base">Ask about a style, a custom piece or a consultation. Share the details below and we will respond after reviewing your enquiry.</p>
+        <p className="mt-5 text-sm text-white">Prefer to call? <a href={BOUTIQUE_PHONE.href} className="font-semibold underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">{BOUTIQUE_PHONE.display}</a></p>
       </div>
       <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-rosepetal-border bg-[#FFF9F7] p-6 shadow-xl sm:p-10">
         {status === "success" ? (

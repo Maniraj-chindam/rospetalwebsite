@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, Heart, Menu, X, ArrowRight } from "lucide-react";
+import { Search, Heart, Menu, X, ArrowRight, ShoppingBag } from "lucide-react";
 import RosepetalLogo from "./RosepetalLogo";
 import { HEADER_NAV_LINKS } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
@@ -14,7 +14,8 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { wishlist } = useBoutique();
+  const { wishlist, bag } = useBoutique();
+  const bagCount = bag.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => { setMobileMenuOpen(false); setIsSearchOpen(false); }, [pathname]);
 
@@ -37,6 +38,7 @@ export default function Navbar() {
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <button type="button" onClick={() => setIsSearchOpen((open) => !open)} aria-label="Search styles" aria-expanded={isSearchOpen} aria-controls="header-search" className="grid h-11 w-11 place-items-center rounded-full text-rosepetal-text hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine"><Search className="h-5 w-5" aria-hidden="true" /></button>
           <Link href="/collections?filter=wishlist" aria-label={`Saved styles, ${wishlist.length}`} className="relative grid h-11 w-11 place-items-center rounded-full text-rosepetal-text hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine"><Heart className="h-5 w-5" aria-hidden="true" />{wishlist.length > 0 && <span className="absolute right-0 top-0 grid h-4 min-w-4 place-items-center rounded-full bg-rosepetal-wine px-1 text-[10px] text-white">{wishlist.length}</span>}</Link>
+          <Link href="/bag" aria-label={`Shopping bag, ${bagCount} ${bagCount === 1 ? "item" : "items"}`} className="relative grid h-11 w-11 place-items-center rounded-full text-rosepetal-text hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine"><ShoppingBag className="h-5 w-5" aria-hidden="true" />{bagCount > 0 && <span className="absolute right-0 top-0 grid h-4 min-w-4 place-items-center rounded-full bg-rosepetal-wine px-1 text-[10px] text-white">{bagCount}</span>}</Link>
           <Link href="/collections" className="hidden min-h-11 items-center gap-2 rounded-lg bg-rosepetal-wine px-5 text-sm font-semibold text-white transition-colors hover:bg-rosepetal-wineHover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2 sm:inline-flex">Explore styles <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           <button type="button" onClick={() => setMobileMenuOpen((open) => !open)} aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" className="grid h-11 w-11 place-items-center rounded-full text-rosepetal-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine lg:hidden">{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
         </div>

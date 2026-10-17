@@ -13,11 +13,16 @@ export async function sendEnquiry(payload: EnquiryPayload): Promise<void> {
   if (!endpoint) {
     throw new Error("Online enquiries are temporarily unavailable. Please try again later.");
   }
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(payload),
-  });
+  let response: Response;
+  try {
+    response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error("We could not connect to the enquiry service. Please call the boutique or try again later.");
+  }
   if (!response.ok) {
     let message = "Your enquiry could not be sent. Please try again.";
     try {

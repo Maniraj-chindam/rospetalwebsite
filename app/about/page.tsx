@@ -11,7 +11,7 @@ export default function AboutPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-rosepetal-wine">About Rosepetal</p>
           <h1 className="mt-4 font-serif-luxury text-4xl leading-tight text-rosepetal-text sm:text-6xl">Style begins with a conversation.</h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-rosepetal-text">Rosepetal Designer Boutique presents sarees, dresses and occasionwear alongside a custom-design enquiry service. Browse the styles for inspiration, then tell us what you are looking for.</p>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-rosepetal-muted">We confirm the material, fit, availability, price and delivery details with you before you make a decision.</p>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-rosepetal-muted">For custom pieces and reference styles, we confirm the material, fit, availability, price and delivery details with you before you make a decision.</p>
           <Link href="/contact" className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-lg bg-rosepetal-wine px-6 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">Start an enquiry <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
         </div>
         <div className="relative aspect-[4/5] overflow-hidden rounded-t-[12rem] rounded-b-2xl bg-rosepetal-card"><Image src="/libas-dress-01.jpg" alt="Coral floral dress style inspiration" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" /></div>

@@ -11,7 +11,7 @@ export function EditorialHero() {
         <p className={styles.eyebrow}>Rosepetal / The boutique edit</p>
         <span className={styles.issueNumber}>An edit in colour and silhouette</span>
         <h1 id="editorial-title">Where every<br /><em>piece has a story.</em></h1>
-        <p className={styles.heroDescription}>Browse a visual selection of sarees, dresses and occasionwear. Ask us about the pieces and details you love.</p>
+        <p className={styles.heroDescription}>Browse a visual selection of sarees, dresses and occasionwear. Discover the pieces and details you love.</p>
         <a href="#editorial-products" className={styles.textCta}>Explore the styles <ArrowRight size={18} aria-hidden="true" /></a>
       </div>
       <div className={styles.editorialVisual}>

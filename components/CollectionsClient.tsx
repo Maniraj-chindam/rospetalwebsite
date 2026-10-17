@@ -9,6 +9,7 @@ import { EditorialHero } from "@/components/ShopConcepts";
 import { PRODUCTS_CATALOG } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import styles from "./ShopConcepts.module.css";
+import { isPurchasable } from "@/lib/commerce";
 
 const CATEGORIES = ["All", "Sarees", "Lehengas", "Dresses", "Designer Suits"];
 
@@ -25,6 +26,7 @@ export default function CollectionsClient() {
   const requestedQuery = searchParams.get("q") || "";
   const wishlistOnly = searchParams.get("filter") === "wishlist";
   const { wishlist } = useBoutique();
+  const hasPurchasableProducts = PRODUCTS_CATALOG.some(isPurchasable);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES.includes(requestedCategory) ? requestedCategory : "All");
   const [query, setQuery] = useState(requestedQuery);
   const [sort, setSort] = useState("featured");
@@ -58,10 +60,10 @@ export default function CollectionsClient() {
             <p className={styles.eyebrow}>{wishlistOnly ? "Your saved edit" : "The curated wardrobe"}</p>
             <h2 id="shop-catalog-title">Pieces to <em>explore.</em></h2>
           </div>
-          <p>Browse the styles, then enquire about the details that matter to you.</p>
+          <p>{hasPurchasableProducts ? "Shop available pieces, or enquire about styles still being prepared." : "Browse the styles, then enquire about the details that matter to you."}</p>
         </div>
         <p className="mb-6 max-w-3xl rounded-lg border border-rosepetal-border bg-white/75 px-4 py-3 text-sm leading-relaxed text-rosepetal-text">
-          These images are style references. Price, fabric, sizing, availability and delivery are confirmed by the boutique for each enquiry.
+          {hasPurchasableProducts ? "Styles without a listed price are references for enquiry. For priced pieces, size and stock are checked again before payment." : "These images are style references. Price, fabric, sizing, availability and delivery are confirmed by the boutique for each enquiry."}
         </p>
         <div className="mb-6 max-w-md">
           <label htmlFor="collection-search" className="mb-2 block text-sm font-medium text-rosepetal-text">Search the collection</label>

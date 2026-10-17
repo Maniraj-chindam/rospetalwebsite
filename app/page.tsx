@@ -15,6 +15,7 @@ import {
   NEW_ARRIVALS_PRODUCTS,
 } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
+import { formatINR, isVerifiedForSale } from "@/lib/commerce";
 
 export default function MasterBoutiquePage() {
   const { wishlist, toggleWishlist } = useBoutique();
@@ -33,8 +34,6 @@ export default function MasterBoutiquePage() {
 
   return (
     <div className="relative">
-      {/* Story Video Modal */}
-
       {/* ============================================================== */}
       {/* 01. HERO SECTION WITH EXACT USER IMAGE & 4 ARCHED CATEGORIES    */}
       {/* ============================================================== */}
@@ -241,7 +240,7 @@ export default function MasterBoutiquePage() {
                     {product.name}
                   </h3>
                   <p className="text-[11px] sm:text-xs font-semibold text-rose-200 mt-0.5">
-                    {product.price}
+                    {isVerifiedForSale(product) ? formatINR(product.pricePaise!) : product.price}
                   </p>
                 </Link>
               </div>
