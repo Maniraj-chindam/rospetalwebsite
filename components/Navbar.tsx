@@ -59,7 +59,7 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-50 border-b border-rosepetal-border/50 bg-[#FFF5F6]/95 backdrop-blur-md shadow-xs transition-colors"
+      className="sticky top-0 z-50 border-b border-pink-200/50 bg-white/90 backdrop-blur-md shadow-xs transition-colors"
     >
       <div className="max-w-[90rem] mx-auto flex h-16 sm:h-20 items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8">
         {/* Brand Logo */}

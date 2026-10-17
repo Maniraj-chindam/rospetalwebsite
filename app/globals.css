@@ -5,21 +5,35 @@
 @tailwind utilities;
 
 :root {
-  --background: #9A375F;
+  --background: #D81558;
   --foreground: #292122;
   --deep-pink-glow: #FA6EA0;
   --deep-pink-vibrant: #F73C7F;
   --deep-pink-primary: #D81558;
-  --deep-pink-rich: #8A0238;
-  --deep-pink-deep: #680227;
+  --deep-pink-rich: #B50B47;
+  --deep-pink-dark: #8A0238;
 }
 
 .bg-rosepetal-deep-pink {
-  background-color: var(--background);
+  background-color: #D81558;
+  background-image: 
+    radial-gradient(135% 100% at 72% 32%, #FA6EA0 0%, #F73C7F 28%, #D81558 55%, #B50B47 80%, #8A0238 100%),
+    url('/deep-pink-background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 body {
-  background-color: var(--background);
+  background-color: #D81558;
+  background-image: 
+    radial-gradient(135% 100% at 72% 32%, #FA6EA0 0%, #F73C7F 28%, #D81558 55%, #B50B47 80%, #8A0238 100%),
+    url('/deep-pink-background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   overflow-x: hidden;

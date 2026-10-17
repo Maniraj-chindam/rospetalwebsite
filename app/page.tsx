@@ -205,7 +205,7 @@ export default function MasterBoutiquePage() {
         {/* ---------------- NEW ULTRA-HD HERO BANNER ---------------- */}
         <div className="w-full">
           <div className="relative overflow-hidden group">
-            <div className="relative min-h-[82svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#680227]">
+            <div className="relative min-h-[82svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#D81558]">
               {/* Ultra-HD Hero Image: object-[80%_15%] on mobile frames saree pleats and embroidered blouse in top zone */}
               <Image
                 src="/hero-rosepetal-bridal-silk.jpg"
@@ -216,15 +216,15 @@ export default function MasterBoutiquePage() {
                 className="absolute inset-0 h-full w-full object-cover object-[80%_15%] sm:object-right md:object-center"
               />
 
-              {/* Delicate silk gradient scrim for tablet and desktop matching deep pink theme */}
+              {/* Radiant deep pink silk scrim for tablet and desktop matching reference image */}
               <div
-                className="pointer-events-none absolute inset-0 hidden sm:block bg-gradient-to-r from-[#680227]/95 via-[#8A0238]/70 to-transparent sm:max-w-3xl lg:max-w-4xl"
+                className="pointer-events-none absolute inset-0 hidden sm:block bg-gradient-to-r from-[#D81558]/95 via-[#F73C7F]/80 via-45% to-transparent sm:max-w-3xl lg:max-w-4xl"
                 aria-hidden="true"
               />
 
-              {/* Mobile vertical gradient scrim matching deep pink palette */}
+              {/* Mobile vertical gradient scrim matching radiant deep pink palette */}
               <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[#680227] via-[#8A0238]/90 via-55% to-transparent sm:hidden"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[68%] bg-gradient-to-t from-[#D81558] via-[#F73C7F]/90 via-50% to-transparent sm:hidden"
                 aria-hidden="true"
               />
 
