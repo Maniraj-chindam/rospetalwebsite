@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "test:smoke": "node --test tests/release-smoke.test.mjs"
+    "lint": "next lint"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -1,117 +1,241 @@
 "use client";
 
-import React, { Suspense, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { ArrowUpRight, Search } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { ArrowLeft, ChevronDown, SlidersHorizontal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
-import { EditorialHero } from "@/components/ShopConcepts";
-import { PRODUCTS_CATALOG } from "@/data/boutique-data";
+import { PRODUCTS_CATALOG, ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
-import styles from "./ShopConcepts.module.css";
-import { isPurchasable } from "@/lib/commerce";
 
-const CATEGORIES = ["All", "Sarees", "Lehengas", "Dresses", "Designer Suits"];
+const CATEGORIES = ["All", "Sarees", "Lehengas", "Designer Suits", "Bridal Wear", "Handlooms"];
 
-function SearchParamSync({ onChange }: { onChange: (value: string) => void }) {
-  const params = useSearchParams();
-  useEffect(() => onChange(params.toString()), [params, onChange]);
-  return null;
-}
+const productDetails = (product: ProductItem) => {
+  const text = `${product.name} ${product.category}`.toLowerCase();
+  return {
+    colour: text.includes("rose") || text.includes("blush") || text.includes("peach") || text.includes("sunset") ? "Rose" : text.includes("emerald") ? "Green" : text.includes("ivory") ? "Ivory" : "Wine",
+    fabric: product.category === "Handlooms" || product.category === "Sarees" ? "Silk" : product.category === "Lehengas" || product.category === "Bridal Wear" ? "Brocade" : "Cotton Blend",
+    weave: product.category === "Handlooms" || product.category === "Sarees" ? "Handwoven" : product.category === "Lehengas" || product.category === "Bridal Wear" ? "Zari Detail" : "Printed",
+  };
+};
+
+const rangeFloor = Math.min(...PRODUCTS_CATALOG.map((product) => product.priceNum));
+const rangeCeiling = Math.max(...PRODUCTS_CATALOG.map((product) => product.priceNum));
 
 export default function CollectionsClient() {
-  const [currentParams, setCurrentParams] = useState("");
-  const searchParams = useMemo(() => new URLSearchParams(currentParams), [currentParams]);
-  const requestedCategory = searchParams.get("category") || "All";
-  const requestedQuery = searchParams.get("q") || "";
-  const wishlistOnly = searchParams.get("filter") === "wishlist";
-  const { wishlist } = useBoutique();
-  const hasPurchasableProducts = PRODUCTS_CATALOG.some(isPurchasable);
-  const [activeCategory, setActiveCategory] = useState(CATEGORIES.includes(requestedCategory) ? requestedCategory : "All");
-  const [query, setQuery] = useState(requestedQuery);
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("category") || "All";
+  const collectionType = searchParams.get("type");
+  const filterParam = searchParams.get("filter");
+  const urlMinPrice = Number(searchParams.get("minPrice"));
+  const urlMaxPrice = Number(searchParams.get("maxPrice"));
+  const { wishlist, searchQuery } = useBoutique();
+
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [minPrice, setMinPrice] = useState(Number.isFinite(urlMinPrice) && urlMinPrice > 0 ? urlMinPrice : rangeFloor);
+  const [maxPrice, setMaxPrice] = useState(Number.isFinite(urlMaxPrice) && urlMaxPrice > 0 ? urlMaxPrice : rangeCeiling);
+  const [colour, setColour] = useState("All");
+  const [fabric, setFabric] = useState("All");
+  const [weave, setWeave] = useState("All");
   const [sort, setSort] = useState("featured");
 
-  useEffect(() => setQuery(requestedQuery), [requestedQuery]);
-  useEffect(() => setActiveCategory(CATEGORIES.includes(requestedCategory) ? requestedCategory : "All"), [requestedQuery, wishlistOnly, requestedCategory]);
+  useEffect(() => setActiveCategory(initialCategory), [initialCategory]);
+  useEffect(() => {
+    setMinPrice(Number.isFinite(urlMinPrice) && urlMinPrice > 0 ? urlMinPrice : rangeFloor);
+    setMaxPrice(Number.isFinite(urlMaxPrice) && urlMaxPrice > 0 ? urlMaxPrice : rangeCeiling);
+  }, [urlMinPrice, urlMaxPrice]);
 
   const filteredProducts = useMemo(() => {
-    const term = query.trim().toLocaleLowerCase();
-    const matches = PRODUCTS_CATALOG.filter((item) => {
-      if (wishlistOnly && !wishlist.includes(item.id)) return false;
+    const matching = PRODUCTS_CATALOG.filter((item) => {
+      if (filterParam === "wishlist" && !wishlist.includes(item.id)) return false;
       if (activeCategory !== "All" && item.category !== activeCategory) return false;
-      return !term || `${item.name} ${item.category} ${item.colour} ${item.description ?? ""}`.toLocaleLowerCase().includes(term);
+      if (item.priceNum < minPrice || item.priceNum > maxPrice) return false;
+      const details = productDetails(item);
+      if (colour !== "All" && details.colour !== colour) return false;
+      if (fabric !== "All" && details.fabric !== fabric) return false;
+      if (weave !== "All" && details.weave !== weave) return false;
+      return !searchQuery.trim() || `${item.name} ${item.category} ${item.description ?? ""}`.toLowerCase().includes(searchQuery.toLowerCase());
     });
-    return sort === "name" ? [...matches].sort((a, b) => a.name.localeCompare(b.name)) : matches;
-  }, [activeCategory, query, sort, wishlist, wishlistOnly]);
+    return [...matching].sort((first, second) => sort === "price-low" ? first.priceNum - second.priceNum : sort === "price-high" ? second.priceNum - first.priceNum : sort === "name" ? first.name.localeCompare(second.name) : 0);
+  }, [activeCategory, colour, fabric, filterParam, maxPrice, minPrice, searchQuery, sort, weave, wishlist]);
 
   const resetFilters = () => {
-    setActiveCategory("All");
-    setQuery("");
-    setSort("featured");
+    setActiveCategory(initialCategory);
+    setMinPrice(rangeFloor);
+    setMaxPrice(rangeCeiling);
+    setColour("All");
+    setFabric("All");
+    setWeave("All");
   };
 
+  const goBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    window.location.assign("/collections");
+  };
+
+  const filterContent = (
+    <div className="space-y-7">
+      <div>
+        <div className="mb-4 flex items-center justify-between"><h2 className="font-serif-luxury text-2xl text-rosepetal-text">Filter pieces</h2><button onClick={resetFilters} className="text-[10px] font-semibold uppercase tracking-[0.15em] text-rosepetal-wine hover:underline">Reset</button></div>
+        <p className="text-xs leading-relaxed text-rosepetal-muted">Refine your edit by price, colour, fabric, or weave.</p>
+      </div>
+      <fieldset className="border-t border-rosepetal-border/75 pt-5">
+        <legend className="font-serif-luxury text-lg text-rosepetal-text">Price</legend>
+        <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-rosepetal-text"><span className="rounded-lg border border-rosepetal-border bg-white/70 px-3 py-2">₹{minPrice.toLocaleString("en-IN")}</span><span className="rounded-lg border border-rosepetal-border bg-white/70 px-3 py-2 text-right">₹{maxPrice.toLocaleString("en-IN")}</span></div>
+        <div className="mt-4 space-y-3"><input aria-label="Minimum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={500} value={minPrice} onChange={(event) => setMinPrice(Math.min(Number(event.target.value), maxPrice))} /><input aria-label="Maximum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={500} value={maxPrice} onChange={(event) => setMaxPrice(Math.max(Number(event.target.value), minPrice))} /></div>
+      </fieldset>
+      {([ ["Colour", colour, setColour, ["All", "Rose", "Green", "Ivory", "Wine"]], ["Fabric", fabric, setFabric, ["All", "Silk", "Brocade", "Cotton Blend"]], ["Weave", weave, setWeave, ["All", "Handwoven", "Zari Detail", "Printed"]] ] as const).map(([label, value, setValue, options]) => (
+        <fieldset key={label} className="border-t border-rosepetal-border/75 pt-5"><legend className="flex w-full items-center justify-between font-serif-luxury text-lg text-rosepetal-text">{label}<ChevronDown className="h-4 w-4 text-rosepetal-muted" /></legend><div className="mt-3 flex flex-wrap gap-2">{options.map((option) => <button key={option} onClick={() => setValue(option)} className={`rounded-full border px-3 py-1.5 text-[11px] transition-colors ${value === option ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/65 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{option}</button>)}</div></fieldset>
+      ))}
+    </div>
+  );
+
   return (
-    <div data-collection-shop-view className={`${styles.page} ${styles.editorial} ${styles.liveShop}`}>
-      <Suspense fallback={null}><SearchParamSync onChange={setCurrentParams} /></Suspense>
-      <EditorialHero />
-      <section className={styles.catalog} id="editorial-products" aria-labelledby="shop-catalog-title">
-        <div className={styles.catalogHeading}>
-          <div>
-            <p className={styles.eyebrow}>{wishlistOnly ? "Your saved edit" : "The curated wardrobe"}</p>
-            <h2 id="shop-catalog-title">Pieces to <em>explore.</em></h2>
-          </div>
-          <p>{hasPurchasableProducts ? "Shop available pieces, or enquire about styles still being prepared." : "Browse the styles, then enquire about the details that matter to you."}</p>
-        </div>
-        <p className="mb-6 max-w-3xl rounded-lg border border-rosepetal-border bg-white/75 px-4 py-3 text-sm leading-relaxed text-rosepetal-text">
-          {hasPurchasableProducts ? "Styles without a listed price are references for enquiry. For priced pieces, size and stock are checked again before payment." : "These images are style references. Price, fabric, sizing, availability and delivery are confirmed by the boutique for each enquiry."}
-        </p>
-        <div className="mb-6 max-w-md">
-          <label htmlFor="collection-search" className="mb-2 block text-sm font-medium text-rosepetal-text">Search the collection</label>
-          <div className="flex items-center gap-2 rounded-lg border border-rosepetal-border bg-white px-3 focus-within:ring-2 focus-within:ring-rosepetal-wine">
-            <Search size={18} aria-hidden="true" className="text-rosepetal-wine" />
-            <input id="collection-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try saree, dress, plum…" className="min-h-11 w-full bg-transparent text-base text-rosepetal-text outline-none" />
-          </div>
-        </div>
-        <div className={styles.toolbar}>
-          <div className={styles.categoryList} aria-label="Filter by category">
-            {CATEGORIES.map((category) => (
-              <button key={category} type="button" aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>
-                {category === "All" ? "All pieces" : category}
+    <div data-collection-shop-view className="w-full">
+      {/* 1. Full-Bleed Banner Section (Flush to Header, 0 side borders, increased height to reveal vase and saree pleats) */}
+      <section className="relative w-full overflow-hidden bg-[#724552] min-h-[260px] h-[285px] sm:h-[315px] lg:h-[345px]">
+        {/* Ultra-HD Background Image anchored to right so all 4 sarees are completely visible */}
+        <Image
+          src="/collections-banner-couture.png"
+          alt="Rosepetal Boutique Couture Collections"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-right sm:object-[100%_center]"
+        />
+
+        {/* Delicate Gradient Scrim for Flawless Text Contrast */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#200A13]/90 via-[#200A13]/55 to-transparent sm:from-[#200A13]/85 sm:via-[#200A13]/30 sm:to-transparent"
+          aria-hidden="true"
+        />
+
+        {/* Inner Centered Container for Luxury Typography & Controls */}
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-between px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          {/* Top Interactive Header Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                data-back-to-collections
+                onClick={goBack}
+                className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/20 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md transition-all hover:bg-white hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                Back to Shop
               </button>
-            ))}
+              <span className="hidden sm:inline-flex rounded-full border border-white/35 bg-white/10 px-3.5 py-1.5 text-[9.5px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+                Our Collection
+              </span>
+            </div>
+
+            <div className="rounded-full border border-white/60 bg-white/90 px-3.5 py-1 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
+              <span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover
+            </div>
           </div>
-          <div className={styles.sortLine}>
-            <span aria-live="polite">{filteredProducts.length} {filteredProducts.length === 1 ? "style" : "styles"}</span>
-            <label>
-              <span className={styles.srOnly}>Sort products</span>
-              <select aria-label="Sort products" value={sort} onChange={(event) => setSort(event.target.value)}>
-                <option value="featured">Featured</option>
-                <option value="name">Name: A–Z</option>
-              </select>
-            </label>
+
+          {/* Live Luxury Typography & Dynamic Category Header */}
+          <div className="max-w-xl">
+            <p className="text-[9.5px] sm:text-[10.5px] font-semibold uppercase tracking-[0.28em] text-rosepetal-blush/90">
+              TIMELESS INDIAN ELEGANCE
+            </p>
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[42px] text-white font-normal leading-tight mt-1 drop-shadow-xs">
+              {collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}
+            </h1>
+            <p className="mt-1 text-xs leading-relaxed text-white/90 font-light max-w-lg drop-shadow-xs line-clamp-1 sm:line-clamp-none">
+              {collectionType
+                ? `A curated Rosepetal edit for ${collectionType.toLowerCase()}.`
+                : "From classic sarees to intricate maggam work, find outfits that tell your story."}
+            </p>
           </div>
         </div>
-        {filteredProducts.length ? (
-          <div className={styles.productGrid}>
-            {filteredProducts.map((product) => (
-              <article className={styles.productShell} data-collection-product-card key={product.id}>
-                <ProductCard product={product} />
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.emptyState}>
-            <p className={styles.eyebrow}>No matching styles</p>
-            <h3>{wishlistOnly && wishlist.length === 0 ? "No saved pieces yet." : "Try another search or category."}</h3>
-            <p>Browse all styles to discover more of the Rosepetal edit.</p>
-            <div><button type="button" onClick={resetFilters}>Clear filters</button><Link href="/collections">All styles <ArrowUpRight size={16} aria-hidden="true" /></Link></div>
-          </div>
-        )}
       </section>
-      <section className={styles.closingNote}>
-        <p>For the story only you can tell.</p>
-        <Link href="/contact">Make an enquiry <ArrowUpRight size={16} aria-hidden="true" /></Link>
-      </section>
+
+      {/* 2. Main Product Catalog & Filter Section */}
+      <div className="mx-auto max-w-7xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-12 lg:px-8">
+        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+          {CATEGORIES.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs font-medium transition-all ${
+                activeCategory === category && filterParam !== "wishlist"
+                  ? "border-white bg-white text-rosepetal-wine shadow-md"
+                  : "border-white/30 bg-white/20 text-white hover:bg-white/40 backdrop-blur-sm"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+        <div className="mt-7 grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+          <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/40 bg-white/90 backdrop-blur-md p-5 shadow-lg [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
+            {filterContent}
+          </aside>
+          <div>
+            <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="font-serif-luxury text-xl text-white">
+                There {filteredProducts.length === 1 ? "is" : "are"}{" "}
+                <span className="font-semibold text-[#FDE8C5]">{filteredProducts.length}</span>{" "}
+                {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit
+              </p>
+              <div className="flex items-center gap-3">
+                <details className="relative lg:hidden">
+                  <summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-white/40 bg-white/90 px-4 py-2 text-xs text-rosepetal-text shadow-sm">
+                    <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
+                  </summary>
+                  <div className="absolute right-0 z-20 mt-3 w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-rosepetal-border bg-[#fff9f7] p-5 shadow-xl">
+                    {filterContent}
+                  </div>
+                </details>
+                <label className="flex items-center gap-2 text-sm text-rose-100">
+                  Sort by{" "}
+                  <select
+                    aria-label="Sort by"
+                    value={sort}
+                    onChange={(event) => setSort(event.target.value)}
+                    className="rounded-lg border border-white/40 bg-white/90 px-3 py-1.5 text-sm text-rosepetal-text focus:outline-none focus:ring-2 focus:ring-white"
+                  >
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: low to high</option>
+                    <option value="price-high">Price: high to low</option>
+                    <option value="name">Name: A–Z</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            {filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+                {filteredProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    data-collection-product-card
+                    className="rounded-2xl bg-white/95 p-3 sm:p-3.5 shadow-md border border-white/60 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-white/30 bg-white/90 backdrop-blur-md p-12 text-center shadow-lg">
+                <h2 className="font-serif-luxury text-2xl text-rosepetal-text">
+                  No pieces match these filters.
+                </h2>
+                <button
+                  onClick={resetFilters}
+                  className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white"
+                >
+                  Clear filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
