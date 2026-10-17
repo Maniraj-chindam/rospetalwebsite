@@ -16,7 +16,8 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const { wishlist, cartCount, isSearchOpen, setIsSearchOpen, searchQuery, setSearchQuery } = useBoutique();
-  const isHomePage = pathname === "/";
+  const isHomePage = !pathname || pathname === "/" || pathname === "" || pathname === "/index.html" || pathname.startsWith("/?") || pathname.startsWith("/#");
+  const isLight = true;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,17 +57,13 @@ export default function Navbar() {
     setOpenDropdown((current) => (current === menuId ? null : menuId));
   };
 
-  const isLight = (isHomePage && !isScrolled) || (isHomePage && isScrolled);
-
   return (
     <header
       ref={headerRef}
       className={`top-0 inset-x-0 z-50 transition-all duration-300 ${
-        isHomePage
-          ? isScrolled
-            ? "fixed bg-[#D81558]/95 backdrop-blur-md shadow-lg border-b border-white/20 text-white"
-            : "absolute bg-gradient-to-b from-black/55 via-black/25 to-transparent text-white border-b border-white/10"
-          : "sticky bg-white/90 backdrop-blur-md border-b border-pink-200/50 shadow-xs text-rosepetal-text"
+        isHomePage && !isScrolled
+          ? "absolute bg-gradient-to-b from-black/65 via-black/25 to-transparent text-white border-b border-white/10"
+          : "fixed bg-[#D81558]/95 backdrop-blur-md shadow-lg border-b border-white/20 text-white"
       }`}
     >
       <div className="max-w-[90rem] mx-auto flex h-16 sm:h-20 items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8">
@@ -74,7 +71,7 @@ export default function Navbar() {
         <RosepetalLogo isLight={isLight} />
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 2xl:flex 2xl:gap-5">
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-3 xl:gap-5 lg:flex">
           {HEADER_NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
 
@@ -261,11 +258,7 @@ export default function Navbar() {
           {/* Mobile menu hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`2xl:hidden p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full ${
-              isLight
-                ? "text-white hover:text-[#FDE8C5] active:bg-white/20"
-                : "text-rosepetal-text hover:text-rosepetal-wine active:bg-rosepetal-blushLight/50"
-            }`}
+            className="lg:hidden p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full text-white hover:text-[#FDE8C5] active:bg-white/20"
             aria-label="Toggle navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
