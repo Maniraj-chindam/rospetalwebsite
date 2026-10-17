@@ -10,7 +10,7 @@ test("home uses a clean surface with the approved contact backdrop", async () =>
     readFile(new URL("../components/FallingRosePetals.tsx", import.meta.url), "utf8"),
   ]);
 
-  assert.doesNotMatch(styles, /background-image:/);
+  assert.match(styles, /bg-rosepetal-deep-pink/);
   assert.doesNotMatch(page, /collections-arch-bg\.png/);
   assert.doesNotMatch(page, /bg-\[radial-gradient/);
   assert.match(page, /<section id="step-06" data-contact-studio-section className="relative isolate overflow-hidden bg-\[#fbeded\] py-6 sm:py-8">/);
