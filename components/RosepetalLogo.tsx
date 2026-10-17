@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function RosepetalLogo({
   className = "",
-  isLight = false,
+  isLight = true,
 }: {
   className?: string;
   isLight?: boolean;
