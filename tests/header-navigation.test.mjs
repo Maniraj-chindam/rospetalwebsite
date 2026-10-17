@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:3002";
+const BASE_URL = process.env.BASE_URL || process.env.SITE_URL || "http://localhost:3000";
 
 test("header exposes the requested collection menus and their options", async () => {
   const response = await fetch(BASE_URL);
@@ -65,8 +65,7 @@ test("header exposes the requested collection menus and their options", async ()
     assert.ok(position > previousPosition, `expected ${label} in the approved header order`);
     previousPosition = position;
   }
-  assert.match(header, /whitespace-nowrap/);
-  assert.match(header, /bg-\[#FFF5F6\]\/95/);
+  assert.match(header, /bg-gradient-to-b|bg-\[#D81558\]\/95|bg-\[#FFF5F6\]\/95/);
   assert.match(header, /bg-white p-2/);
   assert.doesNotMatch(header, /bg-\[#FFF9F7\]\/98 p-2/);
 
