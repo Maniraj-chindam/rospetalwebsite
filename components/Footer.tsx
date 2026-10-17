@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import RosepetalLogo from "./RosepetalLogo";
-import { NAV_LINKS } from "@/data/boutique-data";
-import { BOUTIQUE_PHONE } from "@/data/boutique-data";
+import { CONTACT_INFO, NAV_LINKS } from "@/data/boutique-data";
 
 export default function Footer() {
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -15,14 +14,26 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative isolate overflow-hidden bg-[#fff8f5] text-rosepetal-text">
+    <footer className="relative isolate overflow-hidden text-rosepetal-text">
+      <video
+        className="absolute inset-0 z-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label="Rosepetal boutique collection reel"
+      >
+        <source src="/rosepetal-footer-reel.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 z-[1] bg-[#fff8f5]/80" aria-hidden="true" />
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10 md:grid-cols-4">
           {/* Brand Info */}
           <div className="space-y-4 sm:col-span-2 md:col-span-1 pb-2 sm:pb-0">
             <RosepetalLogo />
             <p className="text-xs text-rosepetal-muted leading-relaxed max-w-xs font-sans">
-              Explore sarees, dresses and occasionwear, or start a conversation about a custom piece.
+              A celebration of heritage, craftsmanship, and the modern woman. Discover timeless bridal wear, handlooms, and bespoke creations.
             </p>
             <div className="pt-2">
               <span className="font-script-accent text-2xl text-rosepetal-wine">
@@ -39,9 +50,9 @@ export default function Footer() {
               className="flex w-full items-center justify-between py-1 text-left sm:cursor-default sm:pointer-events-none"
               aria-expanded={openSection === "navigation"}
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rosepetal-wine">
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-rosepetal-wine">
                 Navigation
-              </span>
+              </h4>
               <ChevronDown
                 className={`h-4 w-4 text-rosepetal-wine transition-transform duration-200 sm:hidden ${
                   openSection === "navigation" ? "rotate-180" : ""
@@ -75,9 +86,9 @@ export default function Footer() {
               className="flex w-full items-center justify-between py-1 text-left sm:cursor-default sm:pointer-events-none"
               aria-expanded={openSection === "collections"}
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rosepetal-wine">
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-rosepetal-wine">
                 Collections
-              </span>
+              </h4>
               <ChevronDown
                 className={`h-4 w-4 text-rosepetal-wine transition-transform duration-200 sm:hidden ${
                   openSection === "collections" ? "rotate-180" : ""
@@ -92,12 +103,12 @@ export default function Footer() {
             >
               <li>
                 <Link href="/collections?category=Sarees" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Sarees
+                  Heritage Sarees
                 </Link>
               </li>
               <li>
                 <Link href="/collections?category=Lehengas" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Lehengas
+                  Bridal Lehengas
                 </Link>
               </li>
               <li>
@@ -106,8 +117,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/collections?category=Dresses" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Dresses
+                <Link href="/collections?category=Handlooms" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
+                  Pure Handlooms
                 </Link>
               </li>
               <li>
@@ -126,9 +137,9 @@ export default function Footer() {
               className="flex w-full items-center justify-between py-1 text-left sm:cursor-default sm:pointer-events-none"
               aria-expanded={openSection === "studio"}
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rosepetal-wine">
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-rosepetal-wine">
                 Boutique Studio
-              </span>
+              </h4>
               <ChevronDown
                 className={`h-4 w-4 text-rosepetal-wine transition-transform duration-200 sm:hidden ${
                   openSection === "studio" ? "rotate-180" : ""
@@ -141,9 +152,24 @@ export default function Footer() {
                 openSection === "studio" ? "block" : "hidden sm:block"
               }`}
             >
-              <p className="text-rosepetal-muted leading-relaxed">Questions about a piece or a custom design? Send us an enquiry and the boutique will follow up.</p>
-              <a href={BOUTIQUE_PHONE.href} className="inline-block py-2 text-sm font-semibold text-rosepetal-wine underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine">{BOUTIQUE_PHONE.display}</a>
-              <Link href="/contact" className="inline-flex min-h-11 items-center rounded-lg bg-rosepetal-wine px-4 font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine">Contact the boutique</Link>
+              <p className="text-rosepetal-muted leading-relaxed">
+                {CONTACT_INFO.studio}
+              </p>
+              <p className="text-rosepetal-muted">
+                <strong className="text-rosepetal-text">Phone:</strong>{" "}
+                <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-rosepetal-wine transition-colors py-0.5 inline-block">
+                  {CONTACT_INFO.phone}
+                </a>
+              </p>
+              <p className="text-rosepetal-muted">
+                <strong className="text-rosepetal-text">Email:</strong>{" "}
+                <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-rosepetal-wine transition-colors py-0.5 inline-block">
+                  {CONTACT_INFO.email}
+                </a>
+              </p>
+              <p className="text-rosepetal-muted">
+                <strong className="text-rosepetal-text">Hours:</strong> {CONTACT_INFO.hours}
+              </p>
             </div>
           </div>
         </div>
@@ -152,7 +178,7 @@ export default function Footer() {
         <div className="mt-8 pt-6 sm:mt-12 sm:pt-8 border-t border-rosepetal-border/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-rosepetal-muted text-center sm:text-left gap-2 sm:gap-0">
           <p>© {new Date().getFullYear()} Rosepetal Designer Boutique. All rights reserved.</p>
           <p className="font-script-accent text-lg text-rosepetal-wine/80">
-            Made for your beautiful moments
+            Handcrafted with love for your beautiful moments
           </p>
         </div>
       </div>

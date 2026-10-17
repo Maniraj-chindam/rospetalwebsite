@@ -1,0 +1,30 @@
+.page { background: #f4ece6; color: #40272f; min-height: 100vh; }
+.intro { padding: clamp(52px, 6vw, 90px) clamp(22px, 5vw, 80px) 52px; max-width: 1600px; margin: auto; }
+.intro > p { color: #9a375f; font-size: 11px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; }
+.intro h1 { margin-top: 28px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(70px, 9vw, 150px); line-height: .79; font-weight: 400; letter-spacing: -.055em; }
+.intro h1 em { color: #9a375f; font-weight: 400; }
+.introBottom { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-top: 38px; padding-top: 25px; border-top: 1px solid #ceb7b4; }
+.introBottom span { max-width: 460px; color: #6b5a5b; font-size: 14px; line-height: 1.7; }
+.introBottom a { display: inline-flex; align-items: center; gap: 10px; border-bottom: 1px solid currentColor; padding-bottom: 5px; color: #793047; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: 0 clamp(22px, 5vw, 80px) 110px; max-width: 1600px; margin: auto; }
+.card { display: block; min-width: 0; background: #f8f2ee; transition: transform .25s ease, box-shadow .25s ease; }
+.card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px rgba(62, 27, 38, .18); }
+.card:focus-visible { outline: 3px solid #9a375f; outline-offset: 4px; }
+.imageWrap { position: relative; height: clamp(320px, 34vw, 540px); overflow: hidden; background: #c6a39b; }
+.cardImage { object-fit: cover; transition: transform .7s ease; }
+.card:hover .cardImage { transform: scale(1.04); }
+.imageWrap::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(25, 10, 17, .3), transparent 30%); }
+.cardNumber { position: absolute; z-index: 1; top: 20px; left: 20px; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .2em; }
+.openIcon { position: absolute; z-index: 1; right: 18px; bottom: 18px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #f8ede7; color: #693047; }
+.cardCopy { display: flex; align-items: flex-start; flex-direction: column; min-height: 220px; padding: 26px; }
+.cardCopy p { font-size: 10px; font-weight: 800; letter-spacing: .19em; text-transform: uppercase; }
+.cardCopy h2 { margin: 11px 0 10px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(36px, 3vw, 52px); line-height: .9; font-weight: 400; }
+.cardCopy > span { max-width: 350px; color: #6e5d5d; font-size: 12px; line-height: 1.65; }
+.cardCopy strong { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 22px; color: #793047; font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.heritage { background: #421d2b; color: #f5e6d7; }
+.heritage .cardCopy > span { color: #e2c7c4; }
+.heritage .cardCopy strong { color: #e8bd9e; }
+.modern { background: #fffaf6; }
+@media (max-width: 950px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .imageWrap { height: 430px; } }
+@media (max-width: 620px) { .intro h1 { font-size: clamp(64px, 14vw, 100px); } .introBottom { align-items: start; flex-direction: column; } .grid { grid-template-columns: 1fr; gap: 22px; padding-bottom: 65px; } .imageWrap { height: 440px; } .cardCopy { min-height: 200px; } }
+@media (prefers-reduced-motion: reduce) { .card, .cardImage { transition: none; } }

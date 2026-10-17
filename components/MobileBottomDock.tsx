@@ -3,13 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Sparkles, ShoppingBag, Mail } from "lucide-react";
+import { Home, Sparkles, Heart, Phone, MessageCircle } from "lucide-react";
 import { useBoutique } from "@/context/BoutiqueContext";
 
 export default function MobileBottomDock() {
   const pathname = usePathname();
-  const { bag } = useBoutique();
-  const bagCount = bag.reduce((total, item) => total + item.quantity, 0);
+  const { wishlist } = useBoutique();
 
   const navItems = [
     {
@@ -25,16 +24,16 @@ export default function MobileBottomDock() {
       isActive: pathname === "/collections",
     },
     {
-      name: "Bag",
-      href: "/bag",
-      icon: ShoppingBag,
-      isActive: pathname === "/bag" || pathname === "/checkout",
-      badge: bagCount > 0 ? bagCount : null,
+      name: "Wishlist",
+      href: "/collections",
+      icon: Heart,
+      isActive: false,
+      badge: wishlist.length > 0 ? wishlist.length : null,
     },
     {
-      name: "Contact",
+      name: "Studio",
       href: "/contact",
-      icon: Mail,
+      icon: Phone,
       isActive: pathname === "/contact",
     },
   ];
@@ -44,7 +43,7 @@ export default function MobileBottomDock() {
       aria-label="Mobile Navigation Dock"
       className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-[#FFF9F7]/95 backdrop-blur-xl border-t border-rosepetal-wine/15 shadow-[0_-8px_30px_rgba(82,31,42,0.12)] pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 px-2"
     >
-      <div className="grid grid-cols-4 items-center justify-items-center max-w-md mx-auto">
+      <div className="grid grid-cols-5 items-center justify-items-center max-w-md mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -75,6 +74,22 @@ export default function MobileBottomDock() {
           );
         })}
 
+        {/* WhatsApp Direct Action Button */}
+        <a
+          href="https://wa.me/919876543210?text=Hello%20Rosepetal%20Boutique%2C%20I%20would%20like%20to%20inquire%20about%20your%20couture%20collection"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat with Stylist on WhatsApp"
+          className="flex flex-col items-center justify-center min-h-[44px] w-full py-1 text-emerald-700 hover:text-emerald-800 transition-colors active:scale-95"
+        >
+          <div className="relative">
+            <MessageCircle className="w-5 h-5 stroke-[1.8] text-emerald-600" aria-hidden="true" />
+            <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          </div>
+          <span className="text-[10px] mt-1 tracking-tight leading-none text-emerald-800 font-medium">
+            WhatsApp
+          </span>
+        </a>
       </div>
     </aside>
   );

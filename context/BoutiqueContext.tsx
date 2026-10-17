@@ -1,105 +1,88 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { PRODUCTS_CATALOG } from "@/data/boutique-data";
-import { BagItem, getBagLines, isPurchasable } from "@/lib/commerce";
-
-const validProductIds = new Set(PRODUCTS_CATALOG.map((product) => product.id));
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface BoutiqueContextType {
-  storageReady: boolean;
   wishlist: string[];
   toggleWishlist: (id: string) => void;
-  bag: BagItem[];
-  addToBag: (productId: string, size: string) => void;
-  updateBagQuantity: (productId: string, size: string, quantity: number) => void;
-  removeFromBag: (productId: string, size: string) => void;
-  clearBag: () => void;
+  cartCount: number;
+  addToCart: () => void;
   isConsultationOpen: boolean;
   setIsConsultationOpen: (open: boolean) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  isSearchOpen: boolean;
+  setIsSearchOpen: (open: boolean) => void;
 }
 
 const BoutiqueContext = createContext<BoutiqueContextType | undefined>(undefined);
 
 export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
   const [wishlist, setWishlist] = useState<string[]>([]);
-  const [bag, setBag] = useState<BagItem[]>([]);
-  const [storageReady, setStorageReady] = useState(false);
+  const [cartCount, setCartCount] = useState<number>(0);
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem("rosepetal_wishlist") || "[]");
-      if (Array.isArray(saved)) {
-        const valid = saved.filter((value): value is string => typeof value === "string" && validProductIds.has(value));
-        setWishlist(valid);
-        localStorage.setItem("rosepetal_wishlist", JSON.stringify(valid));
+      const savedWishlist = localStorage.getItem("rosepetal_wishlist");
+      if (savedWishlist) {
+        setWishlist(JSON.parse(savedWishlist));
       }
-    } catch { /* storage can be disabled */ }
-  }, []);
-
-  useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem("rosepetal_bag") || "[]");
-      if (Array.isArray(saved)) {
-        const valid = getBagLines(saved).map(({ productId, size, quantity, stock }) => ({ productId, size, quantity: Math.min(quantity, stock) }));
-        setBag(valid);
-        localStorage.setItem("rosepetal_bag", JSON.stringify(valid));
+      const savedCart = localStorage.getItem("rosepetal_cart_count");
+      if (savedCart) {
+        setCartCount(parseInt(savedCart, 10));
       }
-    } catch { /* storage can be disabled */ }
-    setStorageReady(true);
-  }, []);
-
-  const saveBag = (update: (current: BagItem[]) => BagItem[]) => {
-    setBag((current) => {
-      const next = update(current);
-      try { localStorage.setItem("rosepetal_bag", JSON.stringify(next)); } catch { /* storage can be disabled */ }
-      return next;
-    });
-  };
-
-  const addToBag = (productId: string, size: string) => {
-    const product = PRODUCTS_CATALOG.find((item) => item.id === productId);
-    const stock = product?.variants?.find((variant) => variant.size === size)?.stock ?? 0;
-    if (!product || !isPurchasable(product) || stock < 1) return;
-    saveBag((current) => {
-      const existing = current.find((item) => item.productId === productId && item.size === size);
-      if (existing) return current.map((item) => item === existing ? { ...item, quantity: Math.min(item.quantity + 1, stock) } : item);
-      return [...current, { productId, size, quantity: 1 }];
-    });
-  };
-
-  const updateBagQuantity = (productId: string, size: string, quantity: number) => {
-    const product = PRODUCTS_CATALOG.find((item) => item.id === productId);
-    const stock = product?.variants?.find((variant) => variant.size === size)?.stock ?? 0;
-    if (!Number.isSafeInteger(quantity)) return;
-    saveBag((current) => current.flatMap((item) => item.productId === productId && item.size === size
-      ? quantity < 1 || stock < 1 ? [] : [{ ...item, quantity: Math.min(quantity, stock) }]
-      : [item]));
-  };
-
-  const removeFromBag = (productId: string, size: string) => {
-    saveBag((current) => current.filter((item) => item.productId !== productId || item.size !== size));
-  };
-
-  const clearBag = useCallback(() => {
-    setBag([]);
-    try { localStorage.setItem("rosepetal_bag", "[]"); } catch { /* storage can be disabled */ }
+    } catch {
+      // Fallback if localStorage is not accessible
+    }
   }, []);
 
   const toggleWishlist = (id: string) => {
-    setWishlist((current) => {
-      const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
-      try { localStorage.setItem("rosepetal_wishlist", JSON.stringify(next)); } catch { /* storage can be disabled */ }
+    setWishlist((prev) => {
+      const next = prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id];
+      try {
+        localStorage.setItem("rosepetal_wishlist", JSON.stringify(next));
+      } catch {}
       return next;
     });
   };
 
-  return <BoutiqueContext.Provider value={{ storageReady, wishlist, toggleWishlist, bag, addToBag, updateBagQuantity, removeFromBag, clearBag, isConsultationOpen, setIsConsultationOpen }}>{children}</BoutiqueContext.Provider>;
+  const addToCart = () => {
+    setCartCount((prev) => {
+      const next = prev + 1;
+      try {
+        localStorage.setItem("rosepetal_cart_count", next.toString());
+      } catch {}
+      return next;
+    });
+  };
+
+  return (
+    <BoutiqueContext.Provider
+      value={{
+        wishlist,
+        toggleWishlist,
+        cartCount,
+        addToCart,
+        isConsultationOpen,
+        setIsConsultationOpen,
+        searchQuery,
+        setSearchQuery,
+        isSearchOpen,
+        setIsSearchOpen,
+      }}
+    >
+      {children}
+    </BoutiqueContext.Provider>
+  );
 }
 
 export function useBoutique() {
   const context = useContext(BoutiqueContext);
-  if (!context) throw new Error("useBoutique must be used within a BoutiqueProvider");
+  if (!context) {
+    throw new Error("useBoutique must be used within a BoutiqueProvider");
+  }
   return context;
 }
