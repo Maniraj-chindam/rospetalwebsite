@@ -205,7 +205,7 @@ export default function MasterBoutiquePage() {
         {/* ---------------- NEW ULTRA-HD HERO BANNER ---------------- */}
         <div className="w-full">
           <div className="relative overflow-hidden group">
-            <div className="relative min-h-[82svh] sm:min-h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#D81558]">
+            <div className="relative min-h-[100svh] w-full overflow-hidden bg-[#D81558]">
               {/* Ultra-HD Hero Image: object-[80%_15%] on mobile frames saree pleats and embroidered blouse in top zone */}
               <Image
                 src="/hero-rosepetal-bridal-silk.jpg"
@@ -232,8 +232,14 @@ export default function MasterBoutiquePage() {
               <FloatingPetals />
 
               {/* Live Typography & Call to Action: Bottom-anchored on mobile, centered on desktop */}
-              <div className="relative z-20 flex min-h-[82svh] sm:min-h-[calc(100svh-5rem)] items-end sm:items-center">
-                <div className="w-full max-w-2xl px-5 pb-10 pt-4 sm:px-12 sm:py-28 lg:px-20">
+              <div className="relative z-20 flex min-h-[100svh] items-end sm:items-center">
+                <div className="w-full max-w-2xl px-5 pb-12 pt-24 sm:px-12 sm:pt-36 sm:pb-24 lg:px-20">
+                  {/* Brand Eyebrow Header in Hero Section */}
+                  <div className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3.5 py-1 text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold text-[#FDE8C5] backdrop-blur-md shadow-xs">
+                    <Sparkles className="h-3.5 w-3.5 text-[#FDE8C5]" />
+                    <span>ROSEPETAL DESIGNER BOUTIQUE</span>
+                  </div>
+
                   {/* Main Heading: Responsive text-[22px] on mobile with natural break and zero clipping */}
                   <h1 className="font-serif-luxury text-[22px] sm:text-5xl lg:text-6xl font-normal leading-[1.2] sm:leading-[1.08] text-white drop-shadow-sm max-w-sm sm:max-w-none">
                     Where Heritage Craft Meets Modern <span className="italic text-[#FDE8C5]">Couture</span>

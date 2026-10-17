@@ -56,14 +56,22 @@ export default function Navbar() {
     setOpenDropdown((current) => (current === menuId ? null : menuId));
   };
 
+  const isLight = (isHomePage && !isScrolled) || (isHomePage && isScrolled);
+
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-50 border-b border-pink-200/50 bg-white/90 backdrop-blur-md shadow-xs transition-colors"
+      className={`top-0 inset-x-0 z-50 transition-all duration-300 ${
+        isHomePage
+          ? isScrolled
+            ? "fixed bg-[#D81558]/95 backdrop-blur-md shadow-lg border-b border-white/20 text-white"
+            : "absolute bg-gradient-to-b from-black/55 via-black/25 to-transparent text-white border-b border-white/10"
+          : "sticky bg-white/90 backdrop-blur-md border-b border-pink-200/50 shadow-xs text-rosepetal-text"
+      }`}
     >
       <div className="max-w-[90rem] mx-auto flex h-16 sm:h-20 items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8">
         {/* Brand Logo */}
-        <RosepetalLogo />
+        <RosepetalLogo isLight={isLight} />
 
         {/* Desktop Navigation Links */}
         <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 2xl:flex 2xl:gap-5">
@@ -80,9 +88,13 @@ export default function Navbar() {
                     onClick={() => toggleDropdown(link.menuId!)}
                     aria-expanded={isOpen}
                     aria-controls={link.menuId}
-                  className={`relative inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap py-1 text-[15px] xl:text-[16px] tracking-wide transition-colors duration-200 ${
+                    className={`relative inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap py-1 text-[15px] xl:text-[16px] tracking-wide transition-colors duration-200 ${
                       isOpen
-                        ? "text-rosepetal-wine font-semibold"
+                        ? isLight
+                          ? "text-[#FDE8C5] font-semibold"
+                          : "text-rosepetal-wine font-semibold"
+                        : isLight
+                        ? "text-white/95 hover:text-[#FDE8C5] font-medium drop-shadow-xs"
                         : "text-rosepetal-text/85 hover:text-rosepetal-wine font-medium"
                     }`}
                   >
@@ -131,13 +143,21 @@ export default function Navbar() {
                 href={link.href}
                 className={`relative shrink-0 whitespace-nowrap py-1 text-[15px] xl:text-[16px] tracking-wide transition-all duration-200 ${
                   isActive
-                    ? "text-rosepetal-wine font-semibold"
+                    ? isLight
+                      ? "text-white font-semibold"
+                      : "text-rosepetal-wine font-semibold"
+                    : isLight
+                    ? "text-white/95 hover:text-[#FDE8C5] font-medium drop-shadow-xs"
                     : "text-rosepetal-text/85 hover:text-rosepetal-wine font-medium"
                 }`}
               >
                 {link.name}
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-rosepetal-wine rounded-full" />
+                  <span
+                    className={`absolute bottom-0 left-0 w-full h-[1.5px] rounded-full ${
+                      isLight ? "bg-[#FDE8C5]" : "bg-rosepetal-wine"
+                    }`}
+                  />
                 )}
               </Link>
             );
@@ -149,7 +169,11 @@ export default function Navbar() {
           {/* Search Trigger */}
           <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="text-rosepetal-text/75 hover:text-rosepetal-wine transition-colors p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
+            className={`transition-colors p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full ${
+              isLight
+                ? "text-white/90 hover:text-[#FDE8C5] active:bg-white/20"
+                : "text-rosepetal-text/75 hover:text-rosepetal-wine active:bg-rosepetal-blushLight/50"
+            }`}
             aria-label="Search"
           >
             <Search className="w-5 h-5 stroke-[1.7]" />
@@ -158,11 +182,19 @@ export default function Navbar() {
           {/* Wishlist Link with Badge */}
           <Link
             href="/collections?filter=wishlist"
-            className="relative text-rosepetal-text/75 hover:text-rosepetal-wine transition-colors p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
+            className={`relative transition-colors p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full ${
+              isLight
+                ? "text-white/90 hover:text-[#FDE8C5] active:bg-white/20"
+                : "text-rosepetal-text/75 hover:text-rosepetal-wine active:bg-rosepetal-blushLight/50"
+            }`}
             aria-label="Wishlist"
           >
             <Heart className="w-5 h-5 stroke-[1.7]" />
-            <span className="absolute top-1 right-0 sm:-top-1 sm:-right-1.5 bg-rosepetal-wine text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
+            <span
+              className={`absolute top-1 right-0 sm:-top-1 sm:-right-1.5 text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-xs ${
+                isLight ? "bg-white text-rosepetal-wine" : "bg-rosepetal-wine text-white"
+              }`}
+            >
               {wishlist.length}
             </span>
           </Link>
@@ -175,10 +207,18 @@ export default function Navbar() {
               aria-label="Shopping bag"
               aria-expanded={isCartOpen}
               aria-controls="shopping-bag-summary"
-              className="relative p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50 text-rosepetal-text/75 transition-colors hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine"
+              className={`relative p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine ${
+                isLight
+                  ? "text-white/90 hover:text-[#FDE8C5] active:bg-white/20"
+                  : "text-rosepetal-text/75 hover:text-rosepetal-wine active:bg-rosepetal-blushLight/50"
+              }`}
             >
               <ShoppingBag className="w-5 h-5 stroke-[1.7]" />
-              <span className="absolute top-1 right-0 sm:-top-1 sm:-right-1.5 bg-rosepetal-wine text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
+              <span
+                className={`absolute top-1 right-0 sm:-top-1 sm:-right-1.5 text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-xs ${
+                  isLight ? "bg-white text-rosepetal-wine" : "bg-rosepetal-wine text-white"
+                }`}
+              >
                 {cartCount}
               </span>
             </button>
@@ -208,7 +248,11 @@ export default function Navbar() {
           {/* New Shop Now Button matching mockup */}
           <Link
             href="/collections"
-            className="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs font-semibold tracking-wider rounded-lg shadow-sm hover:shadow-md transition-all group"
+            className={`hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-semibold tracking-wider rounded-lg shadow-sm hover:shadow-md transition-all group ${
+              isLight
+                ? "bg-white/20 hover:bg-white text-white hover:text-rosepetal-wine border border-white/40 backdrop-blur-md"
+                : "bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white"
+            }`}
           >
             <span>Shop Now</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -217,7 +261,11 @@ export default function Navbar() {
           {/* Mobile menu hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="2xl:hidden text-rosepetal-text hover:text-rosepetal-wine p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full active:bg-rosepetal-blushLight/50"
+            className={`2xl:hidden p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full ${
+              isLight
+                ? "text-white hover:text-[#FDE8C5] active:bg-white/20"
+                : "text-rosepetal-text hover:text-rosepetal-wine active:bg-rosepetal-blushLight/50"
+            }`}
             aria-label="Toggle navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
