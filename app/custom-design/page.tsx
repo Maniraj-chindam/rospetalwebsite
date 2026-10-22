@@ -125,7 +125,7 @@ export default function CustomDesignPage() {
               Something Beautiful
             </h3>
             <p className="text-xs sm:text-sm text-rosepetal-muted max-w-md font-sans font-light">
-              Book a personal design session with our master couturiers at our Banjara Hills studio or schedule a virtual appointment.
+              Tell us what you have in mind and request a personal design consultation. We will confirm the details with you.
             </p>
             <div className="pt-2">
               <button

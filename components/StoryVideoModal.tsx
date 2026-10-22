@@ -42,7 +42,7 @@ export default function StoryVideoModal({
               The Story of Rosepetal
             </h3>
             <p className="text-xs sm:text-sm text-rosepetal-muted max-w-md mx-auto leading-relaxed">
-              Every drape tells a story of culture, care, and creativity. Watch our master weavers and artisans at our Banjara Hills studio bring heritage silk sarees and bespoke silhouettes to life.
+              Explore a glimpse of the Rosepetal collection and the styles that inspire it.
             </p>
           </div>
 
@@ -50,13 +50,12 @@ export default function StoryVideoModal({
           <div className="relative aspect-video rounded-xl overflow-hidden shadow-inner bg-black/5 border border-rosepetal-border flex items-center justify-center">
             <video
               className="w-full h-full object-cover"
-              poster="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=1000"
               controls
               autoPlay
               muted
             >
               <source
-                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+                src="/rosepetal-footer-reel.mp4"
                 type="video/mp4"
               />
               Your browser does not support video playback.

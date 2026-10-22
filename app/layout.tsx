@@ -10,7 +10,7 @@ import { BoutiqueProvider } from "@/context/BoutiqueContext";
 export const metadata: Metadata = {
   title: "Rosepetal Designer Boutique | Where Tradition Blooms in Style",
   description:
-    "Designer sarees, handlooms, bridal wear and bespoke creations for every special you. Located in Banjara Hills, Hyderabad.",
+    "Explore designer sarees, handlooms, bridal wear and bespoke creations from Rosepetal Designer Boutique.",
 };
 
 export default function RootLayout({

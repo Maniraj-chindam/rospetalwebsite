@@ -11,11 +11,7 @@ import {
   Users,
   HeartHandshake,
   PencilRuler,
-  MapPin,
   Phone,
-  Mail,
-  Calendar,
-  CheckCircle2,
   Heart,
   Star,
   Quote,
@@ -136,27 +132,11 @@ export default function MasterBoutiquePage() {
 
   // Contact form state
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
-  const [contactSubmitted, setContactSubmitted] = useState(false);
-  const [contactLoading, setContactLoading] = useState(false);
-  const [contactError, setContactError] = useState("");
 
-  const handleContactSubmit = async (e: React.FormEvent) => {
+  const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setContactLoading(true);
-    setContactError("");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(contactForm),
-      });
-      if (!res.ok) throw new Error("Could not send message. Please try again.");
-      setContactSubmitted(true);
-    } catch (err: any) {
-      setContactError(err.message || "Failed to send message.");
-    } finally {
-      setContactLoading(false);
-    }
+    const message = `Hello Rosepetal, I have an enquiry.\nName: ${contactForm.name}\nEmail: ${contactForm.email}\nMessage: ${contactForm.message}`;
+    window.location.assign(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`);
   };
 
   useEffect(() => {
@@ -816,20 +796,6 @@ export default function MasterBoutiquePage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3.5 sm:gap-4">
                   <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                    <MapPin className="w-4 h-4" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                      Our Studio
-                    </h4>
-                    <p className="text-xs text-rosepetal-muted leading-relaxed font-sans">
-                      {CONTACT_INFO.studio}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5 sm:gap-4">
-                  <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div className="space-y-0.5">
@@ -845,36 +811,6 @@ export default function MasterBoutiquePage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3.5 sm:gap-4">
-                  <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                      Email Us
-                    </h4>
-                    <a
-                      href={`mailto:${CONTACT_INFO.email}`}
-                      className="text-xs text-rosepetal-muted hover:text-rosepetal-wine transition-colors font-sans"
-                    >
-                      {CONTACT_INFO.email}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5 sm:gap-4">
-                  <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                    <Calendar className="w-4 h-4" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                      Visit by Appointment
-                    </h4>
-                    <p className="text-xs text-rosepetal-muted leading-relaxed font-sans">
-                      {CONTACT_INFO.hours}
-                    </p>
-                  </div>
-                </div>
               </div>
 
             </div>
@@ -884,29 +820,7 @@ export default function MasterBoutiquePage() {
                 Send Us a Message
               </h3>
 
-              {contactSubmitted ? (
-                <div className="py-12 text-center space-y-4 animate-in fade-in duration-300">
-                  <div className="w-14 h-14 bg-rosepetal-wine/10 text-rosepetal-wine rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h4 className="font-serif-luxury text-2xl text-rosepetal-wine">
-                    Message Received
-                  </h4>
-                  <p className="text-xs text-rosepetal-muted max-w-sm mx-auto leading-relaxed">
-                    Thank you for reaching out, <strong className="text-rosepetal-text">{contactForm.name}</strong>. Our customer relations team will respond within 24 hours.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setContactSubmitted(false);
-                      setContactForm({ name: "", email: "", message: "" });
-                    }}
-                    className="text-xs uppercase tracking-wider text-rosepetal-wine underline pt-2 font-medium"
-                  >
-                    Send another message
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleContactSubmit} className="space-y-3.5 sm:space-y-3">
+              <form onSubmit={handleContactSubmit} className="space-y-3.5 sm:space-y-3">
                   <div>
                     <input
                       type="text"
@@ -940,24 +854,20 @@ export default function MasterBoutiquePage() {
                     />
                   </div>
 
-                  {contactError && (
-                    <p className="text-xs text-red-600 bg-red-50 p-2.5 rounded border border-red-200">
-                      {contactError}
-                    </p>
-                  )}
+                  <p className="text-xs text-rosepetal-muted leading-relaxed">
+                    Continue to WhatsApp, then tap Send there to deliver your message. Your details are not sent by this website.
+                  </p>
 
                   <div className="pt-1.5 sm:pt-2">
                     <button
                       type="submit"
-                      disabled={contactLoading}
                       className="w-full min-h-[48px] px-8 py-3.5 sm:py-4 bg-rosepetal-wine hover:bg-rosepetal-wineHover disabled:opacity-60 text-white text-xs uppercase font-medium tracking-[0.2em] rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group active:scale-[0.99]"
                     >
-                      <span>{contactLoading ? "SENDING..." : "SEND MESSAGE"}</span>
+                      <span>CONTINUE ON WHATSAPP</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                     </button>
                   </div>
                 </form>
-              )}
             </div>
           </div>
         </div>

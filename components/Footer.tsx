@@ -152,24 +152,13 @@ export default function Footer() {
                 openSection === "studio" ? "block" : "hidden sm:block"
               }`}
             >
-              <p className="text-rosepetal-muted leading-relaxed">
-                {CONTACT_INFO.studio}
-              </p>
               <p className="text-rosepetal-muted">
                 <strong className="text-rosepetal-text">Phone:</strong>{" "}
                 <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-rosepetal-wine transition-colors py-0.5 inline-block">
                   {CONTACT_INFO.phone}
                 </a>
               </p>
-              <p className="text-rosepetal-muted">
-                <strong className="text-rosepetal-text">Email:</strong>{" "}
-                <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-rosepetal-wine transition-colors py-0.5 inline-block">
-                  {CONTACT_INFO.email}
-                </a>
-              </p>
-              <p className="text-rosepetal-muted">
-                <strong className="text-rosepetal-text">Hours:</strong> {CONTACT_INFO.hours}
-              </p>
+              <p className="text-rosepetal-muted">Appointments are arranged by phone or WhatsApp.</p>
             </div>
           </div>
         </div>

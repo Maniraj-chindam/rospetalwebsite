@@ -2,41 +2,20 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { MapPin, Phone, Mail, Calendar, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Phone, ArrowRight } from "lucide-react";
 import { CONTACT_INFO } from "@/data/boutique-data";
 
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setErrorMsg("");
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        throw new Error("Unable to send message. Please try again.");
-      }
-
-      setSubmitted(true);
-    } catch (err: any) {
-      setErrorMsg(err.message || "Failed to send message.");
-    } finally {
-      setLoading(false);
-    }
+    const message = `Hello Rosepetal, I have an enquiry.\nName: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`;
+    window.location.assign(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`);
   };
 
   return (
@@ -61,21 +40,6 @@ export default function ContactPage() {
         {/* Left Column: Contact Details & Floral Accent */}
         <div className="lg:col-span-5 space-y-8 relative bg-white/85 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/60 shadow-md">
           <div className="space-y-6">
-            {/* Studio Address */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                <MapPin className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                  Our Studio
-                </h4>
-                <p className="text-xs text-rosepetal-muted leading-relaxed font-sans">
-                  {CONTACT_INFO.studio}
-                </p>
-              </div>
-            </div>
-
             {/* Phone */}
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
@@ -94,38 +58,6 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Email */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                <Mail className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                  Email Us
-                </h4>
-                <a
-                  href={`mailto:${CONTACT_INFO.email}`}
-                  className="text-xs text-rosepetal-muted hover:text-rosepetal-wine transition-colors font-sans"
-                >
-                  {CONTACT_INFO.email}
-                </a>
-              </div>
-            </div>
-
-            {/* Visiting Hours */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-rosepetal-blushLight/70 flex items-center justify-center text-rosepetal-wine flex-shrink-0 mt-0.5">
-                <Calendar className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
-                  Visit by Appointment
-                </h4>
-                <p className="text-xs text-rosepetal-muted leading-relaxed font-sans">
-                  {CONTACT_INFO.hours}
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Floral Bouquet Artwork (matching the pink floral cluster in the mockup) */}
@@ -147,29 +79,7 @@ export default function ContactPage() {
             Send Us a Message
           </h3>
 
-          {submitted ? (
-            <div className="py-12 text-center space-y-4 animate-in fade-in duration-300">
-              <div className="w-14 h-14 bg-rosepetal-wine/10 text-rosepetal-wine rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-8 h-8" />
-              </div>
-              <h4 className="font-serif-luxury text-2xl text-rosepetal-wine">
-                Message Received
-              </h4>
-              <p className="text-xs text-rosepetal-muted max-w-sm mx-auto leading-relaxed">
-                Thank you for reaching out, <strong className="text-rosepetal-text">{form.name}</strong>. Our customer relations team will respond within 24 hours.
-              </p>
-              <button
-                onClick={() => {
-                  setSubmitted(false);
-                  setForm({ name: "", email: "", message: "" });
-                }}
-                className="text-xs uppercase tracking-wider text-rosepetal-wine underline pt-2 font-medium"
-              >
-                Send another message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <input
                   type="text"
@@ -203,24 +113,20 @@ export default function ContactPage() {
                 />
               </div>
 
-              {errorMsg && (
-                <p className="text-xs text-red-600 bg-red-50 p-2.5 rounded border border-red-200">
-                  {errorMsg}
-                </p>
-              )}
+              <p className="text-xs text-rosepetal-muted leading-relaxed">
+                Continue to WhatsApp, then tap Send there to deliver your message. Your details are not sent by this website.
+              </p>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  disabled={loading}
                   className="w-full sm:w-auto px-8 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover disabled:opacity-60 text-white text-xs uppercase font-medium tracking-[0.2em] rounded-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group"
                 >
-                  <span>{loading ? "SENDING..." : "SEND MESSAGE"}</span>
+                  <span>CONTINUE ON WHATSAPP</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
             </form>
-          )}
         </div>
       </div>
     </div>

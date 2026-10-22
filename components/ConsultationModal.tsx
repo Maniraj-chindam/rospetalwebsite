@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, CheckCircle2, Calendar, Sparkles } from "lucide-react";
+import { X, Sparkles } from "lucide-react";
 import { useBoutique } from "@/context/BoutiqueContext";
+import { CONTACT_INFO } from "@/data/boutique-data";
 
 export default function ConsultationModal() {
   const { isConsultationOpen, setIsConsultationOpen } = useBoutique();
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -20,32 +18,10 @@ export default function ConsultationModal() {
 
   if (!isConsultationOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setErrorMsg("");
-
-    try {
-      const res = await fetch("/api/consultation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        throw new Error("Unable to complete booking. Please try again.");
-      }
-
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setIsConsultationOpen(false);
-      }, 2800);
-    } catch (err: any) {
-      setErrorMsg(err.message || "Failed to submit request.");
-    } finally {
-      setLoading(false);
-    }
+    const message = `Hello Rosepetal, I'd like to request a consultation.\nName: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\nOccasion: ${formData.occasion}\nPreferred date: ${formData.date || "Flexible"}\nNotes: ${formData.notes || "None"}`;
+    window.location.assign(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`);
   };
 
   return (
@@ -60,19 +36,6 @@ export default function ConsultationModal() {
           <X className="w-5 h-5" />
         </button>
 
-        {submitted ? (
-          <div className="py-12 text-center space-y-4 animate-in zoom-in-95 duration-300">
-            <div className="w-16 h-16 bg-rosepetal-wine/10 text-rosepetal-wine rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-10 h-10" />
-            </div>
-            <h3 className="font-serif-luxury text-2xl text-rosepetal-wine">
-              Consultation Requested
-            </h3>
-            <p className="text-sm text-rosepetal-muted max-w-sm mx-auto">
-              Thank you, <strong className="text-rosepetal-text">{formData.name}</strong>! Our master stylist from the Banjara Hills boutique will contact you shortly to confirm your appointment.
-            </p>
-          </div>
-        ) : (
           <div>
             <div className="text-center space-y-2 mb-6">
               <span className="text-[10px] uppercase tracking-[0.25em] text-rosepetal-wine font-semibold flex items-center justify-center gap-1.5">
@@ -111,7 +74,7 @@ export default function ConsultationModal() {
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 98765 43210"
+                    placeholder="+91 90000 00000"
                     className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-rosepetal-border text-sm text-rosepetal-text focus:outline-none focus:border-rosepetal-wine transition-colors"
                   />
                 </div>
@@ -173,22 +136,18 @@ export default function ConsultationModal() {
                 />
               </div>
 
-              {errorMsg && (
-                <p className="text-xs text-red-600 bg-red-50 p-2 rounded border border-red-200">
-                  {errorMsg}
-                </p>
-              )}
+              <p className="text-xs text-rosepetal-muted leading-relaxed">
+                Continue to WhatsApp, then tap Send to request an appointment. We will confirm the date with you there.
+              </p>
 
               <button
                 type="submit"
-                disabled={loading}
                 className="w-full py-3 px-4 bg-rosepetal-wine hover:bg-rosepetal-wineHover disabled:opacity-60 text-white text-xs uppercase font-medium tracking-[0.2em] rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
               >
-                {loading ? "Booking Appointment..." : "Confirm Appointment Request →"}
+                Continue on WhatsApp →
               </button>
             </form>
           </div>
-        )}
       </div>
     </div>
   );

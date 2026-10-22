@@ -532,8 +532,6 @@ export const CUSTOM_PROCESS_STEPS = [
 ];
 
 export const CONTACT_INFO = {
-  studio: "Banjara Hills, Hyderabad 500033",
-  phone: "+91 98765 43210",
-  email: "hello@rosepetal.in",
-  hours: "Mon – Sat, 11 AM – 7 PM",
+  phone: "+91 91823 18862",
+  whatsapp: "919182318862",
 };
