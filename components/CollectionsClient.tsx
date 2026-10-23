@@ -2,25 +2,12 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { ArrowLeft, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft, SlidersHorizontal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
-import { PRODUCTS_CATALOG, ProductItem } from "@/data/boutique-data";
+import type { ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
-
-const CATEGORIES = ["All", "Sarees", "Lehengas", "Designer Suits", "Bridal Wear", "Handlooms"];
-
-const productDetails = (product: ProductItem) => {
-  const text = `${product.name} ${product.category}`.toLowerCase();
-  return {
-    colour: text.includes("rose") || text.includes("blush") || text.includes("peach") || text.includes("sunset") ? "Rose" : text.includes("emerald") ? "Green" : text.includes("ivory") ? "Ivory" : "Wine",
-    fabric: product.category === "Handlooms" || product.category === "Sarees" ? "Silk" : product.category === "Lehengas" || product.category === "Bridal Wear" ? "Brocade" : "Cotton Blend",
-    weave: product.category === "Handlooms" || product.category === "Sarees" ? "Handwoven" : product.category === "Lehengas" || product.category === "Bridal Wear" ? "Zari Detail" : "Printed",
-  };
-};
-
-const rangeFloor = Math.min(...PRODUCTS_CATALOG.map((product) => product.priceNum));
-const rangeCeiling = Math.max(...PRODUCTS_CATALOG.map((product) => product.priceNum));
+import { fetchPosCatalog } from "@/lib/pos-catalog";
 
 export default function CollectionsClient() {
   const searchParams = useSearchParams();
@@ -30,42 +17,54 @@ export default function CollectionsClient() {
   const urlMinPrice = Number(searchParams.get("minPrice"));
   const urlMaxPrice = Number(searchParams.get("maxPrice"));
   const { wishlist, searchQuery } = useBoutique();
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [catalogStatus, setCatalogStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [retryKey, setRetryKey] = useState(0);
+  const rangeFloor = products.length ? Math.min(...products.map((product) => product.priceNum)) : 0;
+  const rangeCeiling = products.length ? Math.max(...products.map((product) => product.priceNum)) : 0;
+  const categories = useMemo(() => ["All", ...new Set(products.map((product) => product.category))], [products]);
+  const colours = useMemo(() => [...new Set(products.map((product) => product.color).filter(Boolean))] as string[], [products]);
 
   const [activeCategory, setActiveCategory] = useState(initialCategory);
-  const [minPrice, setMinPrice] = useState(Number.isFinite(urlMinPrice) && urlMinPrice > 0 ? urlMinPrice : rangeFloor);
-  const [maxPrice, setMaxPrice] = useState(Number.isFinite(urlMaxPrice) && urlMaxPrice > 0 ? urlMaxPrice : rangeCeiling);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
   const [colour, setColour] = useState("All");
-  const [fabric, setFabric] = useState("All");
-  const [weave, setWeave] = useState("All");
   const [sort, setSort] = useState("featured");
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setCatalogStatus("loading");
+    fetchPosCatalog(controller.signal).then((items) => {
+      setProducts(items);
+      setCatalogStatus("ready");
+    }).catch(() => {
+      if (!controller.signal.aborted) setCatalogStatus("error");
+    });
+    return () => controller.abort();
+  }, [retryKey]);
 
   useEffect(() => setActiveCategory(initialCategory), [initialCategory]);
   useEffect(() => {
     setMinPrice(Number.isFinite(urlMinPrice) && urlMinPrice > 0 ? urlMinPrice : rangeFloor);
     setMaxPrice(Number.isFinite(urlMaxPrice) && urlMaxPrice > 0 ? urlMaxPrice : rangeCeiling);
-  }, [urlMinPrice, urlMaxPrice]);
+  }, [urlMinPrice, urlMaxPrice, rangeFloor, rangeCeiling]);
 
   const filteredProducts = useMemo(() => {
-    const matching = PRODUCTS_CATALOG.filter((item) => {
+    const matching = products.filter((item) => {
       if (filterParam === "wishlist" && !wishlist.includes(item.id)) return false;
       if (activeCategory !== "All" && item.category !== activeCategory) return false;
       if (item.priceNum < minPrice || item.priceNum > maxPrice) return false;
-      const details = productDetails(item);
-      if (colour !== "All" && details.colour !== colour) return false;
-      if (fabric !== "All" && details.fabric !== fabric) return false;
-      if (weave !== "All" && details.weave !== weave) return false;
+      if (colour !== "All" && item.color !== colour) return false;
       return !searchQuery.trim() || `${item.name} ${item.category} ${item.description ?? ""}`.toLowerCase().includes(searchQuery.toLowerCase());
     });
     return [...matching].sort((first, second) => sort === "price-low" ? first.priceNum - second.priceNum : sort === "price-high" ? second.priceNum - first.priceNum : sort === "name" ? first.name.localeCompare(second.name) : 0);
-  }, [activeCategory, colour, fabric, filterParam, maxPrice, minPrice, searchQuery, sort, weave, wishlist]);
+  }, [activeCategory, colour, filterParam, maxPrice, minPrice, products, searchQuery, sort, wishlist]);
 
   const resetFilters = () => {
     setActiveCategory(initialCategory);
     setMinPrice(rangeFloor);
     setMaxPrice(rangeCeiling);
     setColour("All");
-    setFabric("All");
-    setWeave("All");
   };
 
   const goBack = () => {
@@ -81,16 +80,17 @@ export default function CollectionsClient() {
     <div className="space-y-7">
       <div>
         <div className="mb-4 flex items-center justify-between"><h2 className="font-serif-luxury text-2xl text-rosepetal-text">Filter pieces</h2><button onClick={resetFilters} className="text-[10px] font-semibold uppercase tracking-[0.15em] text-rosepetal-wine hover:underline">Reset</button></div>
-        <p className="text-xs leading-relaxed text-rosepetal-muted">Refine your edit by price, colour, fabric, or weave.</p>
+        <p className="text-xs leading-relaxed text-rosepetal-muted">Refine the live collection by price and colour.</p>
       </div>
-      <fieldset className="border-t border-rosepetal-border/75 pt-5">
+      {products.length > 0 && <fieldset className="border-t border-rosepetal-border/75 pt-5">
         <legend className="font-serif-luxury text-lg text-rosepetal-text">Price</legend>
         <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-rosepetal-text"><span className="rounded-lg border border-rosepetal-border bg-white/70 px-3 py-2">₹{minPrice.toLocaleString("en-IN")}</span><span className="rounded-lg border border-rosepetal-border bg-white/70 px-3 py-2 text-right">₹{maxPrice.toLocaleString("en-IN")}</span></div>
-        <div className="mt-4 space-y-3"><input aria-label="Minimum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={500} value={minPrice} onChange={(event) => setMinPrice(Math.min(Number(event.target.value), maxPrice))} /><input aria-label="Maximum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={500} value={maxPrice} onChange={(event) => setMaxPrice(Math.max(Number(event.target.value), minPrice))} /></div>
-      </fieldset>
-      {([ ["Colour", colour, setColour, ["All", "Rose", "Green", "Ivory", "Wine"]], ["Fabric", fabric, setFabric, ["All", "Silk", "Brocade", "Cotton Blend"]], ["Weave", weave, setWeave, ["All", "Handwoven", "Zari Detail", "Printed"]] ] as const).map(([label, value, setValue, options]) => (
-        <fieldset key={label} className="border-t border-rosepetal-border/75 pt-5"><legend className="flex w-full items-center justify-between font-serif-luxury text-lg text-rosepetal-text">{label}<ChevronDown className="h-4 w-4 text-rosepetal-muted" /></legend><div className="mt-3 flex flex-wrap gap-2">{options.map((option) => <button key={option} onClick={() => setValue(option)} className={`rounded-full border px-3 py-1.5 text-[11px] transition-colors ${value === option ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/65 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{option}</button>)}</div></fieldset>
-      ))}
+        <div className="mt-4 space-y-3"><input aria-label="Minimum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={1} value={minPrice} onChange={(event) => setMinPrice(Math.min(Number(event.target.value), maxPrice))} /><input aria-label="Maximum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={1} value={maxPrice} onChange={(event) => setMaxPrice(Math.max(Number(event.target.value), minPrice))} /></div>
+      </fieldset>}
+      {colours.length > 0 && <fieldset className="border-t border-rosepetal-border/75 pt-5">
+        <legend className="font-serif-luxury text-lg text-rosepetal-text">Colour</legend>
+        <div className="mt-3 flex flex-wrap gap-2">{["All", ...colours].map((option) => <button key={option} onClick={() => setColour(option)} className={`rounded-full border px-3 py-1.5 text-[11px] transition-colors ${colour === option ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white/65 text-rosepetal-muted hover:border-rosepetal-wine"}`}>{option}</button>)}</div>
+      </fieldset>}
     </div>
   );
 
@@ -158,7 +158,7 @@ export default function CollectionsClient() {
       {/* 2. Main Product Catalog & Filter Section */}
       <div className="mx-auto max-w-7xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-12 lg:px-8">
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-          {CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
@@ -208,7 +208,14 @@ export default function CollectionsClient() {
                 </label>
               </div>
             </div>
-            {filteredProducts.length > 0 ? (
+            {catalogStatus === "loading" ? (
+              <div role="status" className="rounded-2xl bg-white/90 p-12 text-center text-rosepetal-text">Loading the live collection…</div>
+            ) : catalogStatus === "error" ? (
+              <div role="alert" className="rounded-2xl bg-white/90 p-12 text-center text-rosepetal-text">
+                <h2 className="font-serif-luxury text-2xl">The collection could not be loaded.</h2>
+                <button onClick={() => setRetryKey((key) => key + 1)} className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white">Try again</button>
+              </div>
+            ) : filteredProducts.length > 0 ? (
               <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
                 {filteredProducts.map((product) => (
                   <div
@@ -223,14 +230,14 @@ export default function CollectionsClient() {
             ) : (
               <div className="rounded-2xl border border-white/30 bg-white/90 backdrop-blur-md p-12 text-center shadow-lg">
                 <h2 className="font-serif-luxury text-2xl text-rosepetal-text">
-                  No pieces match these filters.
+                  {products.length === 0 ? "New pieces are coming soon." : "No pieces match these filters."}
                 </h2>
-                <button
+                {products.length > 0 && <button
                   onClick={resetFilters}
                   className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white"
                 >
                   Clear filters
-                </button>
+                </button>}
               </div>
             )}
           </div>

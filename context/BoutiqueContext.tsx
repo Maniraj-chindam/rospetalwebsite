@@ -5,8 +5,6 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 interface BoutiqueContextType {
   wishlist: string[];
   toggleWishlist: (id: string) => void;
-  cartCount: number;
-  addToCart: () => void;
   isConsultationOpen: boolean;
   setIsConsultationOpen: (open: boolean) => void;
   searchQuery: string;
@@ -19,7 +17,6 @@ const BoutiqueContext = createContext<BoutiqueContextType | undefined>(undefined
 
 export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
   const [wishlist, setWishlist] = useState<string[]>([]);
-  const [cartCount, setCartCount] = useState<number>(0);
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -29,10 +26,6 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
       const savedWishlist = localStorage.getItem("rosepetal_wishlist");
       if (savedWishlist) {
         setWishlist(JSON.parse(savedWishlist));
-      }
-      const savedCart = localStorage.getItem("rosepetal_cart_count");
-      if (savedCart) {
-        setCartCount(parseInt(savedCart, 10));
       }
     } catch {
       // Fallback if localStorage is not accessible
@@ -49,23 +42,11 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const addToCart = () => {
-    setCartCount((prev) => {
-      const next = prev + 1;
-      try {
-        localStorage.setItem("rosepetal_cart_count", next.toString());
-      } catch {}
-      return next;
-    });
-  };
-
   return (
     <BoutiqueContext.Provider
       value={{
         wishlist,
         toggleWishlist,
-        cartCount,
-        addToCart,
         isConsultationOpen,
         setIsConsultationOpen,
         searchQuery,

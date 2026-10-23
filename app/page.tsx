@@ -12,30 +12,27 @@ import {
   HeartHandshake,
   PencilRuler,
   Phone,
-  Heart,
-  Star,
-  Quote,
   ChevronLeft,
   ChevronRight,
   Play,
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
 import StoryVideoModal from "@/components/StoryVideoModal";
+import ProductCard from "@/components/ProductCard";
+import { fetchPosCatalog } from "@/lib/pos-catalog";
+import type { ProductItem } from "@/data/boutique-data";
 import {
   HOME_PILLARS,
   HERO_ARCHED_CATEGORIES,
   SHOP_BY_CATEGORY_ITEMS,
-  NEW_ARRIVALS_PRODUCTS,
   CONTACT_INFO,
   SHOP_ALL_CATEGORY_CARDS,
 } from "@/data/boutique-data";
-import { useBoutique } from "@/context/BoutiqueContext";
 
 const SHOP_BY_PRICE_CARDS = [
   {
     eyebrow: "EVERYDAY STYLE",
     title: "Under ₹5,000",
-    startingPrice: "Starting at ₹1,499",
     image: "/libas-dress-01.jpg",
     imagePosition: "object-center",
     href: "/collections?minPrice=0&maxPrice=5000",
@@ -43,7 +40,6 @@ const SHOP_BY_PRICE_CARDS = [
   {
     eyebrow: "CELEBRATION EDIT",
     title: "₹5,000 – ₹10,000",
-    startingPrice: "Starting at ₹9,500",
     image: "/libas-dress-02.jpg",
     imagePosition: "object-center",
     href: "/collections?minPrice=5001&maxPrice=10000",
@@ -51,7 +47,6 @@ const SHOP_BY_PRICE_CARDS = [
   {
     eyebrow: "FESTIVE FAVOURITES",
     title: "₹10,000 – ₹25,000",
-    startingPrice: "Starting at ₹11,800",
     image: "/thridha-handloom-01.webp",
     imagePosition: "object-center",
     href: "/collections?minPrice=10001&maxPrice=25000",
@@ -59,48 +54,25 @@ const SHOP_BY_PRICE_CARDS = [
   {
     eyebrow: "SIGNATURE OCCASIONS",
     title: "₹25,000 & Above",
-    startingPrice: "Starting at ₹34,500",
     image: "/thridha-handloom-04.webp",
     imagePosition: "object-top",
     href: "/collections?minPrice=25001",
   },
 ] as const;
 
-const CUSTOMER_REVIEWS = [
-  {
-    name: "Ananya R.",
-    detail: "Handloom saree collection",
-    quote: "The handloom saree felt beautifully light, and every detail was just as lovely in person.",
-  },
-  {
-    name: "Meera K.",
-    detail: "Custom bridal lehenga",
-    quote: "From the first fitting to the final touch, my lehenga fit as though it had been made for me.",
-  },
-  {
-    name: "Sravya P.",
-    detail: "Occasion wear styling",
-    quote: "The Rosepetal team guided me to a silhouette that felt elegant and effortless all evening.",
-  },
-  {
-    name: "Nandini V.",
-    detail: "Designer frock collection",
-    quote: "The colour, finish, and fit made the dress feel truly special from the very first try-on.",
-  },
-  {
-    name: "Ishita S.",
-    detail: "Custom occasionwear",
-    quote: "Every detail felt personal, from the fabric choice to the final styling advice.",
-  },
-  {
-    name: "Kavya P.",
-    detail: "Festive handloom edit",
-    quote: "I found a handloom piece that felt rooted in tradition but perfect for today.",
-  },
-] as const;
-
 export default function MasterBoutiquePage() {
-  const { wishlist, toggleWishlist } = useBoutique();
+  const [newArrivals, setNewArrivals] = useState<ProductItem[]>([]);
+  const [arrivalStatus, setArrivalStatus] = useState<"loading" | "ready" | "error">("loading");
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchPosCatalog(controller.signal).then((items) => {
+      setNewArrivals(items.slice(0, 4));
+      setArrivalStatus("ready");
+    }).catch(() => {
+      if (!controller.signal.aborted) setArrivalStatus("error");
+    });
+    return () => controller.abort();
+  }, []);
 
   // Story video modal state
   const [isStoryOpen, setIsStoryOpen] = useState(false);
@@ -108,7 +80,6 @@ export default function MasterBoutiquePage() {
   const [selectedShopAllId, setSelectedShopAllId] = useState<string | null>(null);
   const shopAllGalleryRef = useRef<HTMLDivElement>(null);
   const collectionCarouselRef = useRef<HTMLDivElement>(null);
-  const reviewsCarouselRef = useRef<HTMLDivElement>(null);
 
   const scrollCollections = (direction: "left" | "right") => {
     const carousel = collectionCarouselRef.current;
@@ -116,16 +87,6 @@ export default function MasterBoutiquePage() {
 
     carousel.scrollBy({
       left: (direction === "left" ? -1 : 1) * Math.min(carousel.clientWidth * 0.72, 760),
-      behavior: "smooth",
-    });
-  };
-
-  const scrollReviews = (direction: "left" | "right") => {
-    const carousel = reviewsCarouselRef.current;
-    if (!carousel) return;
-
-    carousel.scrollBy({
-      left: (direction === "left" ? -1 : 1) * Math.min(carousel.clientWidth * 0.82, 880),
       behavior: "smooth",
     });
   };
@@ -517,51 +478,11 @@ export default function MasterBoutiquePage() {
           </Link>
         </div>
 
-        {/* Row 1: 4 Product Cards */}
-        <div className="relative z-10 mb-5 grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">
-          {NEW_ARRIVALS_PRODUCTS.map((product) => {
-            const isFavorited = wishlist.includes(product.id);
-            return (
-              <div key={product.id} className="group flex flex-col text-left">
-                {/* Product Image */}
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl ring-1 ring-white/10 group-hover:ring-white/30 transition-all group-hover:-translate-y-1">
-                  <Link href={product.href} aria-label={`View ${product.name}`} className="absolute inset-0">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className={`${product.imagePosition} object-cover transition-transform duration-500 group-hover:scale-105`}
-                    />
-                    <span className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/15 to-transparent" />
-                  </Link>
-                  {/* Wishlist Heart Button with 40px+ mobile touch target */}
-                  <button
-                    type="button"
-                    onClick={() => toggleWishlist(product.id)}
-                    className="absolute top-2.5 right-2.5 p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full bg-white/85 hover:bg-white text-rosepetal-muted hover:text-rosepetal-wine shadow-sm transition-all z-10 active:scale-90"
-                    aria-label="Wishlist"
-                  >
-                    <Heart
-                      className={`w-4 h-4 ${
-                        isFavorited ? "fill-rosepetal-wine text-rosepetal-wine" : ""
-                      }`}
-                    />
-                  </button>
-                </div>
-
-                {/* Title & Price */}
-                <Link href={product.href} className="mt-2.5 sm:mt-3 block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">
-                  <h3 className="font-serif-luxury text-[13px] sm:text-sm font-semibold text-white group-hover:text-[#FDE8C5] transition-colors line-clamp-1">
-                    {product.name}
-                  </h3>
-                  <p className="text-[11px] sm:text-xs font-semibold text-rose-200 mt-0.5">
-                    {product.price}
-                  </p>
-                </Link>
-              </div>
-            );
-          })}
+        <div className="relative z-10 mb-5">
+          {arrivalStatus === "loading" && <p role="status" className="py-8 text-center text-white">Loading new pieces…</p>}
+          {arrivalStatus === "error" && <p role="alert" className="py-8 text-center text-white">New pieces are temporarily unavailable. Please visit the collection later.</p>}
+          {arrivalStatus === "ready" && newArrivals.length === 0 && <p className="py-8 text-center text-white">New pieces are coming soon.</p>}
+          {newArrivals.length > 0 && <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">{newArrivals.map((product) => <div key={product.id} className="rounded-xl bg-white p-3"><ProductCard product={product} /></div>)}</div>}
         </div>
 
         {/* Row 2: 2 Promotional Banners */}
@@ -660,7 +581,6 @@ export default function MasterBoutiquePage() {
                     <h3 className="font-serif-luxury text-lg leading-tight sm:text-[1.7rem]">
                       {card.title}
                     </h3>
-                    <p className="mt-0.5 text-[10px] text-white/80 sm:text-xs">{card.startingPrice}</p>
                     <Link
                       href={card.href}
                       className="mt-3 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/70 bg-white/95 px-3 py-1.5 sm:px-4 sm:py-2 text-[8.5px] sm:text-[10px] font-semibold uppercase tracking-[0.16em] text-rosepetal-wine transition-colors hover:bg-white"
@@ -681,90 +601,6 @@ export default function MasterBoutiquePage() {
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ============================================================== */}
-      {/* 05C. CUSTOMER REVIEWS                                           */}
-      {/* ============================================================== */}
-      <section id="customer-reviews" className="relative scroll-mt-20 overflow-hidden border-y border-rosepetal-wine/10 bg-[#FDF6F4] px-4 sm:scroll-mt-24 sm:px-6 lg:px-8">
-        <div className="pointer-events-none absolute -left-12 top-0 h-52 w-52 rounded-full border border-rosepetal-wine/10" aria-hidden="true" />
-        <div className="pointer-events-none absolute -right-16 bottom-0 h-56 w-56 rounded-full border border-[#B07839]/15" aria-hidden="true" />
-
-        <div className="relative mx-auto max-w-7xl py-5 sm:py-7 lg:py-8">
-          <div className="mx-auto mb-7 max-w-3xl text-center">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-rosepetal-wine">
-              CUSTOMER STORIES
-            </p>
-            <h2 className="mt-2 font-serif-luxury text-3xl font-normal text-rosepetal-text sm:text-5xl">
-              Loved by Our Customers
-            </h2>
-            <div className="mt-4 sm:mt-5 flex items-center justify-center gap-2 text-[#B07839]" aria-label="Five-star reviews">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Star key={index} className="h-4 w-4 sm:h-5 sm:w-5 fill-current" aria-hidden="true" />
-              ))}
-            </div>
-            <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm leading-relaxed text-rosepetal-muted">
-              Rosepetal customer stories of thoughtful designs, timeless craft, and love from our community.
-            </p>
-          </div>
-
-          <div className="relative px-7 sm:px-12">
-            <button
-              type="button"
-              onClick={() => scrollReviews("left")}
-              aria-label="Show previous reviews"
-              className="absolute left-0 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#B07839]/40 bg-[#FFF9F7]/95 text-rosepetal-wine shadow-md transition hover:bg-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine sm:h-11 sm:w-11"
-            >
-              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-            </button>
-
-            <div ref={reviewsCarouselRef} aria-label="Customer story review cards" className="flex snap-x snap-mandatory gap-3.5 sm:gap-5 overflow-x-auto scroll-smooth pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {CUSTOMER_REVIEWS.map((review) => (
-                <article
-                  key={review.name}
-                  data-review-card
-                  className="group flex min-h-[250px] sm:min-h-[270px] w-[82vw] max-w-[19rem] shrink-0 snap-center sm:snap-start flex-col rounded-[1.25rem] sm:rounded-[1.5rem] border border-[#B07839]/50 bg-white/85 p-5 sm:p-6 shadow-[0_14px_36px_rgba(82,31,42,0.07)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_42px_rgba(82,31,42,0.12)] sm:w-[20rem]"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className="flex gap-1 text-[#B07839]" aria-label="5 out of 5 stars">
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <Star key={index} className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
-                      ))}
-                    </div>
-                    <Quote className="mt-3 sm:mt-4 h-7 w-7 sm:h-8 sm:w-8 text-rosepetal-wine/25" strokeWidth={1.2} aria-hidden="true" />
-                  </div>
-
-                  <blockquote className="my-3 sm:my-4 flex-1 text-center font-serif-luxury text-lg sm:text-2xl italic leading-snug text-rosepetal-text">
-                    “{review.quote}”
-                  </blockquote>
-
-                  <div className="flex items-center gap-3 border-t border-[#B07839]/30 pt-3.5 sm:pt-4">
-                    <span className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#B07839]/60 bg-rosepetal-wine font-serif-luxury text-base sm:text-lg text-white shadow-sm">
-                      {review.name.charAt(0)}
-                    </span>
-                    <div>
-                      <p className="text-xs sm:text-sm font-semibold text-rosepetal-text">{review.name}</p>
-                      <p className="mt-0.5 text-[9.5px] sm:text-[10px] text-rosepetal-muted">{review.detail}</p>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => scrollReviews("right")}
-              aria-label="Show more reviews"
-              className="absolute right-0 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#B07839]/40 bg-[#FFF9F7]/95 text-rosepetal-wine shadow-md transition hover:bg-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine sm:h-11 sm:w-11"
-            >
-              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-            </button>
-          </div>
-
-          <p className="mt-5 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-rosepetal-wine">
-            Sample customer stories · Rosepetal Designer Boutique
-          </p>
         </div>
       </section>
 

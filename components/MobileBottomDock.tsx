@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Sparkles, Heart, Phone, MessageCircle } from "lucide-react";
 import { useBoutique } from "@/context/BoutiqueContext";
+import { CONTACT_INFO } from "@/data/boutique-data";
 
 export default function MobileBottomDock() {
   const pathname = usePathname();
@@ -76,7 +77,7 @@ export default function MobileBottomDock() {
 
         {/* WhatsApp Direct Action Button */}
         <a
-          href="https://wa.me/919876543210?text=Hello%20Rosepetal%20Boutique%2C%20I%20would%20like%20to%20inquire%20about%20your%20couture%20collection"
+          href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent("Hello Rosepetal Boutique, I would like to enquire about your collection.")}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with Stylist on WhatsApp"

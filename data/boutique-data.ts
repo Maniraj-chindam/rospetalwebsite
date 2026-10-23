@@ -3,10 +3,14 @@ export interface ProductItem {
   name: string;
   price: string;
   priceNum: number;
-  category: "Sarees" | "Lehengas" | "Designer Suits" | "Bridal Wear" | "Handlooms" | "Accessories" | "Dresses" | "Kurtis & Suits" | "Bed Linens" | "Blankets & Quilts" | "Home Decor" | "Gift Sets";
+  category: string;
   image: string;
   tag?: string;
   description?: string;
+  sku?: string;
+  size?: string;
+  color?: string;
+  availableStock?: number;
 }
 
 export interface LookbookItem {

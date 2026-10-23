@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Heart, ShoppingBag, Menu, X, ArrowRight, ChevronDown } from "lucide-react";
+import { Search, Heart, Menu, X, ArrowRight, ChevronDown } from "lucide-react";
 import RosepetalLogo from "./RosepetalLogo";
 import { HEADER_NAV_LINKS } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
@@ -12,10 +12,9 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const { wishlist, cartCount, isSearchOpen, setIsSearchOpen, searchQuery, setSearchQuery } = useBoutique();
+  const { wishlist, isSearchOpen, setIsSearchOpen, searchQuery, setSearchQuery } = useBoutique();
   const isHomePage = !pathname || pathname === "/" || pathname === "" || pathname === "/index.html" || pathname.startsWith("/?") || pathname.startsWith("/#");
   const isLight = true;
 
@@ -50,7 +49,6 @@ export default function Navbar() {
 
   useEffect(() => {
     setOpenDropdown(null);
-    setIsCartOpen(false);
   }, [pathname]);
 
   const toggleDropdown = (menuId: string) => {
@@ -195,52 +193,6 @@ export default function Navbar() {
               {wishlist.length}
             </span>
           </Link>
-
-          {/* Shopping Bag with quick summary */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setIsCartOpen((open) => !open)}
-              aria-label="Shopping bag"
-              aria-expanded={isCartOpen}
-              aria-controls="shopping-bag-summary"
-              className={`relative p-2 sm:p-1 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine ${
-                isLight
-                  ? "text-white/90 hover:text-[#FDE8C5] active:bg-white/20"
-                  : "text-rosepetal-text/75 hover:text-rosepetal-wine active:bg-rosepetal-blushLight/50"
-              }`}
-            >
-              <ShoppingBag className="w-5 h-5 stroke-[1.7]" />
-              <span
-                className={`absolute top-1 right-0 sm:-top-1 sm:-right-1.5 text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-xs ${
-                  isLight ? "bg-white text-rosepetal-wine" : "bg-rosepetal-wine text-white"
-                }`}
-              >
-                {cartCount}
-              </span>
-            </button>
-            {isCartOpen && (
-              <div
-                id="shopping-bag-summary"
-                role="dialog"
-                aria-label="Shopping bag summary"
-                className="absolute right-0 top-[calc(100%+0.9rem)] z-50 w-56 rounded-2xl border border-rosepetal-border/80 bg-[#FFF9F7]/98 p-4 shadow-[0_18px_45px_rgba(83,24,42,0.18)] backdrop-blur-xl"
-              >
-                <p className="font-serif-luxury text-lg text-rosepetal-text">Your bag</p>
-                <p className="mt-1 text-xs leading-relaxed text-rosepetal-muted">
-                  {cartCount === 0 ? "Your bag is waiting for its first piece." : `${cartCount} ${cartCount === 1 ? "piece" : "pieces"} ready to review.`}
-                </p>
-                <Link
-                  href="/collections"
-                  onClick={() => setIsCartOpen(false)}
-                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-rosepetal-wine px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-rosepetal-wineHover"
-                >
-                  Continue shopping
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-                </Link>
-              </div>
-            )}
-          </div>
 
           {/* New Shop Now Button matching mockup */}
           <Link
