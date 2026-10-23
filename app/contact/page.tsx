@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Phone, ArrowRight } from "lucide-react";
 import { CONTACT_INFO } from "@/data/boutique-data";
+import { useEnquirySubmission } from "@/hooks/useEnquirySubmission";
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -11,12 +12,13 @@ export default function ContactPage() {
     email: "",
     message: "",
   });
+  const { submitting, error, reference, submit, reset } = useEnquirySubmission();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Hello Rosepetal, I have an enquiry.\nName: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`;
-    window.location.assign(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`);
+    void submit({ kind: "contact", name: form.name, email: form.email, message: form.message });
   };
+  const whatsappMessage = `Hello Rosepetal, I have an enquiry.\nName: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`;
 
   return (
     <div className="pb-10 pt-24 sm:pb-12 sm:pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -79,13 +81,16 @@ export default function ContactPage() {
             Send Us a Message
           </h3>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          {reference ? <div role="status" className="space-y-4 rounded-lg border border-rosepetal-wine/30 bg-white/80 p-5 text-sm text-rosepetal-text"><h4 className="font-serif-luxury text-2xl text-rosepetal-wine">Your message is saved</h4><p>We received your enquiry. Keep this reference if you need to follow up: <strong>{reference}</strong>.</p><button type="button" onClick={() => { setForm({ name: "", email: "", message: "" }); reset(); }} className="font-semibold text-rosepetal-wine underline underline-offset-4">Send another message</button></div> : <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label htmlFor="contact-name" className="mb-1.5 block text-xs font-semibold text-rosepetal-text">Your name</label>
                 <input
                   id="contact-name"
                   type="text"
                   required
+                  maxLength={100}
+                  autoComplete="name"
+                  disabled={submitting}
                   placeholder="Your Name"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -99,6 +104,9 @@ export default function ContactPage() {
                   id="contact-email"
                   type="email"
                   required
+                  maxLength={254}
+                  autoComplete="email"
+                  disabled={submitting}
                   placeholder="Your Email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -112,6 +120,9 @@ export default function ContactPage() {
                   id="contact-message"
                   rows={5}
                   required
+                  minLength={10}
+                  maxLength={2000}
+                  disabled={submitting}
                   placeholder="Your Message"
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -119,20 +130,20 @@ export default function ContactPage() {
                 />
               </div>
 
-              <p className="text-xs text-rosepetal-muted leading-relaxed">
-                Continue to WhatsApp, then tap Send there to deliver your message. Your details are not sent by this website.
-              </p>
+              <p className="text-xs text-rosepetal-muted leading-relaxed">We use these details to respond to your enquiry. Your message is saved only when a reference appears.</p>
+              {error && <p role="alert" className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-800">{error} <a className="font-semibold underline" href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`} target="_blank" rel="noopener noreferrer">Continue on WhatsApp</a> and tap Send there if you prefer.</p>}
 
               <div className="pt-2">
                 <button
                   type="submit"
+                  disabled={submitting}
                   className="w-full sm:w-auto px-8 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover disabled:opacity-60 text-white text-xs uppercase font-medium tracking-[0.2em] rounded-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group"
                 >
-                  <span>CONTINUE ON WHATSAPP</span>
+                  <span>{submitting ? "SAVING YOUR MESSAGE…" : "SEND MESSAGE"}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
-            </form>
+            </form>}
         </div>
       </div>
     </div>
