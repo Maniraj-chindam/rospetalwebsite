@@ -11,6 +11,7 @@ const variant = (id, overrides = {}) => ({
   styleCode: "RP-ROSE-01",
   name: "Rose kurta",
   category: "Dresses",
+  websiteType: "Designer Long Frocks",
   description: "A cotton kurta with floral print.",
   fabric: "Cotton",
   care: "Gentle wash",

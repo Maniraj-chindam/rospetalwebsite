@@ -53,12 +53,13 @@ export default function CollectionsClient() {
     const matching = products.filter((item) => {
       if (filterParam === "wishlist" && !wishlist.includes(item.id)) return false;
       if (activeCategory !== "All" && item.category !== activeCategory) return false;
+      if (collectionType && item.websiteType !== collectionType) return false;
       if (item.priceNum < minPrice || item.priceNum > maxPrice) return false;
       if (colour !== "All" && item.color !== colour) return false;
       return true;
     });
     return [...matching].sort((first, second) => sort === "price-low" ? first.priceNum - second.priceNum : sort === "price-high" ? second.priceNum - first.priceNum : sort === "name" ? first.name.localeCompare(second.name) : 0);
-  }, [activeCategory, colour, filterParam, maxPrice, minPrice, products, sort, wishlist]);
+  }, [activeCategory, collectionType, colour, filterParam, maxPrice, minPrice, products, sort, wishlist]);
   const visibleGroups = useMemo(() => {
     const allGroups = new Map(groupCatalogByStyle(products).map((variants) => [variants[0].styleCode || variants[0].id, variants]));
     return groupCatalogByStyle(filteredProducts).map((matching) => ({

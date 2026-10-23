@@ -12,6 +12,7 @@ export interface ProductItem {
   color?: string;
   availableStock?: number;
   styleCode?: string;
+  websiteType?: string;
   fabric?: string;
   care?: string;
   delivery?: string;
