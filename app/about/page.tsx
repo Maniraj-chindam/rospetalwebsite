@@ -26,7 +26,7 @@ export default function AboutPage() {
             </span>
 
             <h1 className="font-serif-luxury text-4xl sm:text-5xl lg:text-6xl text-rosepetal-wine leading-[1.14] font-light">
-              A Boutique Born from a Love for Timeless Beauty
+              Discover Rosepetal
             </h1>
 
             <p className="text-sm sm:text-base text-rosepetal-muted max-w-lg font-sans font-light leading-relaxed">
@@ -49,8 +49,8 @@ export default function AboutPage() {
             {/* Arched Portrait Frame */}
             <div className="relative w-[320px] sm:w-[390px] h-[460px] sm:h-[520px] rounded-t-[180px] rounded-b-2xl overflow-hidden shadow-2xl border-4 border-white/80 bg-[#F5E6E5]">
               <Image
-                src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=85&w=1000"
-                alt="Rosepetal Craftsmanship Back Detail"
+                src="/shop-all-featured-lehenga.png"
+                alt="Embellished occasion-wear inspiration"
                 fill
                 priority
                 sizes="(max-width: 640px) 320px, 390px"
@@ -118,12 +118,12 @@ export default function AboutPage() {
             </span>
 
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl text-rosepetal-wine font-light leading-tight">
-              Crafted with Heart, <br />
-              Worn with Pride
+              Explore Fabric, <br />
+              Colour and Form
             </h2>
 
             <p className="text-sm sm:text-base text-rosepetal-muted leading-relaxed font-sans font-light max-w-lg">
-              We draw on Indian textile traditions and contemporary silhouettes. The collection brings together woven sarees, occasion wear and design ideas for pieces made around your preferences.
+              Browse the live collection for confirmed prices, sizes and availability. If you have a particular occasion in mind, send us a consultation request and we will discuss the details with you.
             </p>
 
             <div className="pt-2">
@@ -148,7 +148,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div className="font-script-accent text-3xl text-rosepetal-wine/90">
-                Handcrafted for your beautiful moments
+                Find a piece for your moment
               </div>
             </div>
           </div>

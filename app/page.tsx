@@ -19,6 +19,7 @@ import {
 import FloatingPetals from "@/components/FloatingPetals";
 import StoryVideoModal from "@/components/StoryVideoModal";
 import ProductCard from "@/components/ProductCard";
+import { useEnquirySubmission } from "@/hooks/useEnquirySubmission";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import type { ProductItem } from "@/data/boutique-data";
 import {
@@ -94,11 +95,11 @@ export default function MasterBoutiquePage() {
 
   // Contact form state
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
+  const homeEnquiry = useEnquirySubmission();
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Hello Rosepetal, I have an enquiry.\nName: ${contactForm.name}\nEmail: ${contactForm.email}\nMessage: ${contactForm.message}`;
-    window.location.assign(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`);
+    void homeEnquiry.submit({ kind: "contact", ...contactForm });
   };
 
   useEffect(() => {
@@ -151,7 +152,7 @@ export default function MasterBoutiquePage() {
               {/* Ultra-HD Hero Image: object-[80%_15%] on mobile frames saree pleats and embroidered blouse in top zone */}
               <Image
                 src="/hero-rosepetal-bridal-silk.jpg"
-                alt="Rosepetal Boutique - Handcrafted Bridal Silks & Couture Wear"
+                alt="Pink silk saree and embellished occasion-wear styling"
                 fill
                 priority
                 sizes="100vw"
@@ -184,7 +185,7 @@ export default function MasterBoutiquePage() {
 
                   {/* Main Heading: Responsive text-[22px] on mobile with natural break and zero clipping */}
                   <h1 className="font-serif-luxury text-[22px] sm:text-5xl lg:text-6xl font-normal leading-[1.2] sm:leading-[1.08] text-white drop-shadow-sm max-w-sm sm:max-w-none">
-                    Where Heritage Craft Meets Modern <span className="italic text-[#FDE8C5]">Couture</span>
+                    Where Tradition Meets <span className="italic text-[#FDE8C5]">Personal Style</span>
                   </h1>
 
                   {/* Description: Balanced max-width on mobile */}
@@ -402,7 +403,7 @@ export default function MasterBoutiquePage() {
                     <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-rosepetal-wine">All collections</p>
                     <h3 className="mt-1 font-serif-luxury text-3xl text-rosepetal-text sm:text-4xl">Find the piece that feels like you.</h3>
                   </div>
-                  <p className="max-w-sm text-sm leading-6 text-rosepetal-muted">Choose a category to view its related collection.</p>
+                  <p className="max-w-sm text-sm leading-6 text-rosepetal-muted">Choose a category to view its live pieces. Category images are styling inspiration.</p>
                 </div>
 
                 {(["Designer Dresses", "Handloom Collection", "Designer Frocks", "Lehenga Collection"] as const).map((group) => (
@@ -657,13 +658,15 @@ export default function MasterBoutiquePage() {
                 Send Us a Message
               </h3>
 
-              <form onSubmit={handleContactSubmit} className="space-y-3.5 sm:space-y-3">
+              {homeEnquiry.reference ? <div role="status" className="rounded-lg border border-rosepetal-wine/30 bg-white p-5 text-sm text-rosepetal-text"><h4 className="font-serif-luxury text-2xl text-rosepetal-wine">Your message is saved</h4><p className="mt-2">We received your enquiry. Reference: <strong>{homeEnquiry.reference}</strong>.</p><button type="button" onClick={() => { homeEnquiry.reset(); setContactForm({ name: "", email: "", message: "" }); }} className="mt-3 font-semibold text-rosepetal-wine underline">Send another message</button></div> : <form onSubmit={handleContactSubmit} className="space-y-3.5 sm:space-y-3">
                   <div>
                     <label htmlFor="home-contact-name" className="mb-1 block text-xs font-semibold text-rosepetal-text">Your name</label>
                     <input
                       id="home-contact-name"
                       type="text"
                       required
+                      maxLength={100}
+                      disabled={homeEnquiry.submitting}
                       placeholder="Your Name"
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
@@ -677,6 +680,8 @@ export default function MasterBoutiquePage() {
                       id="home-contact-email"
                       type="email"
                       required
+                      maxLength={254}
+                      disabled={homeEnquiry.submitting}
                       placeholder="Your Email"
                       value={contactForm.email}
                       onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
@@ -690,6 +695,9 @@ export default function MasterBoutiquePage() {
                       id="home-contact-message"
                       rows={3}
                       required
+                      minLength={10}
+                      maxLength={3000}
+                      disabled={homeEnquiry.submitting}
                       placeholder="Your Message"
                       value={contactForm.message}
                       onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
@@ -697,20 +705,19 @@ export default function MasterBoutiquePage() {
                     />
                   </div>
 
-                  <p className="text-xs text-rosepetal-muted leading-relaxed">
-                    Continue to WhatsApp, then tap Send there to deliver your message. Your details are not sent by this website.
-                  </p>
+                  {homeEnquiry.error && <p role="alert" className="rounded-lg border border-red-300 bg-red-50 p-3 text-xs text-red-800">{homeEnquiry.error}</p>}
 
                   <div className="pt-1.5 sm:pt-2">
                     <button
                       type="submit"
+                      disabled={homeEnquiry.submitting}
                       className="w-full min-h-[48px] px-8 py-3.5 sm:py-4 bg-rosepetal-wine hover:bg-rosepetal-wineHover disabled:opacity-60 text-white text-xs uppercase font-medium tracking-[0.2em] rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group active:scale-[0.99]"
                     >
-                      <span>CONTINUE ON WHATSAPP</span>
+                      <span>{homeEnquiry.submitting ? "SAVING YOUR MESSAGE…" : "SEND MESSAGE"}</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                     </button>
                   </div>
-                </form>
+                </form>}
             </div>
           </div>
         </div>

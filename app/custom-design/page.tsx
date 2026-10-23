@@ -13,17 +13,17 @@ const HOW_IT_WORKS = [
   },
   {
     step: "2. DESIGN A PLAN",
-    desc: "Our team creates a personalised design for you.",
+    desc: "We discuss fabric, fit and timing with you.",
     Icon: PencilRuler,
   },
   {
-    step: "3. CRAFTED WITH CARE",
-    desc: "Skilled artisans bring your design to life.",
+    step: "3. CONFIRM THE DETAILS",
+    desc: "Agree on the design and next steps before work begins.",
     Icon: Scissors,
   },
   {
-    step: "4. YOUR PERFECT OUTFIT",
-    desc: "Cherish a one-of-a-kind creation, made just for you.",
+    step: "4. STAY IN TOUCH",
+    desc: "We confirm progress and collection or delivery details with you.",
     Icon: HeartHandshake,
   },
 ];
@@ -58,7 +58,7 @@ export default function CustomDesignPage() {
           </p>
 
           <p className="text-xs sm:text-sm text-rosepetal-muted max-w-md mx-auto leading-relaxed font-sans font-light">
-            From concept to creation, we bring your dream outfit to life with personalized designs, fabrics and detailing.
+            Tell us what you have in mind. We will discuss design, fabric, fit and timing before confirming any custom order.
           </p>
 
           <div className="pt-4">

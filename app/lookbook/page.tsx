@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { X } from "lucide-react";
 import { LOOKBOOK_GALLERY, type LookbookItem } from "@/data/boutique-data";
 import { useModalKeyboard } from "@/hooks/useModalKeyboard";
@@ -18,7 +19,8 @@ export default function LookbookPage() {
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 sm:pt-28 lg:px-8">
       <header className="mx-auto mb-7 max-w-2xl space-y-3 text-center">
         <h1 className="font-serif-luxury text-4xl font-normal text-white drop-shadow-sm sm:text-5xl">Lookbook</h1>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#FDE8C5]">A glimpse of the Rosepetal aesthetic</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#FDE8C5]">Style inspiration · images do not confirm current stock</p>
+        <Link href="/collections" className="inline-block rounded-full border border-white/70 px-5 py-2 text-xs font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Browse live pieces</Link>
       </header>
 
       <div role="group" aria-label="Filter lookbook" className="mb-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3">

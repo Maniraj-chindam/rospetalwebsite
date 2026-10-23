@@ -249,8 +249,8 @@ export const HOME_PILLARS = [
   },
   {
     icon: "Globe",
-    title: "WORLDWIDE SHIPPING",
-    subtitle: "Bringing elegance to you",
+    title: "INDIA DELIVERY",
+    subtitle: "Availability confirmed before dispatch",
   },
 ];
 
@@ -290,23 +290,23 @@ export const HOME_CATEGORIES = [
 export const ABOUT_PILLARS = [
   {
     icon: "Flower2",
-    title: "OUR HERITAGE",
-    subtitle: "Rooted in tradition",
+    title: "THE COLLECTION",
+    subtitle: "Sarees and occasion wear",
   },
   {
     icon: "Scissors",
-    title: "OUR CRAFTSMANSHIP",
-    subtitle: "Attention to detail",
+    title: "PERSONAL DESIGN",
+    subtitle: "Discuss your preferences",
   },
   {
     icon: "Users",
-    title: "OUR PEOPLE",
-    subtitle: "A passionate team",
+    title: "PRODUCT DETAILS",
+    subtitle: "Fabric, care and sizing",
   },
   {
     icon: "HeartHandshake",
-    title: "OUR PROMISE",
-    subtitle: "Elegance always",
+    title: "GET IN TOUCH",
+    subtitle: "Ask before you decide",
   },
 ];
 
@@ -496,7 +496,7 @@ export const CUSTOM_PROCESS_STEPS = [
   {
     step: "3",
     title: "CRAFTED WITH CARE",
-    description: "Skilled artisans bring your design to life.",
+    description: "We discuss fabric, fit and timing before work begins.",
     icon: "Scissors",
   },
   {
@@ -511,4 +511,5 @@ export const CONTACT_INFO = {
   phone: "+91 91823 18862",
   phoneDial: "+919182318862",
   whatsapp: "919182318862",
+  email: "rosepetalfashionstudio@gmail.com",
 };

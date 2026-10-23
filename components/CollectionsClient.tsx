@@ -3,13 +3,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, SlidersHorizontal } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 
 export default function CollectionsClient() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "All";
   const collectionType = searchParams.get("type");
@@ -69,19 +70,16 @@ export default function CollectionsClient() {
   }, [filteredProducts, products]);
 
   const resetFilters = () => {
-    setActiveCategory(initialCategory);
+    setActiveCategory("All");
     setMinPrice(rangeFloor);
     setMaxPrice(rangeCeiling);
     setColour("All");
+    setSort("featured");
+    router.push("/collections");
   };
 
   const goBack = () => {
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-
-    window.location.assign("/collections");
+    resetFilters();
   };
 
   const filterContent = (

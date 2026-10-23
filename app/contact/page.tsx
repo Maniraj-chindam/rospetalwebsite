@@ -59,6 +59,7 @@ export default function ContactPage() {
                 </a>
               </div>
             </div>
+            <div className="pl-14 text-xs"><span className="block font-semibold uppercase tracking-[0.16em] text-rosepetal-text">Email</span><a href={`mailto:${CONTACT_INFO.email}`} className="mt-1 inline-block text-rosepetal-muted underline-offset-2 hover:text-rosepetal-wine hover:underline">{CONTACT_INFO.email}</a></div>
 
           </div>
 
@@ -66,8 +67,8 @@ export default function ContactPage() {
           <div className="relative pt-6 max-w-[280px]">
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-rosepetal-border/60">
               <Image
-                src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=600"
-                alt="Soft pink blooming roses bouquet"
+                src="/contact-studio-floral.png"
+                alt="Soft pink floral artwork"
                 fill
                 className="object-cover"
               />

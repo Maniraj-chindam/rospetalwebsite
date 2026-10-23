@@ -82,6 +82,17 @@ body {
   [data-falling-rose-petals] * {
     animation: none !important;
   }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:is(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid #fff !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 5px #6b1735 !important;
 }
 
 .animate-float-slow {

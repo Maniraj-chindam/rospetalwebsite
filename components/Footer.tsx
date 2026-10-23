@@ -14,26 +14,14 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative isolate overflow-hidden text-rosepetal-text">
-      <video
-        className="absolute inset-0 z-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-label="Rosepetal boutique collection reel"
-      >
-        <source src="/rosepetal-footer-reel.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 z-[1] bg-[#fff8f5]/90" aria-hidden="true" />
+    <footer className="relative isolate overflow-hidden bg-[#fff8f5] text-rosepetal-text">
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10 md:grid-cols-4">
           {/* Brand Info */}
           <div className="space-y-4 sm:col-span-2 md:col-span-1 pb-2 sm:pb-0">
             <RosepetalLogo isLight={false} />
             <p className="text-xs text-rosepetal-muted leading-relaxed max-w-xs font-sans">
-              A celebration of heritage, craftsmanship, and the modern woman. Discover timeless bridal wear, handlooms, and bespoke creations.
+              Explore sarees and occasion wear, browse current pieces, and request a personal design consultation.
             </p>
             <div className="pt-2">
               <span className="font-script-accent text-2xl text-rosepetal-wine">
@@ -167,7 +155,7 @@ export default function Footer() {
         <div className="mt-8 pt-6 sm:mt-12 sm:pt-8 border-t border-rosepetal-border/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-rosepetal-muted text-center sm:text-left gap-2 sm:gap-0">
           <p>© {new Date().getFullYear()} Rosepetal Designer Boutique. All rights reserved.</p>
           <p className="font-script-accent text-lg text-rosepetal-wine/80">
-            Handcrafted with love for your beautiful moments
+            Thoughtful style for your beautiful moments
           </p>
         </div>
       </div>
