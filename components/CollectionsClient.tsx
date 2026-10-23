@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowLeft, SlidersHorizontal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
-import type { ProductItem } from "@/data/boutique-data";
+import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog } from "@/lib/pos-catalog";
 
@@ -157,7 +157,7 @@ export default function CollectionsClient() {
 
       {/* 2. Main Product Catalog & Filter Section */}
       <div className="mx-auto max-w-7xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-12 lg:px-8">
-        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+        {products.length > 0 && <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
           {categories.map((category) => (
             <button
               key={category}
@@ -171,11 +171,11 @@ export default function CollectionsClient() {
               {category}
             </button>
           ))}
-        </div>
-        <div className="mt-7 grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/40 bg-white/90 backdrop-blur-md p-5 shadow-lg [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
+        </div>}
+        <div className={`mt-7 grid items-start gap-8 ${products.length > 0 ? "lg:grid-cols-[260px_minmax(0,1fr)]" : ""}`}>
+          {products.length > 0 && <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/40 bg-white/90 backdrop-blur-md p-5 shadow-lg [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
             {filterContent}
-          </aside>
+          </aside>}
           <div>
             <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-serif-luxury text-xl text-white">
@@ -183,6 +183,7 @@ export default function CollectionsClient() {
                 <span className="font-semibold text-[#FDE8C5]">{filteredProducts.length}</span>{" "}
                 {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit
               </p>
+              {products.length > 0 &&
               <div className="flex items-center gap-3">
                 <details className="relative lg:hidden">
                   <summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-white/40 bg-white/90 px-4 py-2 text-xs text-rosepetal-text shadow-sm">
@@ -206,7 +207,7 @@ export default function CollectionsClient() {
                     <option value="name">Name: A–Z</option>
                   </select>
                 </label>
-              </div>
+              </div>}
             </div>
             {catalogStatus === "loading" ? (
               <div role="status" className="rounded-2xl bg-white/90 p-12 text-center text-rosepetal-text">Loading the live collection…</div>
@@ -230,8 +231,9 @@ export default function CollectionsClient() {
             ) : (
               <div className="rounded-2xl border border-white/30 bg-white/90 backdrop-blur-md p-12 text-center shadow-lg">
                 <h2 className="font-serif-luxury text-2xl text-rosepetal-text">
-                  {products.length === 0 ? "New pieces are coming soon." : "No pieces match these filters."}
+                  {products.length === 0 ? "Our next edit is being prepared." : "No pieces match these filters."}
                 </h2>
+                {products.length === 0 && <><p className="mt-3 text-sm text-rosepetal-muted">Ask the boutique about current and upcoming pieces.</p><a href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent("Hello Rosepetal Boutique, I would like to know about your upcoming collection.")}`} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-rosepetal-wine px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white">Enquire on WhatsApp</a></>}
                 {products.length > 0 && <button
                   onClick={resetFilters}
                   className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white"

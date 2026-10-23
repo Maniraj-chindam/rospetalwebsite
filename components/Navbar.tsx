@@ -69,7 +69,7 @@ export default function Navbar() {
         <RosepetalLogo isLight={isLight} />
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-3 xl:gap-5 lg:flex">
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-3 2xl:gap-5 2xl:flex">
           {HEADER_NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
 
@@ -210,7 +210,7 @@ export default function Navbar() {
           {/* Mobile menu hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full text-white hover:text-[#FDE8C5] active:bg-white/20"
+            className="2xl:hidden p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full text-white hover:text-[#FDE8C5] active:bg-white/20"
             aria-label="Toggle navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
