@@ -5,6 +5,9 @@ export type BagQuote = {
   currency: "INR";
   items: Array<{ productId: string; sku: string; name: string; size: string; color: string; qty: number; unitPricePaise: number; lineTotalPaise: number }>;
   subtotalPaise: number;
+  deliveryPincode: string | null;
+  deliveryStatus: "pin_required" | "packaging_required" | "available" | "unserviceable" | "unavailable";
+  deliveryQuote: { courierCompanyId: number; courierName: string; estimatedChargePaise: number; estimatedDeliveryDays: number | null } | null;
   quotedAt: string;
   expiresAt: string;
   shippingPaise: number | null;
@@ -13,7 +16,7 @@ export type BagQuote = {
   reason: string;
 };
 
-export async function quoteBag(items: BagLine[], signal?: AbortSignal): Promise<BagQuote> {
+export async function quoteBag(items: BagLine[], deliveryPincode?: string, signal?: AbortSignal): Promise<BagQuote> {
   const controller = new AbortController();
   const abort = () => controller.abort();
   signal?.addEventListener("abort", abort, { once: true });
@@ -22,7 +25,7 @@ export async function quoteBag(items: BagLine[], signal?: AbortSignal): Promise<
   try { response = await fetch(`${apiBase}/api/checkout/quote`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ items }),
+    body: JSON.stringify({ items, ...(deliveryPincode ? { deliveryPincode } : {}) }),
     cache: "no-store",
     signal: controller.signal,
   }); } catch (error) {
@@ -38,6 +41,9 @@ export async function quoteBag(items: BagLine[], signal?: AbortSignal): Promise<
         item.lineTotalPaise === item.qty * item.unitPricePaise) ||
       body.items.reduce((sum: number, item: BagQuote["items"][number]) => sum + item.lineTotalPaise, 0) !== body.subtotalPaise ||
       typeof body.checkoutAvailable !== "boolean" || typeof body.reason !== "string" ||
+      !["pin_required", "packaging_required", "available", "unserviceable", "unavailable"].includes(body.deliveryStatus) ||
+      (body.deliveryQuote !== null && (!body.deliveryQuote || !Number.isSafeInteger(body.deliveryQuote.estimatedChargePaise) || body.deliveryQuote.estimatedChargePaise < 0 || typeof body.deliveryQuote.courierName !== "string")) ||
+      (body.deliveryStatus === "available") !== (body.deliveryQuote !== null) ||
       typeof body.quotedAt !== "string" || typeof body.expiresAt !== "string") {
     throw new Error("The bag quote was invalid. Please refresh and try again.");
   }

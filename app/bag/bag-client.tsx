@@ -20,6 +20,8 @@ export default function BagClient() {
   const [quoteState, setQuoteState] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [quoteError, setQuoteError] = useState("");
   const [quoteRetry, setQuoteRetry] = useState(0);
+  const [deliveryPincode, setDeliveryPincode] = useState("");
+  const [checkedPincode, setCheckedPincode] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -31,9 +33,9 @@ export default function BagClient() {
     if (bag.length === 0) { setQuote(null); setQuoteState("idle"); return; }
     const controller = new AbortController();
     setQuote(null); setQuoteError(""); setQuoteState("loading");
-    quoteBag(bag, controller.signal).then((value) => { setQuote(value); setQuoteState("ready"); }).catch((error) => { if (!controller.signal.aborted) { setQuoteError(error instanceof Error ? error.message : "The bag could not be checked."); setQuoteState("error"); } });
+    quoteBag(bag, checkedPincode, controller.signal).then((value) => { setQuote(value); setQuoteState("ready"); }).catch((error) => { if (!controller.signal.aborted) { setQuoteError(error instanceof Error ? error.message : "The bag could not be checked."); setQuoteState("error"); } });
     return () => controller.abort();
-  }, [bag, quoteRetry]);
+  }, [bag, checkedPincode, quoteRetry]);
   useEffect(() => {
     if (!quote) return;
     const refresh = () => { if (document.visibilityState === "visible" && Date.now() >= Date.parse(quote.expiresAt)) setQuoteRetry((value) => value + 1); };
@@ -66,10 +68,14 @@ export default function BagClient() {
           </section>
           <aside className="h-fit rounded-2xl border border-white/60 bg-[#FFF9F7] p-6 shadow-xl lg:sticky lg:top-28">
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-rosepetal-wine">ORDER SUMMARY</p><h2 className="mt-2 font-serif-luxury text-2xl">The pieces you chose</h2>
+            <form className="mt-5" onSubmit={event => { event.preventDefault(); if (/^[1-9][0-9]{5}$/.test(deliveryPincode)) { if (checkedPincode === deliveryPincode) setQuoteRetry(value => value + 1); else setCheckedPincode(deliveryPincode); } }}>
+              <label htmlFor="delivery-pin" className="block text-xs font-semibold text-rosepetal-wine">Delivery PIN code</label>
+              <div className="mt-2 flex gap-2"><input id="delivery-pin" inputMode="numeric" autoComplete="postal-code" pattern="[1-9][0-9]{5}" maxLength={6} value={deliveryPincode} onChange={event => { setDeliveryPincode(event.target.value.replace(/\D/g, "").slice(0, 6)); setCheckedPincode(""); }} placeholder="6-digit India PIN" className="min-w-0 flex-1 rounded-lg border border-rosepetal-border bg-white px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-rosepetal-wine"/><button type="submit" className="rounded-lg bg-rosepetal-wine px-4 py-2 text-xs font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Check</button></div>
+            </form>
             {quoteState === "loading" && <p role="status" className="mt-6 text-sm text-rosepetal-muted">Checking live prices and availability…</p>}
             {quoteState === "error" && <div role="alert" className="mt-6 rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-800">{quoteError}<button onClick={() => setQuoteRetry((value) => value + 1)} className="ml-2 font-semibold underline">Check again</button></div>}
-            {quote && <><dl className="mt-6 space-y-3 border-y border-rosepetal-border py-4 text-sm"><div className="flex justify-between gap-3"><dt>Pieces</dt><dd>{currency.format(quote.subtotalPaise / 100)}</dd></div><div className="flex justify-between gap-3 text-rosepetal-muted"><dt>Delivery</dt><dd>Calculated later</dd></div></dl><p className="mt-4 flex justify-between font-serif-luxury text-xl"><span>Subtotal</span><strong>{currency.format(quote.subtotalPaise / 100)}</strong></p></>}
-            <div className="mt-6 rounded-lg border border-rosepetal-wine/20 bg-rosepetal-card p-4 text-sm leading-relaxed"><strong>Secure checkout is being prepared.</strong><p className="mt-2 text-rosepetal-muted">Delivery charges and online payment are not active yet. Your bag is saved on this device; no stock is reserved until checkout opens.</p></div>
+            {quote && <><dl className="mt-6 space-y-3 border-y border-rosepetal-border py-4 text-sm"><div className="flex justify-between gap-3"><dt>Pieces</dt><dd>{currency.format(quote.subtotalPaise / 100)}</dd></div><div className="flex justify-between gap-3 text-rosepetal-muted"><dt>Delivery estimate</dt><dd>{quote.deliveryQuote ? currency.format(quote.deliveryQuote.estimatedChargePaise / 100) : "Unavailable"}</dd></div></dl><p className="mt-4 flex justify-between font-serif-luxury text-xl"><span>Pieces subtotal</span><strong>{currency.format(quote.subtotalPaise / 100)}</strong></p>{quote.deliveryQuote ? <p role="status" className="mt-3 text-xs leading-relaxed text-rosepetal-muted">Estimated courier charge via {quote.deliveryQuote.courierName}{quote.deliveryQuote.estimatedDeliveryDays ? ` · about ${quote.deliveryQuote.estimatedDeliveryDays} days after dispatch` : ""}. Final delivery charge and total will be confirmed at checkout.</p> : checkedPincode && <p role="status" className="mt-3 text-xs leading-relaxed text-rosepetal-muted">{quote.deliveryStatus === "packaging_required" ? "Delivery estimate is pending packed measurements for this piece." : quote.deliveryStatus === "unserviceable" ? "No courier currently serves this PIN from our pickup location." : "A live delivery estimate is unavailable right now. Please try again later."}</p>}</>}
+            <div className="mt-6 rounded-lg border border-rosepetal-wine/20 bg-rosepetal-card p-4 text-sm leading-relaxed"><strong>Secure checkout is being prepared.</strong><p className="mt-2 text-rosepetal-muted">Courier rates are estimates. The final delivery charge and online payment are not active yet. Your bag is saved on this device; no stock is reserved until checkout opens.</p></div>
             <button type="button" disabled aria-disabled="true" className="mt-5 w-full rounded-lg bg-rosepetal-wine px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white opacity-55">Continue to secure checkout</button>
             <Link href="/contact" className="mt-4 block text-center text-xs font-semibold text-rosepetal-wine underline underline-offset-4">Need help with a piece? Contact the boutique</Link>
             {hasMissing && <p role="alert" className="mt-4 text-xs text-red-700">One or more pieces are no longer in the live collection. Remove them before checkout.</p>}
