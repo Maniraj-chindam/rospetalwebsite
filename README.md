@@ -1,6 +1,6 @@
 # Rosepetal Designer Boutique
 
-This is a Next.js static export hosted on Firebase Hosting. Shop and search read the POS public catalog v2; only owner-published variants appear, and the site is empty until approved products are published in the POS. Contact and consultation forms save requests to the private POS enquiry inbox through `POST /api/enquiries`; the site shows a reference only after the server confirms the save. WhatsApp is offered as an explicit fallback on failure, and customers must tap **Send** there. Paid checkout and website stock reservations are not live.
+This is a Next.js static export hosted on Firebase Hosting. Shop and search read the POS public catalog v2; only owner-published variants appear, and the site is empty until approved products are published in the POS. Contact and consultation forms save requests to the private POS enquiry inbox through `POST /api/enquiries`; the site shows a reference only after the server confirms the save. WhatsApp is offered as an explicit fallback on failure, and customers must tap **Send** there. The bag stores only variant IDs and quantities on the customer's device and obtains server-priced quotes through `POST /api/checkout/quote`. Paid checkout and website stock reservations are not live yet.
 
 ## Run locally
 

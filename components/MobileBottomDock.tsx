@@ -3,13 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Sparkles, Heart, Phone, MessageCircle } from "lucide-react";
+import { Home, Sparkles, Heart, Phone, MessageCircle, ShoppingBag } from "lucide-react";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { CONTACT_INFO } from "@/data/boutique-data";
 
 export default function MobileBottomDock() {
   const pathname = usePathname();
-  const { wishlist } = useBoutique();
+  const { wishlist, bag } = useBoutique();
 
   const navItems = [
     {
@@ -26,10 +26,17 @@ export default function MobileBottomDock() {
     },
     {
       name: "Wishlist",
-      href: "/collections",
+      href: "/collections?filter=wishlist",
       icon: Heart,
       isActive: false,
       badge: wishlist.length > 0 ? wishlist.length : null,
+    },
+    {
+      name: "Bag",
+      href: "/bag",
+      icon: ShoppingBag,
+      isActive: pathname === "/bag",
+      badge: bag.length > 0 ? bag.reduce((total, item) => total + item.qty, 0) : null,
     },
     {
       name: "Studio",
@@ -44,7 +51,7 @@ export default function MobileBottomDock() {
       aria-label="Mobile Navigation Dock"
       className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-[#FFF9F7]/95 backdrop-blur-xl border-t border-rosepetal-wine/15 shadow-[0_-8px_30px_rgba(82,31,42,0.12)] pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 px-2"
     >
-      <div className="grid grid-cols-5 items-center justify-items-center max-w-md mx-auto">
+      <div className="grid grid-cols-6 items-center justify-items-center max-w-md mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (

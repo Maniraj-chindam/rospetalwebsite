@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Eye, Heart, X } from "lucide-react";
 import type { ProductItem } from "@/data/boutique-data";
 import { CONTACT_INFO } from "@/data/boutique-data";
@@ -14,10 +15,11 @@ function enquiryUrl(product: ProductItem) {
 }
 
 export default function ProductCard({ product, variants = [product] }: { product: ProductItem; variants?: ProductItem[] }) {
-  const { wishlist, toggleWishlist } = useBoutique();
+  const { wishlist, toggleWishlist, bag, addToBag } = useBoutique();
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(product.id);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [added, setAdded] = useState(false);
   const dialogRef = useModalKeyboard(isQuickViewOpen, () => setIsQuickViewOpen(false));
   const selected = variants.find((item) => item.id === selectedId) ?? product;
   const photos = selected.images?.length ? selected.images : [selected.image];
@@ -28,6 +30,8 @@ export default function ProductCard({ product, variants = [product] }: { product
     ? `From ${variants.find((item) => item.priceNum === minPrice)?.price}`
     : product.price;
   const isFavorited = wishlist.includes(product.id);
+  const bagQty = bag.find((line) => line.productId === selected.id)?.qty ?? 0;
+  const canAdd = bagQty < Math.min(10, selected.availableStock ?? 0) && (bagQty > 0 || bag.length < 20);
 
   return (
     <>
@@ -46,7 +50,7 @@ export default function ProductCard({ product, variants = [product] }: { product
           <p className="text-xs font-medium text-rosepetal-muted">{priceLabel}</p>
           {variants.length > 1 && <p className="text-xs text-rosepetal-muted">{variants.length} size/colour options</p>}
           {!anyAvailable && <p className="text-xs text-rosepetal-wine">Currently unavailable</p>}
-          <button type="button" onClick={() => { setSelectedId(product.id); setSelectedImage(null); setIsQuickViewOpen(true); }} className="inline-flex min-h-10 items-center text-left text-xs font-semibold text-rosepetal-wine underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Choose a variant and enquire</button>
+          <button type="button" onClick={() => { setSelectedId(product.id); setSelectedImage(null); setAdded(false); setIsQuickViewOpen(true); }} className="inline-flex min-h-10 items-center text-left text-xs font-semibold text-rosepetal-wine underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Choose a variant</button>
         </div>
       </article>
 
@@ -62,7 +66,7 @@ export default function ProductCard({ product, variants = [product] }: { product
             <h2 id="product-dialog-title" className="font-serif-luxury text-3xl text-rosepetal-text">{selected.name}</h2>
             <p className="text-xl text-rosepetal-wine">{selected.price}</p>
             {selected.description && <p className="text-sm leading-relaxed">{selected.description}</p>}
-            {variants.length > 1 && <fieldset className="border-t border-rosepetal-border pt-3"><legend className="text-xs font-semibold uppercase tracking-wider text-rosepetal-wine">Size and colour</legend><div className="mt-2 flex flex-wrap gap-2">{variants.map((item) => <button key={item.id} type="button" onClick={() => { setSelectedId(item.id); setSelectedImage(null); }} aria-pressed={selected.id === item.id} className={`rounded-md border px-3 py-2 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-rosepetal-wine ${selected.id === item.id ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white"}`}>{[item.size, item.color].filter(Boolean).join(" · ")}</button>)}</div></fieldset>}
+            {variants.length > 1 && <fieldset className="border-t border-rosepetal-border pt-3"><legend className="text-xs font-semibold uppercase tracking-wider text-rosepetal-wine">Size and colour</legend><div className="mt-2 flex flex-wrap gap-2">{variants.map((item) => <button key={item.id} type="button" onClick={() => { setSelectedId(item.id); setSelectedImage(null); setAdded(false); }} aria-pressed={selected.id === item.id} className={`rounded-md border px-3 py-2 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-rosepetal-wine ${selected.id === item.id ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white"}`}>{[item.size, item.color].filter(Boolean).join(" · ")}</button>)}</div></fieldset>}
             <dl className="grid gap-2 border-t border-rosepetal-border pt-3 text-sm">
               {selected.size && <div><dt className="inline font-semibold">Size: </dt><dd className="inline">{selected.size}</dd></div>}
               {selected.color && <div><dt className="inline font-semibold">Colour: </dt><dd className="inline">{selected.color}</dd></div>}
@@ -72,7 +76,9 @@ export default function ProductCard({ product, variants = [product] }: { product
               <div><dt className="inline font-semibold">Availability: </dt><dd className="inline">{(selected.availableStock ?? 0) > 0 ? `${selected.availableStock} available` : "Currently unavailable"}</dd></div>
               {selected.sku && <div><dt className="inline font-semibold">SKU: </dt><dd className="inline">{selected.sku}</dd></div>}
             </dl>
-            <a href={enquiryUrl(selected)} target="_blank" rel="noopener noreferrer" className="mt-2 rounded bg-rosepetal-wine px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-white hover:bg-rosepetal-wineHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Enquire about this variant</a>
+            <button type="button" disabled={!canAdd} onClick={() => { addToBag(selected.id); setAdded(true); }} className="mt-2 rounded bg-rosepetal-wine px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{(selected.availableStock ?? 0) < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to bag"}</button>
+            {added && <p role="status" className="text-sm text-rosepetal-wine">Added to your bag. <Link href="/bag" className="font-semibold underline underline-offset-4">Review bag</Link></p>}
+            <a href={enquiryUrl(selected)} target="_blank" rel="noopener noreferrer" className="rounded border border-rosepetal-wine/40 px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Ask about this piece</a>
           </div>
         </div>
       </div>}
