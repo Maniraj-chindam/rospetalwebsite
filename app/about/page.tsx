@@ -4,6 +4,12 @@ import Link from "next/link";
 import { ArrowRight, Flower2, Scissors, Users, HeartHandshake } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
 import { ABOUT_PILLARS } from "@/data/boutique-data";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Rosepetal | Designer Boutique",
+  description: "Discover the style and design approach behind Rosepetal Designer Boutique.",
+};
 
 export default function AboutPage() {
   return (
@@ -24,7 +30,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="text-sm sm:text-base text-rosepetal-muted max-w-lg font-sans font-light leading-relaxed">
-              Rosepetal Designer Boutique is a celebration of heritage, craftsmanship and the modern woman. What started as a small dream has now blossomed into a label known for its elegant sarees, bespoke designs and unforgettable stories.
+              Rosepetal Designer Boutique brings together sarees, occasion wear and personal design consultations. Explore the styles that inspire our collections and tell us what you would love to wear.
             </p>
 
             <div className="pt-2">
@@ -32,7 +38,7 @@ export default function AboutPage() {
                 href="/custom-design"
                 className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-xs font-semibold tracking-[0.2em] uppercase rounded-sm shadow-md hover:shadow-lg transition-all group"
               >
-                <span>OUR JOURNEY</span>
+                <span>EXPLORE CUSTOM DESIGN</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
@@ -96,8 +102,8 @@ export default function AboutPage() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[4/3] sm:aspect-[16/11] rounded-2xl overflow-hidden shadow-xl border-4 border-white/80 bg-rosepetal-card">
               <Image
-                src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=900"
-                alt="Artisan hand embroidering intricate zardozi detail"
+                src="/thridha-handloom-01.webp"
+                alt="A silk saree with a detailed woven border"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover hover:scale-105 transition-transform duration-700"
@@ -117,7 +123,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="text-sm sm:text-base text-rosepetal-muted leading-relaxed font-sans font-light max-w-lg">
-              Every piece at Rosepetal is thoughtfully designed and ethically crafted, bringing together traditional techniques and contemporary aesthetics. We work closely with skilled artisans to ensure every drape tells a story of culture, care and creativity.
+              We draw on Indian textile traditions and contemporary silhouettes. The collection brings together woven sarees, occasion wear and design ideas for pieces made around your preferences.
             </p>
 
             <div className="pt-2">

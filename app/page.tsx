@@ -188,7 +188,7 @@ export default function MasterBoutiquePage() {
 
                   {/* Description: Balanced max-width on mobile */}
                   <p className="mt-2.5 max-w-[18.5rem] sm:max-w-lg text-[11px] sm:text-base leading-relaxed text-rose-100 font-sans font-light">
-                    Discover masterfully handwoven silks, intricate bridal zardozi embroidery, and bespoke silhouettes crafted for life’s most cherished celebrations.
+                    Explore silk sarees, occasion wear and custom design ideas for life’s most cherished celebrations.
                   </p>
 
                   {/* Actions Bar */}
@@ -205,11 +205,11 @@ export default function MasterBoutiquePage() {
 
                   {/* Trust Badges: Safe wrap with max-w */}
                   <div className="mt-5 text-[9px] sm:text-[10.5px] uppercase tracking-[0.14em] font-medium text-rose-200/90 flex flex-wrap items-center gap-x-2 gap-y-1 max-w-[19rem] sm:max-w-none">
-                    <span>Handcrafted in Hyderabad</span>
+                    <span>Designer Boutique</span>
                     <span>•</span>
                     <span>Custom Orders Welcome</span>
                     <span>•</span>
-                    <span>Worldwide Shipping</span>
+                    <span>Personal Consultations</span>
                   </div>
                 </div>
               </div>
@@ -639,7 +639,7 @@ export default function MasterBoutiquePage() {
                       Call Us
                     </h4>
                     <a
-                      href={`tel:${CONTACT_INFO.phone}`}
+                      href={`tel:${CONTACT_INFO.phoneDial}`}
                       className="text-xs text-rosepetal-muted hover:text-rosepetal-wine transition-colors font-sans"
                     >
                       {CONTACT_INFO.phone}
@@ -658,7 +658,9 @@ export default function MasterBoutiquePage() {
 
               <form onSubmit={handleContactSubmit} className="space-y-3.5 sm:space-y-3">
                   <div>
+                    <label htmlFor="home-contact-name" className="mb-1 block text-xs font-semibold text-rosepetal-text">Your name</label>
                     <input
+                      id="home-contact-name"
                       type="text"
                       required
                       placeholder="Your Name"
@@ -669,7 +671,9 @@ export default function MasterBoutiquePage() {
                   </div>
 
                   <div>
+                    <label htmlFor="home-contact-email" className="mb-1 block text-xs font-semibold text-rosepetal-text">Your email</label>
                     <input
+                      id="home-contact-email"
                       type="email"
                       required
                       placeholder="Your Email"
@@ -680,7 +684,9 @@ export default function MasterBoutiquePage() {
                   </div>
 
                   <div>
+                    <label htmlFor="home-contact-message" className="mb-1 block text-xs font-semibold text-rosepetal-text">Your message</label>
                     <textarea
+                      id="home-contact-message"
                       rows={3}
                       required
                       placeholder="Your Message"

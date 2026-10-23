@@ -16,7 +16,7 @@ export default function CollectionsClient() {
   const filterParam = searchParams.get("filter");
   const urlMinPrice = Number(searchParams.get("minPrice"));
   const urlMaxPrice = Number(searchParams.get("maxPrice"));
-  const { wishlist, searchQuery } = useBoutique();
+  const { wishlist } = useBoutique();
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [catalogStatus, setCatalogStatus] = useState<"loading" | "ready" | "error">("loading");
   const [retryKey, setRetryKey] = useState(0);
@@ -55,10 +55,10 @@ export default function CollectionsClient() {
       if (activeCategory !== "All" && item.category !== activeCategory) return false;
       if (item.priceNum < minPrice || item.priceNum > maxPrice) return false;
       if (colour !== "All" && item.color !== colour) return false;
-      return !searchQuery.trim() || `${item.name} ${item.category} ${item.description ?? ""}`.toLowerCase().includes(searchQuery.toLowerCase());
+      return true;
     });
     return [...matching].sort((first, second) => sort === "price-low" ? first.priceNum - second.priceNum : sort === "price-high" ? second.priceNum - first.priceNum : sort === "name" ? first.name.localeCompare(second.name) : 0);
-  }, [activeCategory, colour, filterParam, maxPrice, minPrice, products, searchQuery, sort, wishlist]);
+  }, [activeCategory, colour, filterParam, maxPrice, minPrice, products, sort, wishlist]);
 
   const resetFilters = () => {
     setActiveCategory(initialCategory);

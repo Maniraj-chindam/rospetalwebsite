@@ -26,12 +26,12 @@ export default function Footer() {
       >
         <source src="/rosepetal-footer-reel.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 z-[1] bg-[#fff8f5]/80" aria-hidden="true" />
+      <div className="absolute inset-0 z-[1] bg-[#fff8f5]/90" aria-hidden="true" />
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10 md:grid-cols-4">
           {/* Brand Info */}
           <div className="space-y-4 sm:col-span-2 md:col-span-1 pb-2 sm:pb-0">
-            <RosepetalLogo />
+            <RosepetalLogo isLight={false} />
             <p className="text-xs text-rosepetal-muted leading-relaxed max-w-xs font-sans">
               A celebration of heritage, craftsmanship, and the modern woman. Discover timeless bridal wear, handlooms, and bespoke creations.
             </p>
@@ -154,7 +154,7 @@ export default function Footer() {
             >
               <p className="text-rosepetal-muted">
                 <strong className="text-rosepetal-text">Phone:</strong>{" "}
-                <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-rosepetal-wine transition-colors py-0.5 inline-block">
+                <a href={`tel:${CONTACT_INFO.phoneDial}`} className="hover:text-rosepetal-wine transition-colors py-0.5 inline-block">
                   {CONTACT_INFO.phone}
                 </a>
               </p>

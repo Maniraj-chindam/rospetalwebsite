@@ -24,9 +24,8 @@ export interface LookbookItem {
 export const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/collections" },
-  { name: "Dresses", href: "/collections?category=Dresses" },
-  { name: "Bed & Bath", href: "/collections?category=Bed+Linens" },
-  { name: "Custom Orders", href: "/custom-design" },
+  { name: "Lookbook", href: "/lookbook" },
+  { name: "Custom Designs", href: "/custom-design" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
@@ -70,41 +69,7 @@ export const SHOP_ALL_CATEGORY_CARDS: ShopAllCategoryCard[] = [
   { id: "narayanpet-handloom-lehengas", group: "Lehenga Collection", name: "Narayanpet Handloom Lehengas", image: "/thridha-handloom-03.webp", href: "/collections?category=Lehengas&type=Narayanpet+Handloom+Lehengas" },
 ];
 
-const shopAllHeaderChildren = (group: ShopAllCategoryCard["group"]) =>
-  SHOP_ALL_CATEGORY_CARDS.filter((card) => card.group === group).map((card) => ({
-    name: card.name,
-    href: `/?shopAll=${card.id}#shop-all`,
-    shopAllId: card.id,
-  }));
-
-export const HEADER_NAV_LINKS: HeaderNavItem[] = [
-  { name: "Home", href: "/" },
-  { name: "Shop", href: "/collections" },
-  {
-    name: "Designer Dresses",
-    href: "/collections?category=Dresses",
-    menuId: "designer-dresses-menu",
-    children: shopAllHeaderChildren("Designer Dresses"),
-  },
-  {
-    name: "Handloom Collection",
-    href: "/collections?category=Handlooms",
-    menuId: "handloom-collection-menu",
-    children: shopAllHeaderChildren("Handloom Collection"),
-  },
-  {
-    name: "Designer Frocks",
-    href: "/collections?category=Dresses",
-    menuId: "designer-frocks-menu",
-    children: shopAllHeaderChildren("Designer Frocks"),
-  },
-  {
-    name: "Lehenga Collection",
-    href: "/collections?category=Lehengas",
-    menuId: "lehenga-collection-menu",
-    children: shopAllHeaderChildren("Lehenga Collection"),
-  },
-];
+export const HEADER_NAV_LINKS: HeaderNavItem[] = NAV_LINKS;
 
 export const HERO_ARCHED_CATEGORIES = [
   {
@@ -452,58 +417,58 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
 export const LOOKBOOK_GALLERY: LookbookItem[] = [
   {
     id: "look-1",
-    title: "Blush Bride",
+    title: "Red Bridal Lehenga",
     category: "Bridal",
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
+    image: "/lehenga-red-bridal.png",
     aspect: "tall",
   },
   {
     id: "look-2",
-    title: "Golden Aura",
+    title: "Floral Festive Dress",
     category: "Festive",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800",
+    image: "/libas-dress-01.jpg",
     aspect: "tall",
   },
   {
     id: "look-3",
-    title: "Emerald Elegance",
+    title: "Green Silk Saree",
     category: "Handloom",
-    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800",
+    image: "/heritage-silk-saree-green.png",
     aspect: "tall",
   },
   {
     id: "look-4",
-    title: "Royal Plum",
+    title: "Ivory Bridal Lehenga",
     category: "Bridal",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    image: "/shop-all-featured-lehenga.png",
     aspect: "tall",
   },
   {
     id: "look-5",
-    title: "Warm Teracotta",
+    title: "Rose Occasion Suit",
     category: "Festive",
-    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=800",
+    image: "/shop-all-featured-dress.png",
     aspect: "tall",
   },
   {
     id: "look-6",
-    title: "Rose Grace",
+    title: "Contemporary Dress",
     category: "Contemporary",
-    image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&q=80&w=800",
+    image: "/libas-dress-07.jpg",
     aspect: "tall",
   },
   {
     id: "look-7",
-    title: "Artisan Hands",
+    title: "Woven Silk Detail",
     category: "Handloom",
-    image: "https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=80&w=800",
+    image: "/thridha-handloom-01.webp",
     aspect: "tall",
   },
   {
     id: "look-8",
-    title: "Regal Heritage",
+    title: "Printed Designer Dress",
     category: "Contemporary",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800",
+    image: "/libas-dress-03.jpg",
     aspect: "tall",
   },
 ];
@@ -537,5 +502,6 @@ export const CUSTOM_PROCESS_STEPS = [
 
 export const CONTACT_INFO = {
   phone: "+91 91823 18862",
+  phoneDial: "+919182318862",
   whatsapp: "919182318862",
 };

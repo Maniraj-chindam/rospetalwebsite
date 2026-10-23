@@ -1,189 +1,52 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { LOOKBOOK_GALLERY, LookbookItem } from "@/data/boutique-data";
+import { LOOKBOOK_GALLERY, type LookbookItem } from "@/data/boutique-data";
+import { useModalKeyboard } from "@/hooks/useModalKeyboard";
 
 const CATEGORIES = ["All", "Festive", "Bridal", "Handloom", "Contemporary"];
 
 export default function LookbookPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeImage, setActiveImage] = useState<LookbookItem | null>(null);
-
-  const filteredItems = LOOKBOOK_GALLERY.filter((item) => {
-    if (activeCategory === "All") return true;
-    return item.category === activeCategory;
-  });
+  const dialogRef = useModalKeyboard(Boolean(activeImage), () => setActiveImage(null));
+  const filteredItems = LOOKBOOK_GALLERY.filter((item) => activeCategory === "All" || item.category === activeCategory);
 
   return (
-    <div className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-3 mb-6">
-        <h1 className="font-serif-luxury text-4xl sm:text-5xl text-white font-normal drop-shadow-sm">
-          Lookbook
-        </h1>
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[#FDE8C5] font-semibold">
-          REAL WOMEN. REAL MOMENTS. TIMELESS STYLE
-        </p>
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 sm:pt-28 lg:px-8">
+      <header className="mx-auto mb-7 max-w-2xl space-y-3 text-center">
+        <h1 className="font-serif-luxury text-4xl font-normal text-white drop-shadow-sm sm:text-5xl">Lookbook</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#FDE8C5]">A glimpse of the Rosepetal aesthetic</p>
+      </header>
+
+      <div role="group" aria-label="Filter lookbook" className="mb-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        {CATEGORIES.map((cat) => (
+          <button key={cat} type="button" onClick={() => setActiveCategory(cat)} aria-pressed={activeCategory === cat} className={`rounded-full px-5 py-2 text-xs tracking-wider transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${activeCategory === cat ? "bg-white font-semibold text-rosepetal-wine shadow-md" : "border border-white/30 bg-white/20 text-white hover:bg-white/35"}`}>{cat}</button>
+        ))}
       </div>
 
-      {/* Pill Filter Tabs */}
-      <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6 flex-wrap">
-        {CATEGORIES.map((cat) => {
-          const isActive = activeCategory === cat;
-          return (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-xs tracking-wider transition-all duration-200 ${
-                isActive
-                  ? "bg-white text-rosepetal-wine shadow-md font-semibold"
-                  : "bg-white/20 hover:bg-white/35 text-white border border-white/30 backdrop-blur-sm"
-              }`}
-            >
-              {cat}
-            </button>
-          );
-        })}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredItems.map((item, index) => (
+          <button key={item.id} type="button" onClick={() => setActiveImage(item)} aria-label={`View ${item.title} image`} className={`group overflow-hidden rounded-xl bg-rosepetal-card text-left shadow-sm transition-shadow hover:shadow-xl focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-white ${index % 5 === 3 ? "lg:row-span-2" : ""}`}>
+            <div className={`relative w-full overflow-hidden ${index % 5 === 3 ? "aspect-[3/4] lg:h-full lg:aspect-auto" : "aspect-[3/4]"}`}>
+              <Image src={item.image} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/55 to-transparent px-5 pb-5 pt-16 text-white">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-100">{item.category}</p>
+                <p className="font-serif-luxury text-xl">{item.title}</p>
+              </div>
+            </div>
+          </button>
+        ))}
       </div>
 
-      {/* Editorial Masonry / Collage Layout (matching layout in mockup) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-        {/* Column 1 */}
-        <div className="space-y-6">
-          {filteredItems.slice(0, 3).map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setActiveImage(item)}
-              className="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer bg-rosepetal-card"
-            >
-              <div className="relative aspect-[3/4] w-full">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                  <div className="text-white">
-                    <p className="text-xs uppercase tracking-widest text-rosepetal-blush">
-                      {item.category}
-                    </p>
-                    <p className="font-serif-luxury text-lg">{item.title}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Column 2 (with Quote Card) */}
-        <div className="space-y-6">
-          {/* Item 4 */}
-          {filteredItems[3] && (
-            <div
-              onClick={() => setActiveImage(filteredItems[3])}
-              className="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer bg-rosepetal-card"
-            >
-              <div className="relative aspect-[4/5] w-full">
-                <Image
-                  src={filteredItems[3].image}
-                  alt={filteredItems[3].title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Featured Quote Card (Exact matching mockup center quote block) */}
-          <div className="relative p-10 sm:p-12 rounded-xl bg-gradient-to-br from-[#FCEAEB] to-[#F7DDE0] border border-rosepetal-border/80 shadow-inner flex flex-col items-center justify-center text-center space-y-3 my-4">
-            <span className="font-script-accent text-3xl sm:text-4xl text-rosepetal-wine">
-              “Elegance is a state of mind.”
-            </span>
-            <div className="w-12 h-[1px] bg-rosepetal-wine/40" />
-            <span className="text-[10px] uppercase tracking-[0.25em] text-rosepetal-muted">
-              Rosepetal Muse
-            </span>
-          </div>
-
-          {/* Item 5 */}
-          {filteredItems[4] && (
-            <div
-              onClick={() => setActiveImage(filteredItems[4])}
-              className="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer bg-rosepetal-card"
-            >
-              <div className="relative aspect-[3/4] w-full">
-                <Image
-                  src={filteredItems[4].image}
-                  alt={filteredItems[4].title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Column 3 */}
-        <div className="space-y-6">
-          {filteredItems.slice(5).map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setActiveImage(item)}
-              className="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer bg-rosepetal-card"
-            >
-              <div className="relative aspect-[3/4] w-full">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                  <div className="text-white">
-                    <p className="text-xs uppercase tracking-widest text-rosepetal-blush">
-                      {item.category}
-                    </p>
-                    <p className="font-serif-luxury text-lg">{item.title}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Lightbox Modal */}
       {activeImage && (
-        <div
-          onClick={() => setActiveImage(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative max-w-3xl max-h-[90vh] w-full bg-black rounded-lg overflow-hidden shadow-2xl"
-          >
-            <button
-              onClick={() => setActiveImage(null)}
-              className="absolute top-4 right-4 z-20 text-white/80 hover:text-white p-2 rounded-full bg-black/40"
-              aria-label="Close image"
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <div className="relative aspect-[3/4] w-full max-h-[85vh]">
-              <Image
-                src={activeImage.image}
-                alt={activeImage.title}
-                fill
-                className="object-contain"
-              />
-            </div>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md" onMouseDown={(event) => { if (event.target === event.currentTarget) setActiveImage(null); }}>
+          <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="lookbook-dialog-title" tabIndex={-1} className="relative flex max-h-[90dvh] w-full max-w-3xl flex-col overflow-hidden rounded-lg bg-[#180e12] text-white shadow-2xl">
+            <button type="button" onClick={() => setActiveImage(null)} aria-label="Close image" className="absolute right-3 top-3 z-20 rounded-full bg-black/70 p-2 text-white hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"><X className="size-6" aria-hidden="true" /></button>
+            <div className="relative min-h-0 w-full flex-1 aspect-[4/5] sm:aspect-[5/4]"><Image src={activeImage.image} alt={activeImage.title} fill sizes="(max-width: 768px) 100vw, 768px" className="object-contain" /></div>
+            <p id="lookbook-dialog-title" className="px-5 py-3 font-serif-luxury text-lg">{activeImage.title}</p>
           </div>
         </div>
       )}

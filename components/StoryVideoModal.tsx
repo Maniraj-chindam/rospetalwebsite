@@ -2,6 +2,7 @@
 
 import React from "react";
 import { X, Play } from "lucide-react";
+import { useModalKeyboard } from "@/hooks/useModalKeyboard";
 
 export default function StoryVideoModal({
   isOpen,
@@ -10,16 +11,22 @@ export default function StoryVideoModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const dialogRef = useModalKeyboard(isOpen, onClose);
   if (!isOpen) return null;
 
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in"
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="story-video-title"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
-        className="relative max-w-2xl w-full bg-[#FCECEE] rounded-2xl overflow-hidden shadow-2xl border border-rosepetal-border"
+        className="relative max-h-[90dvh] max-w-2xl w-full bg-[#FCECEE] rounded-2xl overflow-y-auto shadow-2xl border border-rosepetal-border"
       >
         <button
           onClick={onClose}
@@ -38,7 +45,7 @@ export default function StoryVideoModal({
             <span className="text-[10px] uppercase tracking-[0.25em] text-rosepetal-wine font-semibold">
               OUR JOURNEY & CRAFT
             </span>
-            <h3 className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-wine">
+            <h3 id="story-video-title" className="font-serif-luxury text-3xl sm:text-4xl text-rosepetal-wine">
               The Story of Rosepetal
             </h3>
             <p className="text-xs sm:text-sm text-rosepetal-muted max-w-md mx-auto leading-relaxed">

@@ -22,9 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-rosepetal-deep-pink text-rosepetal-text antialiased selection:bg-rosepetal-blush selection:text-rosepetal-wine">
         <BoutiqueProvider>
+          <a href="#main-content" className="fixed left-4 top-3 z-[110] -translate-y-20 rounded-md bg-white px-4 py-2 text-sm font-semibold text-rosepetal-wine shadow-lg transition-transform focus:translate-y-0">Skip to content</a>
           <Navbar />
           <FallingRosePetals />
-          <main className="flex-grow relative z-10">{children}</main>
+          <main id="main-content" tabIndex={-1} className="flex-grow relative z-10">{children}</main>
           <div className="relative z-10 pb-16 sm:pb-0">
             <Footer />
           </div>

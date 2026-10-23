@@ -38,8 +38,8 @@ export default function CustomDesignPage() {
         {/* Atelier Embroidery Background */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=1600"
-            alt="Handcrafted embroidery texture"
+            src="/video-maggam-work.png"
+            alt="Red embellished occasion wear"
             fill
             priority
             className="object-cover brightness-[0.88]"
@@ -111,8 +111,8 @@ export default function CustomDesignPage() {
           {/* Left Artisan Photo */}
           <div className="md:col-span-5 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[260px]">
             <Image
-              src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&q=85&w=800"
-              alt="Intricate zardozi embroidery"
+              src="/thridha-handloom-01.webp"
+              alt="Silk saree showing detailed woven pattern"
               fill
               className="object-cover"
             />

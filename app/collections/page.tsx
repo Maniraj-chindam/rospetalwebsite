@@ -1,5 +1,11 @@
 import React, { Suspense } from "react";
 import CollectionsClient from "@/components/CollectionsClient";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Shop | Rosepetal Designer Boutique",
+  description: "Browse the live Rosepetal collection of sarees, dresses, lehengas and handlooms.",
+};
 
 export default function CollectionsPage() {
   return (

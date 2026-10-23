@@ -19,7 +19,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="pb-10 pt-24 sm:pb-12 sm:pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3 mb-8">
         <h1 className="font-serif-luxury text-4xl sm:text-5xl text-white font-normal drop-shadow-sm">
@@ -50,7 +50,7 @@ export default function ContactPage() {
                   Call Us
                 </h4>
                 <a
-                  href={`tel:${CONTACT_INFO.phone}`}
+                  href={`tel:${CONTACT_INFO.phoneDial}`}
                   className="text-xs text-rosepetal-muted hover:text-rosepetal-wine transition-colors font-sans"
                 >
                   {CONTACT_INFO.phone}
@@ -81,7 +81,9 @@ export default function ContactPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
               <div>
+                <label htmlFor="contact-name" className="mb-1.5 block text-xs font-semibold text-rosepetal-text">Your name</label>
                 <input
+                  id="contact-name"
                   type="text"
                   required
                   placeholder="Your Name"
@@ -92,7 +94,9 @@ export default function ContactPage() {
               </div>
 
               <div>
+                <label htmlFor="contact-email" className="mb-1.5 block text-xs font-semibold text-rosepetal-text">Your email</label>
                 <input
+                  id="contact-email"
                   type="email"
                   required
                   placeholder="Your Email"
@@ -103,7 +107,9 @@ export default function ContactPage() {
               </div>
 
               <div>
+                <label htmlFor="contact-message" className="mb-1.5 block text-xs font-semibold text-rosepetal-text">Your message</label>
                 <textarea
+                  id="contact-message"
                   rows={5}
                   required
                   placeholder="Your Message"

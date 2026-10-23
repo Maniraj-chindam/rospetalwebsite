@@ -6,6 +6,7 @@ import { Eye, Heart, X } from "lucide-react";
 import type { ProductItem } from "@/data/boutique-data";
 import { CONTACT_INFO } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
+import { useModalKeyboard } from "@/hooks/useModalKeyboard";
 
 function enquiryUrl(product: ProductItem) {
   const message = `Hello Rosepetal Boutique, I would like to enquire about ${product.name}${product.sku ? ` (SKU ${product.sku})` : ""}${product.size ? `, size ${product.size}` : ""}. Is it available?`;
@@ -15,6 +16,7 @@ function enquiryUrl(product: ProductItem) {
 export default function ProductCard({ product }: { product: ProductItem }) {
   const { wishlist, toggleWishlist } = useBoutique();
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const dialogRef = useModalKeyboard(isQuickViewOpen, () => setIsQuickViewOpen(false));
   const isFavorited = wishlist.includes(product.id);
 
   return (
@@ -38,8 +40,8 @@ export default function ProductCard({ product }: { product: ProductItem }) {
         </div>
       </div>
 
-      {isQuickViewOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) setIsQuickViewOpen(false); }}>
-        <div role="dialog" aria-modal="true" aria-label={`${product.name} details`} className="relative flex w-full max-w-2xl flex-col gap-6 rounded-xl border border-rosepetal-border bg-[#FFF5F6] p-6 shadow-2xl md:flex-row">
+      {isQuickViewOpen && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) setIsQuickViewOpen(false); }}>
+        <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={`${product.name} details`} tabIndex={-1} className="relative flex max-h-[90dvh] w-full max-w-2xl flex-col gap-6 overflow-y-auto rounded-xl border border-rosepetal-border bg-[#FFF5F6] p-6 shadow-2xl md:flex-row">
           <button type="button" onClick={() => setIsQuickViewOpen(false)} className="absolute right-4 top-4 z-10 rounded p-1 text-rosepetal-wine focus-visible:outline focus-visible:outline-2" aria-label="Close details"><X className="h-5 w-5" /></button>
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-rosepetal-card md:w-1/2"><Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 320px" className="object-cover" /></div>
           <div className="flex flex-1 flex-col justify-center gap-3 pr-4">
