@@ -17,7 +17,6 @@ import {
   Play,
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
-import StoryVideoModal from "@/components/StoryVideoModal";
 import ProductCard from "@/components/ProductCard";
 import { useEnquirySubmission } from "@/hooks/useEnquirySubmission";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
@@ -34,29 +33,29 @@ const SHOP_BY_PRICE_CARDS = [
   {
     eyebrow: "EVERYDAY STYLE",
     title: "Under ₹5,000",
-    image: "/libas-dress-01.jpg",
-    imagePosition: "object-center",
+    min: 0,
+    max: 5000,
     href: "/collections?minPrice=0&maxPrice=5000",
   },
   {
     eyebrow: "CELEBRATION EDIT",
     title: "₹5,000 – ₹10,000",
-    image: "/libas-dress-02.jpg",
-    imagePosition: "object-center",
+    min: 5001,
+    max: 10000,
     href: "/collections?minPrice=5001&maxPrice=10000",
   },
   {
     eyebrow: "FESTIVE FAVOURITES",
     title: "₹10,000 – ₹25,000",
-    image: "/thridha-handloom-01.webp",
-    imagePosition: "object-center",
+    min: 10001,
+    max: 25000,
     href: "/collections?minPrice=10001&maxPrice=25000",
   },
   {
     eyebrow: "SIGNATURE OCCASIONS",
     title: "₹25,000 & Above",
-    image: "/thridha-handloom-04.webp",
-    imagePosition: "object-top",
+    min: 25001,
+    max: Infinity,
     href: "/collections?minPrice=25001",
   },
 ] as const;
@@ -75,9 +74,12 @@ export default function MasterBoutiquePage() {
     return () => controller.abort();
   }, []);
   const arrivalGroups = groupCatalogByStyle(newArrivals).slice(0, 4);
+  const availablePriceCards = SHOP_BY_PRICE_CARDS.flatMap((card) => {
+    const piece = newArrivals.find((item) => item.priceNum >= card.min && item.priceNum <= card.max && (item.availableStock ?? 0) > 0);
+    return piece ? [{ ...card, image: piece.image, imageAlt: `${piece.name}, currently available` }] : [];
+  });
 
   // Story video modal state
-  const [isStoryOpen, setIsStoryOpen] = useState(false);
   const [shopAllExpanded, setShopAllExpanded] = useState(false);
   const [selectedShopAllId, setSelectedShopAllId] = useState<string | null>(null);
   const shopAllGalleryRef = useRef<HTMLDivElement>(null);
@@ -138,7 +140,6 @@ export default function MasterBoutiquePage() {
   return (
     <div className="relative">
       {/* Story Video Modal */}
-      <StoryVideoModal isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
 
       {/* ============================================================== */}
       {/* 01. HERO SECTION WITH EXACT USER IMAGE & 8 ARCHED CATEGORIES    */}
@@ -340,7 +341,7 @@ export default function MasterBoutiquePage() {
                   <span>{shopAllExpanded ? "Hide categories" : "Shop all collections"}</span>
                   <ArrowRight className={`h-4 w-4 transition-transform ${shopAllExpanded ? "rotate-90" : "group-hover:translate-x-1"}`} />
                 </button>
-                <span className="font-serif-luxury text-sm italic text-[#8B6D73]">Fashion · Home · Gifts</span>
+                <span className="font-serif-luxury text-sm italic text-[#8B6D73]">Sarees · Occasion wear · Home</span>
               </div>
             </div>
 
@@ -488,7 +489,7 @@ export default function MasterBoutiquePage() {
         </div>
 
         {/* Row 2: 2 Promotional Banners */}
-        <div className="relative z-10 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
+        {newArrivals.length > 0 && <div className="relative z-10 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
           {/* Banner 1: Elegant Dresses */}
           <div className="relative overflow-hidden group min-h-[170px] sm:min-h-[220px] rounded-xl sm:rounded-2xl">
             <div className="relative aspect-[1024/412] sm:aspect-auto sm:h-full min-h-[170px] sm:min-h-[220px] w-full">
@@ -534,13 +535,13 @@ export default function MasterBoutiquePage() {
               </div>
             </div>
           </div>
-        </div>
+        </div>}
       </section>
 
       {/* ============================================================== */}
       {/* 05B. SHOP BY PRICE                                              */}
       {/* ============================================================== */}
-      <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24 py-4 sm:py-6 lg:py-7">
+      {availablePriceCards.length > 0 && <section id="shop-by-price" className="scroll-mt-20 sm:scroll-mt-24 py-4 sm:py-6 lg:py-7">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="overflow-hidden px-4 sm:px-7 lg:px-9">
             <div className="mb-7 flex items-end justify-between gap-5 border-b border-white/20 pb-5 sm:mb-8">
@@ -562,7 +563,7 @@ export default function MasterBoutiquePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-              {SHOP_BY_PRICE_CARDS.map((card) => (
+              {availablePriceCards.map((card) => (
                 <article
                   key={card.title}
                   data-price-card
@@ -570,10 +571,10 @@ export default function MasterBoutiquePage() {
                 >
                   <Image
                     src={card.image}
-                    alt={`${card.title} fashion collection`}
+                    alt={card.imageAlt}
                     fill
                     sizes="(max-width: 639px) 50vw, (max-width: 1023px) 50vw, 25vw"
-                    className={`object-cover ${card.imagePosition} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
+                    className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#281419]/95 via-[#281419]/18 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-3.5 sm:p-6 text-white">
@@ -604,7 +605,7 @@ export default function MasterBoutiquePage() {
             </Link>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}

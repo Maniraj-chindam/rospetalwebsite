@@ -31,6 +31,7 @@ export default function CollectionsClient() {
   const [maxPrice, setMaxPrice] = useState(0);
   const [colour, setColour] = useState("All");
   const [sort, setSort] = useState("featured");
+  const hasFilters = searchParams.toString().length > 0 || activeCategory !== "All" || colour !== "All" || sort !== "featured" || minPrice > rangeFloor || maxPrice < rangeCeiling;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -125,7 +126,7 @@ export default function CollectionsClient() {
           {/* Top Interactive Header Bar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <button
+              {hasFilters && <button
                 type="button"
                 data-back-to-collections
                 onClick={goBack}
@@ -133,7 +134,7 @@ export default function CollectionsClient() {
               >
                 <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
                 Back to Shop
-              </button>
+              </button>}
               <span className="hidden sm:inline-flex rounded-full border border-white/35 bg-white/10 px-3.5 py-1.5 text-[9.5px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
                 Our Collection
               </span>
