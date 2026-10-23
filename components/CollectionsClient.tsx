@@ -133,9 +133,9 @@ export default function CollectionsClient() {
               </span>
             </div>
 
-            <div className="rounded-full border border-white/60 bg-white/90 px-3.5 py-1 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
+            {products.length > 0 && <div className="rounded-full border border-white/60 bg-white/90 px-3.5 py-1 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
               <span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover
-            </div>
+            </div>}
           </div>
 
           {/* Live Luxury Typography & Dynamic Category Header */}
@@ -177,13 +177,12 @@ export default function CollectionsClient() {
             {filterContent}
           </aside>}
           <div>
-            <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
+            {products.length > 0 && <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-serif-luxury text-xl text-white">
                 There {filteredProducts.length === 1 ? "is" : "are"}{" "}
                 <span className="font-semibold text-[#FDE8C5]">{filteredProducts.length}</span>{" "}
                 {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit
               </p>
-              {products.length > 0 &&
               <div className="flex items-center gap-3">
                 <details className="relative lg:hidden">
                   <summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-white/40 bg-white/90 px-4 py-2 text-xs text-rosepetal-text shadow-sm">
@@ -207,8 +206,8 @@ export default function CollectionsClient() {
                     <option value="name">Name: A–Z</option>
                   </select>
                 </label>
-              </div>}
-            </div>
+              </div>
+            </div>}
             {catalogStatus === "loading" ? (
               <div role="status" className="rounded-2xl bg-white/90 p-12 text-center text-rosepetal-text">Loading the live collection…</div>
             ) : catalogStatus === "error" ? (
