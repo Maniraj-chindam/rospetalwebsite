@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { HEADER_NAV_LINKS, type ProductItem } from "@/data/boutique-data";
-import { fetchPosCatalog } from "@/lib/pos-catalog";
+import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 
 const collectionLinks = [
   { name: "Sarees", href: "/collections?category=Sarees" },
@@ -29,9 +29,16 @@ export default function SearchResults() {
 
   const term = query.toLocaleLowerCase();
   const matchingProducts = useMemo(() => products.filter((item) =>
-    [item.name, item.category, item.description, item.color, item.sku]
+    [item.name, item.category, item.description, item.color, item.sku, item.styleCode, item.fabric]
       .some((value) => value?.toLocaleLowerCase().includes(term))
   ), [products, term]);
+  const matchingGroups = useMemo(() => {
+    const allGroups = new Map(groupCatalogByStyle(products).map((variants) => [variants[0].styleCode || variants[0].id, variants]));
+    return groupCatalogByStyle(matchingProducts).map((matches) => ({
+      product: matches[0],
+      variants: allGroups.get(matches[0].styleCode || matches[0].id) || matches,
+    }));
+  }, [matchingProducts, products]);
   const matchingPages = [...HEADER_NAV_LINKS, ...collectionLinks].filter((link) =>
     link.name.toLocaleLowerCase().includes(term) ||
     (term === "bridal" && link.name === "Lehengas") ||
@@ -49,7 +56,7 @@ export default function SearchResults() {
       {query && matchingPages.length > 0 && <section className="mb-8 rounded-2xl bg-white/95 p-6 shadow-lg"><h2 className="font-serif-luxury text-2xl text-rosepetal-wine">Pages and collections</h2><div className="mt-4 flex flex-wrap gap-2">{matchingPages.map((link) => <Link key={link.href} href={link.href} className="rounded-full border border-rosepetal-wine/30 px-4 py-2 text-sm text-rosepetal-wine hover:bg-rosepetal-wine hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{link.name}</Link>)}</div></section>}
       {query && status === "loading" && <p role="status" className="text-center text-white">Searching the live collection…</p>}
       {query && status === "error" && <p role="status" className="rounded-xl bg-white/95 p-5 text-center text-rosepetal-text">The live collection could not be loaded. You can still use the page links or try again later.</p>}
-      {query && status === "ready" && <section><h2 className="mb-5 font-serif-luxury text-2xl text-white">Pieces {matchingProducts.length > 0 && <span className="text-base">({matchingProducts.length})</span>}</h2>{matchingProducts.length > 0 ? <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{matchingProducts.map((item) => <ProductCard key={item.id} product={item} />)}</div> : <p role="status" className="rounded-xl bg-white/95 p-5 text-center text-rosepetal-text">No published pieces match “{query}”. Browse the collection or contact us for help finding a piece.</p>}</section>}
+      {query && status === "ready" && <section><h2 className="mb-5 font-serif-luxury text-2xl text-white">Designs {matchingGroups.length > 0 && <span className="text-base">({matchingGroups.length})</span>}</h2>{matchingGroups.length > 0 ? <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{matchingGroups.map(({product, variants}) => <div key={product.styleCode || product.id} className="rounded-xl bg-white p-3"><ProductCard product={product} variants={variants} /></div>)}</div> : <p role="status" className="rounded-xl bg-white/95 p-5 text-center text-rosepetal-text">No published pieces match “{query}”. Browse the collection or contact us for help finding a piece.</p>}</section>}
       <div className="mt-8 flex flex-wrap justify-center gap-3"><Link href="/collections" className="rounded-md bg-white px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-[#FDE8C5]">Browse Shop</Link><Link href="/contact" className="rounded-md border border-white px-5 py-3 text-sm font-semibold text-white hover:bg-white/15">Contact boutique</Link></div>
     </div>
   );

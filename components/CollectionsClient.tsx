@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
-import { fetchPosCatalog } from "@/lib/pos-catalog";
+import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 
 export default function CollectionsClient() {
   const searchParams = useSearchParams();
@@ -59,6 +59,13 @@ export default function CollectionsClient() {
     });
     return [...matching].sort((first, second) => sort === "price-low" ? first.priceNum - second.priceNum : sort === "price-high" ? second.priceNum - first.priceNum : sort === "name" ? first.name.localeCompare(second.name) : 0);
   }, [activeCategory, colour, filterParam, maxPrice, minPrice, products, sort, wishlist]);
+  const visibleGroups = useMemo(() => {
+    const allGroups = new Map(groupCatalogByStyle(products).map((variants) => [variants[0].styleCode || variants[0].id, variants]));
+    return groupCatalogByStyle(filteredProducts).map((matching) => ({
+      product: matching[0],
+      variants: allGroups.get(matching[0].styleCode || matching[0].id) || matching,
+    }));
+  }, [filteredProducts, products]);
 
   const resetFilters = () => {
     setActiveCategory(initialCategory);
@@ -134,7 +141,7 @@ export default function CollectionsClient() {
             </div>
 
             {products.length > 0 && <div className="rounded-full border border-white/60 bg-white/90 px-3.5 py-1 text-xs text-rosepetal-muted backdrop-blur-md shadow-xs">
-              <span className="font-semibold text-rosepetal-wine">{filteredProducts.length}</span> pieces to discover
+              <span className="font-semibold text-rosepetal-wine">{visibleGroups.length}</span> designs to discover
             </div>}
           </div>
 
@@ -179,9 +186,9 @@ export default function CollectionsClient() {
           <div>
             {products.length > 0 && <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-serif-luxury text-xl text-white">
-                There {filteredProducts.length === 1 ? "is" : "are"}{" "}
-                <span className="font-semibold text-[#FDE8C5]">{filteredProducts.length}</span>{" "}
-                {filteredProducts.length === 1 ? "piece" : "pieces"} in this edit
+                There {visibleGroups.length === 1 ? "is" : "are"}{" "}
+                <span className="font-semibold text-[#FDE8C5]">{visibleGroups.length}</span>{" "}
+                {visibleGroups.length === 1 ? "design" : "designs"} in this edit
               </p>
               <div className="flex items-center gap-3">
                 <details className="relative lg:hidden">
@@ -215,15 +222,15 @@ export default function CollectionsClient() {
                 <h2 className="font-serif-luxury text-2xl">The collection could not be loaded.</h2>
                 <button onClick={() => setRetryKey((key) => key + 1)} className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white">Try again</button>
               </div>
-            ) : filteredProducts.length > 0 ? (
+            ) : visibleGroups.length > 0 ? (
               <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
-                {filteredProducts.map((product) => (
+                {visibleGroups.map(({ product, variants }) => (
                   <div
-                    key={product.id}
+                    key={product.styleCode || product.id}
                     data-collection-product-card
                     className="rounded-2xl bg-white/95 p-3 sm:p-3.5 shadow-md border border-white/60 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                   >
-                    <ProductCard product={product} />
+                    <ProductCard product={product} variants={variants} />
                   </div>
                 ))}
               </div>

@@ -19,7 +19,7 @@ import {
 import FloatingPetals from "@/components/FloatingPetals";
 import StoryVideoModal from "@/components/StoryVideoModal";
 import ProductCard from "@/components/ProductCard";
-import { fetchPosCatalog } from "@/lib/pos-catalog";
+import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import type { ProductItem } from "@/data/boutique-data";
 import {
   HOME_PILLARS,
@@ -66,13 +66,14 @@ export default function MasterBoutiquePage() {
   useEffect(() => {
     const controller = new AbortController();
     fetchPosCatalog(controller.signal).then((items) => {
-      setNewArrivals(items.slice(0, 4));
+      setNewArrivals(items);
       setArrivalStatus("ready");
     }).catch(() => {
       if (!controller.signal.aborted) setArrivalStatus("error");
     });
     return () => controller.abort();
   }, []);
+  const arrivalGroups = groupCatalogByStyle(newArrivals).slice(0, 4);
 
   // Story video modal state
   const [isStoryOpen, setIsStoryOpen] = useState(false);
@@ -482,7 +483,7 @@ export default function MasterBoutiquePage() {
           {arrivalStatus === "loading" && <p role="status" className="py-8 text-center text-white">Loading new pieces…</p>}
           {arrivalStatus === "error" && <p role="alert" className="py-8 text-center text-white">New pieces are temporarily unavailable. Please visit the collection later.</p>}
           {arrivalStatus === "ready" && newArrivals.length === 0 && <p className="py-8 text-center text-white">New pieces are coming soon.</p>}
-          {newArrivals.length > 0 && <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">{newArrivals.map((product) => <div key={product.id} className="rounded-xl bg-white p-3"><ProductCard product={product} /></div>)}</div>}
+          {arrivalGroups.length > 0 && <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">{arrivalGroups.map((variants) => <div key={variants[0].styleCode || variants[0].id} className="rounded-xl bg-white p-3"><ProductCard product={variants[0]} variants={variants} /></div>)}</div>}
         </div>
 
         {/* Row 2: 2 Promotional Banners */}

@@ -11,6 +11,12 @@ export interface ProductItem {
   size?: string;
   color?: string;
   availableStock?: number;
+  styleCode?: string;
+  fabric?: string;
+  care?: string;
+  delivery?: string;
+  images?: string[];
+  updatedAt?: string;
 }
 
 export interface LookbookItem {

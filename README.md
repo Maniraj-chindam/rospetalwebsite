@@ -1,6 +1,6 @@
 # Rosepetal Designer Boutique
 
-This is a Next.js static export hosted on Firebase Hosting. The site currently presents collections and directs contact and consultation requests to the boutique's WhatsApp number, `+91 91823 18862`. Customers must tap **Send** in WhatsApp; opening the chat does not deliver a message. No server endpoint, paid checkout, stock reservation, or CRM integration is live.
+This is a Next.js static export hosted on Firebase Hosting. Shop and search read the POS public catalog v2; only owner-published variants appear, and the site is empty until approved products are published in the POS. Contact and consultation requests still open the boutique's WhatsApp number, `+91 91823 18862`. Customers must tap **Send** in WhatsApp; opening the chat does not deliver a message. Paid checkout, website stock reservations, and CRM enquiries are not live.
 
 ## Run locally
 
@@ -18,6 +18,8 @@ pnpm dlx firebase-tools deploy --only hosting --project rosepetal-boutique-live
 ```
 
 The export is written to `out/`. Firebase Hosting serves static files only; Next.js API routes will not run there. The Firebase project is configured in `.firebaserc`.
+
+Run `node --experimental-strip-types --test tests/pos-catalog.test.mjs` to check the public POS adapter. The POS backend and staff editor own the catalog contract; see `docs/website-catalog-v2.md` in the POS repository. Deploy the backend contract before deploying a website build that requires it.
 
 ## Before enabling online sales
 
