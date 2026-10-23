@@ -9,6 +9,7 @@ interface BoutiqueContextType {
   addToBag: (productId: string) => void;
   setBagQuantity: (productId: string, qty: number) => void;
   removeFromBag: (productId: string) => void;
+  clearBag: () => void;
   isConsultationOpen: boolean;
   setIsConsultationOpen: (open: boolean) => void;
   searchQuery: string;
@@ -72,6 +73,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
   });
   const setBagQuantity = (productId: string, qty: number) => saveBag((items) => items.map((item) => item.productId === productId ? { ...item, qty: Math.min(10, Math.max(1, Math.trunc(qty))) } : item));
   const removeFromBag = (productId: string) => saveBag((items) => items.filter((item) => item.productId !== productId));
+  const clearBag = () => saveBag(() => []);
 
   return (
     <BoutiqueContext.Provider
@@ -82,6 +84,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
         addToBag,
         setBagQuantity,
         removeFromBag,
+        clearBag,
         isConsultationOpen,
         setIsConsultationOpen,
         searchQuery,
