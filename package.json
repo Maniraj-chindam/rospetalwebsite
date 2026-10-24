@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "node --experimental-strip-types --test tests/pos-catalog.test.mjs tests/enquiries.test.mjs tests/product-readiness.test.mjs tests/checkout-quote.test.mjs tests/checkout.test.mjs"
+    "test": "node --experimental-strip-types --test tests/pos-catalog.test.mjs tests/enquiries.test.mjs tests/product-readiness.test.mjs tests/checkout-quote.test.mjs tests/checkout.test.mjs",
+    "check:export": "node scripts/check-export.mjs",
+    "release:check": "npm run lint && npm test && npm run build && npm run check:export"
   },
   "dependencies": {
     "clsx": "^2.1.1",

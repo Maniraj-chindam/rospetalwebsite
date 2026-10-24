@@ -5,35 +5,23 @@
 @tailwind utilities;
 
 :root {
-  --background: #D81558;
+  --background: #9C2D5B;
   --foreground: #292122;
-  --deep-pink-glow: #FA6EA0;
-  --deep-pink-vibrant: #F73C7F;
-  --deep-pink-primary: #D81558;
-  --deep-pink-rich: #B50B47;
-  --deep-pink-dark: #8A0238;
+  --deep-pink-glow: #A13965;
+  --deep-pink-vibrant: #9C2D5B;
+  --deep-pink-primary: #8A1648;
+  --deep-pink-rich: #7A173C;
+  --deep-pink-dark: #6D1735;
 }
 
 .bg-rosepetal-deep-pink {
-  background-color: #D81558;
-  background-image: 
-    radial-gradient(135% 100% at 72% 32%, #FA6EA0 0%, #F73C7F 28%, #D81558 55%, #B50B47 80%, #8A0238 100%),
-    url('/deep-pink-background.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background-color: var(--background);
+  background-image: radial-gradient(135% 100% at 72% 32%, #A13965 0%, #9C2D5B 28%, #8A1648 55%, #7A173C 80%, #6D1735 100%);
 }
 
 body {
-  background-color: #D81558;
-  background-image: 
-    radial-gradient(135% 100% at 72% 32%, #FA6EA0 0%, #F73C7F 28%, #D81558 55%, #B50B47 80%, #8A0238 100%),
-    url('/deep-pink-background.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background-color: var(--background);
+  background-image: radial-gradient(135% 100% at 72% 32%, #A13965 0%, #9C2D5B 28%, #8A1648 55%, #7A173C 80%, #6D1735 100%);
   color: var(--foreground);
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   overflow-x: hidden;

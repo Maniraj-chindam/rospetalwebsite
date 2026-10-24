@@ -5,19 +5,19 @@ This plan separates verified website behavior from work that requires real bouti
 | Phase | Acceptance gate | Current evidence | Owner or POS input still needed |
 | --- | --- | --- | --- |
 | 1. Public site and policy routes | All pages, robots and sitemap return 200; navigation and enquiry-only states are usable | Firebase routes verified; responsive shop fixes deployed | Approve final privacy, delivery, returns and purchase terms before payment |
-| 2. Catalog | Each published variant has approved name, SKU, price, stock, size measurements, fabric, care, delivery text, actual colour photos and packed dimensions | Public POS catalog still has 12 `Designer Frock 1` test variants, draft copy and one shared image | Boutique must supply and approve facts/photos; measure actual packed parcels in POS |
+| 2. Catalog | Each published variant has approved name, SKU, price, stock, size measurements, fabric, care, delivery text, actual colour photos and packed dimensions | Public POS catalog has 12 `Designer Frock 1` test variants and 4 `NarayanaPeta designer frock` variants; the latter's `RED GREEN YELLOW` label shows a dark dress photo and its category is `Designer Suits` | Boutique must correct and approve facts/photos/category, supply size measurements, and measure actual packed parcels in POS |
 | 3. Enquiries | Contact and consultation save in POS and a notification reaches the confirmed inbox | Contact `RP-E-CABD6549` and consultation `RP-E-E33F5AE4` were saved and visible in the POS inbox | Complete SES verification for `rosepetalfashionstudio@gmail.com`, then confirm a new message arrives in Gmail |
-| 4. Courier quotes | For an approved in-stock SKU, a real India PIN gets a live Shiprocket courier, charge and expiry | Test variant returns `packaging_required`; no live quote | POS packed dimensions, Shiprocket API-user secret and usable courier account |
+| 4. Courier quotes | For an approved in-stock SKU, a real India PIN gets a live Shiprocket courier, charge and expiry | Earlier test variant returned `packaging_required`; a newly published variant returned `unavailable` for PIN `560001`; no live quote | Confirm actual packed dimensions, Shiprocket API-user secret and usable courier account |
 | 5. Payment | A controlled test payment is captured once, a POS order and stock commitment appear once, and webhook replay does not duplicate them | Razorpay secret missing and checkout switch off | Configure secret and webhook in merchant account; agree on a real test order and amount |
 | 6. Fulfilment | Paid order books Shiprocket once and shows AWB, label, tracking and failure recovery | Shiprocket secret missing and booking switch off | Configure secret/webhook, then run a real booking against the controlled order |
-| 7. Release verification | Catalog/bag/enquiry/quote/checkout tests, lint, build, keyboard, zoom, contrast and performance checks pass | Website release tests and build can run locally | Recheck on the final catalog and after a real order; field Core Web Vitals need sufficient Chrome traffic |
+| 7. Release verification | Catalog/bag/enquiry/quote/checkout tests, lint, build, keyboard, zoom, contrast and performance checks pass | 13 release tests, ESLint, build and exported-route check passed locally; 320px reflow and keyboard menu focus checked; darker page background meets normal-text contrast against white | Recheck on the final catalog and after a real order; complete screen-reader and actual 200% zoom pass; field Core Web Vitals remain unmeasured |
 
 ## Current production blockers
 
 - AWS account `115019372452`, region `ap-south-1`: Secrets Manager names `rosepetal/razorpay/website` and `rosepetal/shiprocket/api-user` are absent. Never paste credential values into chat or commit them.
 - POS stack `rosepetal-boutique`: `RazorpayCheckoutEnabled=false`, `ShiprocketFulfillmentEnabled=false`, `WebsiteShippingChargeMode=quoted`.
 - Amazon SES identity `rosepetalfashionstudio@gmail.com`: a fresh verification email was requested on 24 October; the identity is `PENDING` until the boutique clicks its verification link. Email delivery is unproven.
-- A live quote for `DF1-BROWN-L`, quantity one, delivery PIN `560001` returned `deliveryStatus=packaging_required`, no courier quote and `checkoutAvailable=false`.
+- A live quote for `DF1-BROWN-L`, quantity one, delivery PIN `560001` returned `deliveryStatus=packaging_required`. A quote for newly published SKU `RP-BED37BF1-REDGREENYELLOW-M` returned `deliveryStatus=unavailable`; both had `checkoutAvailable=false`.
 - No production payment or shipment was made during this release check. PageSpeed Insights API returned HTTP 429, so field Core Web Vitals remain unmeasured.
 
 ## Controlled acceptance sequence

@@ -119,7 +119,7 @@ export default function MasterBoutiquePage() {
         {/* ---------------- NEW ULTRA-HD HERO BANNER ---------------- */}
         <div className="w-full">
           <div className="relative overflow-hidden group">
-            <div className="relative min-h-[100svh] w-full overflow-hidden bg-[#D81558]">
+            <div className="relative min-h-[100svh] w-full overflow-hidden bg-[#9C2D5B]">
               {/* Ultra-HD Hero Image: object-[80%_15%] on mobile frames saree pleats and embroidered blouse in top zone */}
               <Image
                 src="/hero-rosepetal-bridal-silk.jpg"
@@ -130,15 +130,15 @@ export default function MasterBoutiquePage() {
                 className="absolute inset-0 h-full w-full object-cover object-[80%_15%] sm:object-right md:object-center"
               />
 
-              {/* Radiant deep pink silk scrim for tablet and desktop matching reference image */}
+              {/* A dark wine scrim keeps text readable over the photograph. */}
               <div
-                className="pointer-events-none absolute inset-0 hidden sm:block bg-gradient-to-r from-[#D81558]/95 via-[#F73C7F]/80 via-45% to-transparent sm:max-w-3xl lg:max-w-4xl"
+                className="pointer-events-none absolute inset-0 hidden sm:block bg-gradient-to-r from-[#681A2A]/95 via-[#7A173C]/90 via-45% to-transparent sm:max-w-3xl lg:max-w-4xl"
                 aria-hidden="true"
               />
 
-              {/* Mobile vertical gradient scrim matching radiant deep pink palette */}
+              {/* The mobile text sits on the dark end of the gradient. */}
               <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-[68%] bg-gradient-to-t from-[#D81558] via-[#F73C7F]/90 via-50% to-transparent sm:hidden"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[68%] bg-gradient-to-t from-[#681A2A] via-[#7A173C]/95 via-50% to-transparent sm:hidden"
                 aria-hidden="true"
               />
 
@@ -147,7 +147,7 @@ export default function MasterBoutiquePage() {
 
               {/* Live Typography & Call to Action: Bottom-anchored on mobile, centered on desktop */}
               <div className="relative z-20 flex min-h-[100svh] items-end sm:items-center">
-                <div className="w-full max-w-2xl px-5 pb-12 pt-24 sm:px-12 sm:pt-36 sm:pb-24 lg:px-20">
+                <div className="w-full max-w-2xl px-5 pb-28 pt-24 sm:px-12 sm:pt-36 sm:pb-24 lg:px-20">
                   {/* Brand Eyebrow Header in Hero Section */}
                   <div className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3.5 py-1 text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold text-[#FDE8C5] backdrop-blur-md shadow-xs">
                     <Sparkles className="h-3.5 w-3.5 text-[#FDE8C5]" />
@@ -160,7 +160,7 @@ export default function MasterBoutiquePage() {
                   </h1>
 
                   {/* Description: Balanced max-width on mobile */}
-                  <p className="mt-2.5 max-w-[18.5rem] sm:max-w-lg text-[11px] sm:text-base leading-relaxed text-rose-100 font-sans font-light">
+                  <p className="mt-2.5 max-w-[18.5rem] sm:max-w-lg text-sm sm:text-base leading-relaxed text-rose-100 font-sans font-light">
                     Explore silk sarees, occasion wear and custom design ideas for life’s most cherished celebrations.
                   </p>
 

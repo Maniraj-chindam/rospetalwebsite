@@ -1,9 +1,13 @@
 import type { ProductItem } from "@/data/boutique-data";
 
-const draftCopy = /website publishing test|stock availability is to be confirmed|contact the boutique for details|online checkout is not active yet/i;
+const draftCopy = /website publishing test|stock availability is to be confirmed|contact the boutique for details|online checkout is not active yet|\b(?:tbd|tbc|placeholder|sample product|demo product)\b/i;
+const draftName = /^(?:designer frock\s*\d+|.*\b(?:test|sample|demo|placeholder)\b.*)$/i;
 
 export function productReadinessIssues(product: ProductItem, catalog: ProductItem[]): string[] {
   const issues: string[] = [];
+  if (draftName.test(product.name.trim())) {
+    issues.push("The product name needs boutique confirmation.");
+  }
   if ([product.description, product.fabric, product.care, product.delivery].some((value) => !value?.trim() || draftCopy.test(value))) {
     issues.push("Product details and availability need boutique confirmation.");
   }

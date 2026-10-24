@@ -10,9 +10,12 @@ npm run dev
 npm test
 npm run lint
 npm run build
+npm run check:export
+# Or run the complete sequence:
+npm run release:check
 ```
 
-`npm test` covers the catalog contract, provisional and stale bag items, enquiry acknowledgements, courier quote totals, and checkout responses. Older visual tests in `tests/` target superseded shop designs and are not release checks. A static asset/link check and manual browser pass are also required before deployment.
+`npm test` covers the catalog contract, provisional and stale bag items, enquiry acknowledgements, courier quote totals, and checkout responses. `npm run check:export` checks exported routes and local links/assets after the build. Older visual tests in `tests/` target superseded shop designs and are not release checks. A manual browser pass is also required before deployment.
 
 The build exports to `out/`. Firebase Hosting serves static files only; Next.js API routes will not run there. Deploy with `npx firebase-tools deploy --only hosting --project rosepetal-boutique-live` after the checks pass.
 

@@ -29,3 +29,9 @@ test("stale and provisional bag items cannot proceed to payment", () => {
   assert.match(productReadinessIssues(catalog[1], catalog).join(" "), /individual photo/i);
   assert.equal(assessBagProducts([], catalog).ready, false);
 });
+
+test("a generic test name cannot become buyable by changing only the description", () => {
+  const item = product("test-item", { name: "Designer Frock 1" });
+  assert.match(productReadinessIssues(item, [item]).join(" "), /name needs boutique confirmation/i);
+  assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, false);
+});
