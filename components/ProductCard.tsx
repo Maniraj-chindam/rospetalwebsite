@@ -9,6 +9,7 @@ import type { ProductItem } from "@/data/boutique-data";
 import { CONTACT_INFO } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { useModalKeyboard } from "@/hooks/useModalKeyboard";
+import VariantSelector from "@/components/VariantSelector";
 
 function enquiryUrl(product: ProductItem) {
   const message = `Hello Rosepetal Boutique, I would like to enquire about ${product.name} (SKU ${product.sku ?? product.id})${product.size ? `, size ${product.size}` : ""}${product.color ? `, colour ${product.color}` : ""}. Is it available?`;
@@ -70,7 +71,7 @@ export default function ProductCard({ product, variants = [product] }: { product
             <h2 id="product-dialog-title" className="font-serif-luxury text-3xl text-rosepetal-text">{selected.name}</h2>
             <p className="text-xl text-rosepetal-wine">{selected.price}</p>
             {selected.description && <p className="text-sm leading-relaxed">{selected.description}</p>}
-            {variants.length > 1 && <fieldset className="border-t border-rosepetal-border pt-3"><legend className="text-xs font-semibold uppercase tracking-wider text-rosepetal-wine">Size and colour</legend><div className="mt-2 flex flex-wrap gap-2">{variants.map((item) => <button key={item.id} type="button" onClick={() => { setSelectedId(item.id); setSelectedImage(null); setAdded(false); }} aria-pressed={selected.id === item.id} className={`rounded-md border px-3 py-2 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-rosepetal-wine ${selected.id === item.id ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white"}`}>{[item.size, item.color].filter(Boolean).join(" · ")}</button>)}</div></fieldset>}
+            {variants.length > 1 && <div className="border-t border-rosepetal-border pt-3"><VariantSelector variants={variants} selected={selected} onSelect={(item) => { setSelectedId(item.id); setSelectedImage(null); setAdded(false); }} /></div>}
             <dl className="grid gap-2 border-t border-rosepetal-border pt-3 text-sm">
               {selected.size && <div><dt className="inline font-semibold">Size: </dt><dd className="inline">{selected.size}</dd></div>}
               {selected.color && <div><dt className="inline font-semibold">Colour: </dt><dd className="inline">{selected.color}</dd></div>}

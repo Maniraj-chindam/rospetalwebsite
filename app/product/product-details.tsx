@@ -8,6 +8,7 @@ import { ArrowLeft, Heart, ShoppingBag } from "lucide-react";
 import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
+import VariantSelector from "@/components/VariantSelector";
 
 function enquiryUrl(product: ProductItem) {
   const message = `Hello Rosepetal Boutique, I would like to enquire about ${product.name} (SKU ${product.sku ?? product.id})${product.size ? `, size ${product.size}` : ""}${product.color ? `, colour ${product.color}` : ""}. Is it available?`;
@@ -84,10 +85,7 @@ export default function ProductDetails() {
           <p className="mt-4 text-2xl text-rosepetal-wine">{product.price}</p>
           {product.description && <p className="mt-5 text-sm leading-7 text-rosepetal-muted">{product.description}</p>}
 
-          {variants.length > 1 && <fieldset className="mt-7 border-t border-rosepetal-border pt-5">
-            <legend className="text-xs font-semibold uppercase tracking-[0.17em] text-rosepetal-wine">Choose size and colour</legend>
-            <div className="mt-3 flex flex-wrap gap-2">{variants.map((item) => <button key={item.id} type="button" onClick={() => { setSelectedImage(null); setAddedId(null); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} aria-pressed={item.id === product.id} className={`min-h-11 rounded-md border px-4 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${item.id === product.id ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-text hover:border-rosepetal-wine"}`}>{[item.size, item.color].filter(Boolean).join(" · ") || item.sku || "Option"}{(item.availableStock ?? 0) < 1 ? " · Sold out" : ""}</button>)}</div>
-          </fieldset>}
+          {variants.length > 1 && <div className="mt-7 border-t border-rosepetal-border pt-5"><VariantSelector variants={variants} selected={product} onSelect={(item) => { setSelectedImage(null); setAddedId(null); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} /></div>}
 
           <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} available` : "Currently unavailable"}</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
