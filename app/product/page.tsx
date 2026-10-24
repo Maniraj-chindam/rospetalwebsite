@@ -4,7 +4,7 @@ import ProductDetails from "./product-details";
 
 export const metadata: Metadata = {
   title: "Product Details | Rosepetal Designer Boutique",
-  description: "View photos, available sizes, fabric, care and delivery details for a Rosepetal piece.",
+  description: "Explore a Rosepetal piece, its available options and boutique enquiry details.",
 };
 
 export default function ProductPage() {

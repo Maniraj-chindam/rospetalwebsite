@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import CustomerInfoPage from "@/components/CustomerInfoPage";
 
-export const metadata: Metadata = { title: "Returns | Rosepetal Designer Boutique", description: "How to ask Rosepetal about a return, alteration or order issue." };
+export const metadata: Metadata = { title: "Returns | Rosepetal Designer Boutique", description: "How to ask Rosepetal about a return, alteration or order issue.", alternates: { canonical: "/returns" } };
 
 export default function ReturnsPage() {
   return <CustomerInfoPage eyebrow="Customer information" title="Returns and order issues" intro="Return, exchange and alteration conditions for specific pieces have not yet been published. Please ask the boutique for the applicable terms before paying; this page does not promise that every piece can be returned." sections={[

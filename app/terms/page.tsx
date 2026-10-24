@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import CustomerInfoPage from "@/components/CustomerInfoPage";
 
-export const metadata: Metadata = { title: "Order information | Rosepetal Designer Boutique", description: "Important information before placing a Rosepetal website order." };
+export const metadata: Metadata = { title: "Order information | Rosepetal Designer Boutique", description: "Important information before placing a Rosepetal website order.", alternates: { canonical: "/terms" } };
 
 export default function TermsPage() {
   return <CustomerInfoPage eyebrow="Customer information" title="Before placing an order" intro="The boutique is completing the terms for website purchases. Confirm any product-specific conditions, especially for custom work, before payment." sections={[

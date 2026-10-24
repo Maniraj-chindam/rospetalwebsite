@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import CustomerInfoPage from "@/components/CustomerInfoPage";
 
-export const metadata: Metadata = { title: "Privacy | Rosepetal Designer Boutique", description: "How Rosepetal uses information sent through its website." };
+export const metadata: Metadata = { title: "Privacy | Rosepetal Designer Boutique", description: "How Rosepetal uses information sent through its website.", alternates: { canonical: "/privacy" } };
 
 export default function PrivacyPage() {
   return <CustomerInfoPage eyebrow="Customer information" title="Privacy" intro="This page explains the information used by the website's current enquiry and shopping features. Contact the boutique if you need more detail before submitting." sections={[

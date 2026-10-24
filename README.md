@@ -1,28 +1,26 @@
-# Rosepetal Designer Boutique
+# Rosepetal Designer Boutique website
 
-This is a Next.js static export hosted on Firebase Hosting. Shop and search read the POS public catalog v2; only owner-published variants appear, and the site is empty until approved products are published in the POS. Contact and consultation forms save requests to the private POS enquiry inbox through `POST /api/enquiries`; the site shows a reference only after the server confirms the save. WhatsApp is offered as an explicit fallback on failure, and customers must tap **Send** there. The bag stores only variant IDs and quantities on the customer's device and obtains server-priced quotes through `POST /api/checkout/quote`. Paid checkout and website stock reservations are not live yet.
+This is a Next.js static export hosted on Firebase Hosting. The POS is the source of truth for the public catalog, server-priced bag quotes, enquiries, payment sessions and fulfilment. The website never stores gateway credentials or prices a paid order by itself.
 
-## Run locally
-
-```sh
-pnpm install
-pnpm dev
-```
-
-## Build and deploy
+## Local development and release checks
 
 ```sh
-pnpm build
-pnpm dlx firebase-tools emulators:start --only hosting --project rosepetal-boutique-live
-pnpm dlx firebase-tools deploy --only hosting --project rosepetal-boutique-live
+npm ci
+npm run dev
+npm test
+npm run lint
+npm run build
 ```
 
-The export is written to `out/`. Firebase Hosting serves static files only; Next.js API routes will not run there. The Firebase project is configured in `.firebaserc`.
+`npm test` covers the catalog contract, provisional and stale bag items, enquiry acknowledgements, courier quote totals, and checkout responses. Older visual tests in `tests/` target superseded shop designs and are not release checks. A static asset/link check and manual browser pass are also required before deployment.
 
-Run `node --experimental-strip-types --test tests/pos-catalog.test.mjs` to check the public POS adapter. The POS backend and staff editor own the catalog contract; see `docs/website-catalog-v2.md` in the POS repository. Deploy the backend contract before deploying a website build that requires it.
+The build exports to `out/`. Firebase Hosting serves static files only; Next.js API routes will not run there. Deploy with `npx firebase-tools deploy --only hosting --project rosepetal-boutique-live` after the checks pass.
 
-## Before enabling online sales
+## Live integrations
 
-The owner needs to provide approved SKU, price, size, stock, fabric, care, and delivery data, plus a merchant payment account and a secure checkout backend. Product and site content will be managed through a CRM later; the CRM API and paid-order sync are deferred. Do not present a payment as successful until the backend verifies the provider's payment result.
+- `GET /api/catalog` supplies owner-published POS variants. A published variant is display data, not a reservation or permission to charge.
+- `POST /api/enquiries` saves contact and consultation requests. A reference appears only after POS acknowledges the save. The sender email still requires SES verification before boutique inbox delivery can be claimed.
+- `POST /api/checkout/quote` supplies live POS pricing and a Shiprocket estimate when each piece has confirmed packed measurements. The website rejects an inconsistent or expired payable total.
+- Razorpay session, verification and status calls remain gated by the POS release switch and merchant credentials. The website also blocks provisional or missing catalog items from payment.
 
-The studio address, email, visiting hours, customer reviews, and founder details also need owner confirmation before they are used as factual claims. `+91 91823 18862` is the confirmed phone and WhatsApp destination. Email alerts require a confirmed boutique inbox and verified sender identity; staff can read saved enquiries in the POS meanwhile.
+See [release readiness](docs/release-readiness-2026-10-24.md) for the current evidence, owner inputs and acceptance gates. The confirmed public contact details are `+91 91823 18862` and `rosepetalfashionstudio@gmail.com`. Founder, artisan, studio, photography, return and sale-policy claims still need owner approval.

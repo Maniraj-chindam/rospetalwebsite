@@ -7,7 +7,7 @@ import { useBoutique } from '@/context/BoutiqueContext';
 import { quoteBag, type BagQuote } from '@/lib/checkout-quote';
 import { createCheckoutSession, getCheckoutStatus, loadRazorpayCheckout, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
 import { fetchPosCatalog } from '@/lib/pos-catalog';
-import { isProductReadyForCheckout } from '@/lib/product-readiness';
+import { assessBagProducts } from '@/lib/product-readiness';
 import type { ProductItem } from '@/data/boutique-data';
 
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
@@ -81,11 +81,7 @@ export default function CheckoutClient() {
   }, [outcome?.paymentStatus, clearBag]);
 
   const itemCount = useMemo(() => bag.reduce((sum, item) => sum + item.qty, 0), [bag]);
-  const catalogById = useMemo(() => new Map(catalog.map(item => [item.id, item])), [catalog]);
-  const productsReady = catalogState === 'ready' && bag.every(line => {
-    const product = catalogById.get(line.productId);
-    return product && isProductReadyForCheckout(product, catalog);
-  });
+  const productsReady = catalogState === 'ready' && assessBagProducts(bag, catalog).ready;
   const ready = !!quote?.checkoutAvailable && !!quote.totalPaise && !quoteLoading && productsReady;
 
   async function pay(event: FormEvent<HTMLFormElement>) {

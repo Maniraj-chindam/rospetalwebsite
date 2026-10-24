@@ -7,6 +7,29 @@ export type CheckoutAddress = { line1: string; line2: string; city: string; stat
 export type CheckoutStatus = { reference: string; paymentStatus: string; fulfillmentStatus: string; totalPaise: number; expiresAt?: string };
 export type CheckoutSession = CheckoutStatus & { checkoutToken: string; razorpayOrderId: string; keyId: string; currency: 'INR'; expiresAt: string };
 
+function checkoutStatus(value: unknown): CheckoutStatus {
+  const status = value as Partial<CheckoutStatus> | null;
+  if (!status || !/^RP-W-[A-F0-9]{8}$/.test(status.reference ?? '') ||
+      typeof status.paymentStatus !== 'string' || !status.paymentStatus ||
+      typeof status.fulfillmentStatus !== 'string' || !status.fulfillmentStatus ||
+      !Number.isSafeInteger(status.totalPaise) || (status.totalPaise ?? 0) <= 0) {
+    throw new Error('The order status was invalid. Please contact the boutique before trying another payment.');
+  }
+  return status as CheckoutStatus;
+}
+
+function checkoutSession(value: unknown): CheckoutSession {
+  const session = value as Partial<CheckoutSession> | null;
+  checkoutStatus(value);
+  if (!session || session.currency !== 'INR' || !/^[a-f0-9]{48}$/.test(session.checkoutToken ?? '') ||
+      !/^order_[A-Za-z0-9]+$/.test(session.razorpayOrderId ?? '') ||
+      !/^rzp_(live|test)_[A-Za-z0-9]+$/.test(session.keyId ?? '') ||
+      typeof session.expiresAt !== 'string' || !Number.isFinite(Date.parse(session.expiresAt)) || Date.parse(session.expiresAt) <= Date.now()) {
+    throw new Error('The payment session was invalid. Please return to your bag and try again.');
+  }
+  return session as CheckoutSession;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 18000);
@@ -21,22 +44,25 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   } finally { clearTimeout(timeout); }
 }
 
-export function createCheckoutSession(items: BagLine[], buyer: CheckoutBuyer, address: CheckoutAddress, requestId: string) {
-  return request<CheckoutSession>('/api/checkout/session', {
+export async function createCheckoutSession(items: BagLine[], buyer: CheckoutBuyer, address: CheckoutAddress, requestId: string) {
+  const result = await request<unknown>('/api/checkout/session', {
     method: 'POST', headers: { 'content-type': 'application/json', 'x-request-id': requestId },
     body: JSON.stringify({ items, buyer, address }),
   });
+  return checkoutSession(result);
 }
 
-export function verifyCheckout(session: CheckoutSession, payment: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) {
-  return request<CheckoutStatus>('/api/checkout/verify', {
+export async function verifyCheckout(session: CheckoutSession, payment: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) {
+  if (payment.razorpay_order_id !== session.razorpayOrderId) throw new Error('The payment reference did not match this order. Please check its status before retrying.');
+  const result = await request<unknown>('/api/checkout/verify', {
     method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ checkoutToken: session.checkoutToken, razorpayOrderId: payment.razorpay_order_id, razorpayPaymentId: payment.razorpay_payment_id, razorpaySignature: payment.razorpay_signature }),
   });
+  return checkoutStatus(result);
 }
 
-export function getCheckoutStatus(token: string) {
-  return request<CheckoutStatus>(`/api/checkout/status?token=${encodeURIComponent(token)}`);
+export async function getCheckoutStatus(token: string) {
+  return checkoutStatus(await request<unknown>(`/api/checkout/status?token=${encodeURIComponent(token)}`));
 }
 
 declare global {

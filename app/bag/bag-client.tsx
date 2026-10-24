@@ -8,7 +8,7 @@ import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog } from "@/lib/pos-catalog";
 import { quoteBag, type BagQuote } from "@/lib/checkout-quote";
 import type { ProductItem } from "@/data/boutique-data";
-import { isProductReadyForCheckout } from "@/lib/product-readiness";
+import { assessBagProducts } from "@/lib/product-readiness";
 
 const currency = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
 
@@ -47,11 +47,9 @@ export default function BagClient() {
 
   const byId = useMemo(() => new Map(products.map((product) => [product.id, product])), [products]);
   const quotedById = useMemo(() => new Map(quote?.items.map((item) => [item.productId, item]) ?? []), [quote]);
-  const hasMissing = catalogState === "ready" && bag.some((line) => !byId.has(line.productId));
-  const hasUnconfirmed = catalogState === "ready" && bag.some((line) => {
-    const product = byId.get(line.productId);
-    return product && !isProductReadyForCheckout(product, products);
-  });
+  const bagReadiness = useMemo(() => assessBagProducts(bag, products), [bag, products]);
+  const hasMissing = catalogState === "ready" && bagReadiness.missingIds.length > 0;
+  const hasUnconfirmed = catalogState === "ready" && bagReadiness.unconfirmedIds.length > 0;
 
   return <div className="min-h-[70dvh] bg-rosepetal-deep-pink px-4 pb-20 pt-28 text-rosepetal-text sm:px-6 sm:pt-32">
     <div className="mx-auto max-w-6xl">

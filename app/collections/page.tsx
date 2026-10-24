@@ -4,7 +4,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shop | Rosepetal Designer Boutique",
-  description: "Browse the live Rosepetal collection of sarees, dresses, lehengas and handlooms.",
+  description: "Browse the Rosepetal pieces currently published by the boutique, with live sizes and colours.",
+  alternates: { canonical: "/collections" },
 };
 
 export default function CollectionsPage() {

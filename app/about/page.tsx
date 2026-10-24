@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About Rosepetal | Designer Boutique",
   description: "Discover the style and design approach behind Rosepetal Designer Boutique.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

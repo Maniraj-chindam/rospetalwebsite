@@ -48,6 +48,26 @@ export default function ProductDetails() {
   const canAdd = Boolean(product) && !needsConfirmation && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
   const isFavorited = wishlist.includes(productId);
 
+  useEffect(() => {
+    if (status !== "ready" || !product) return;
+    const previousTitle = document.title;
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    const previousDescription = description?.content;
+    const canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    canonical.href = `https://rosepetalboutique.com/product?id=${encodeURIComponent(product.id)}`;
+    document.head.appendChild(canonical);
+    document.title = `${product.name}${product.color ? ` in ${product.color}` : ""} | Rosepetal Designer Boutique`;
+    if (description) description.content = needsConfirmation
+      ? `Explore ${product.name} at Rosepetal and enquire about its confirmed details.`
+      : (product.description ?? "").slice(0, 155);
+    return () => {
+      canonical.remove();
+      document.title = previousTitle;
+      if (description && previousDescription !== undefined) description.content = previousDescription;
+    };
+  }, [needsConfirmation, product, status]);
+
   if (status === "loading") return <div role="status" className="mx-auto min-h-[65vh] max-w-7xl px-4 pt-32 text-center text-white">Loading this piece from the live collection…</div>;
   if (status === "error") return (
     <div className="mx-auto flex min-h-[65vh] max-w-xl flex-col items-center justify-center px-4 py-32 text-center text-white">

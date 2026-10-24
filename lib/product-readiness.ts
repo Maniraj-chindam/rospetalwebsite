@@ -18,3 +18,15 @@ export function productReadinessIssues(product: ProductItem, catalog: ProductIte
 export function isProductReadyForCheckout(product: ProductItem, catalog: ProductItem[]): boolean {
   return productReadinessIssues(product, catalog).length === 0;
 }
+
+export function assessBagProducts(lines: Array<{ productId: string; qty: number }>, catalog: ProductItem[]) {
+  const byId = new Map(catalog.map((product) => [product.id, product]));
+  const missingIds: string[] = [];
+  const unconfirmedIds: string[] = [];
+  for (const line of lines) {
+    const product = byId.get(line.productId);
+    if (!product) missingIds.push(line.productId);
+    else if (!isProductReadyForCheckout(product, catalog)) unconfirmedIds.push(line.productId);
+  }
+  return { ready: lines.length > 0 && missingIds.length === 0 && unconfirmedIds.length === 0, missingIds, unconfirmedIds };
+}

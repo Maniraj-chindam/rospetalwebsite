@@ -37,14 +37,23 @@ export async function quoteBag(items: BagLine[], deliveryPincode?: string, signa
   if (!body || body.currency !== "INR" || !Array.isArray(body.items) || body.items.length !== items.length ||
       !Number.isSafeInteger(body.subtotalPaise) || body.subtotalPaise < 0 ||
       !body.items.every((item: BagQuote["items"][number], index: number) => item && item.productId === items[index].productId && item.qty === items[index].qty &&
-        Number.isSafeInteger(item.qty) && Number.isSafeInteger(item.unitPricePaise) && Number.isSafeInteger(item.lineTotalPaise) &&
+        Number.isSafeInteger(item.qty) && item.qty > 0 && Number.isSafeInteger(item.unitPricePaise) && item.unitPricePaise > 0 &&
+        Number.isSafeInteger(item.lineTotalPaise) && item.lineTotalPaise > 0 &&
         item.lineTotalPaise === item.qty * item.unitPricePaise) ||
       body.items.reduce((sum: number, item: BagQuote["items"][number]) => sum + item.lineTotalPaise, 0) !== body.subtotalPaise ||
       typeof body.checkoutAvailable !== "boolean" || typeof body.reason !== "string" ||
       !["pin_required", "packaging_required", "available", "unserviceable", "unavailable"].includes(body.deliveryStatus) ||
-      (body.deliveryQuote !== null && (!body.deliveryQuote || !Number.isSafeInteger(body.deliveryQuote.estimatedChargePaise) || body.deliveryQuote.estimatedChargePaise < 0 || typeof body.deliveryQuote.courierName !== "string")) ||
+      (body.deliveryQuote !== null && (!body.deliveryQuote || !Number.isSafeInteger(body.deliveryQuote.courierCompanyId) || body.deliveryQuote.courierCompanyId <= 0 ||
+        !Number.isSafeInteger(body.deliveryQuote.estimatedChargePaise) || body.deliveryQuote.estimatedChargePaise < 0 ||
+        typeof body.deliveryQuote.courierName !== "string" || !body.deliveryQuote.courierName.trim() ||
+        (body.deliveryQuote.estimatedDeliveryDays !== null && (!Number.isSafeInteger(body.deliveryQuote.estimatedDeliveryDays) || body.deliveryQuote.estimatedDeliveryDays < 0)))) ||
       (body.deliveryStatus === "available") !== (body.deliveryQuote !== null) ||
-      typeof body.quotedAt !== "string" || typeof body.expiresAt !== "string") {
+      typeof body.quotedAt !== "string" || !Number.isFinite(Date.parse(body.quotedAt)) ||
+      typeof body.expiresAt !== "string" || !Number.isFinite(Date.parse(body.expiresAt)) ||
+      Date.parse(body.expiresAt) <= Date.parse(body.quotedAt) || Date.parse(body.expiresAt) <= Date.now() ||
+      (body.checkoutAvailable && (body.deliveryStatus !== "available" || body.shippingPaise !== body.deliveryQuote?.estimatedChargePaise ||
+        !Number.isSafeInteger(body.totalPaise) || body.totalPaise !== body.subtotalPaise + body.shippingPaise)) ||
+      (!body.checkoutAvailable && (body.shippingPaise !== null || body.totalPaise !== null))) {
     throw new Error("The bag quote was invalid. Please refresh and try again.");
   }
   return body as BagQuote;

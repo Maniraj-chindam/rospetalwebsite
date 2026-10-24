@@ -5,6 +5,7 @@ import SearchResults from "./search-results";
 export const metadata: Metadata = {
   title: "Search | Rosepetal Designer Boutique",
   description: "Find Rosepetal collections, custom design information and boutique pages.",
+  robots: { index: false, follow: false },
 };
 
 export default function SearchPage() {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import CustomerInfoPage from "@/components/CustomerInfoPage";
 
-export const metadata: Metadata = { title: "Delivery | Rosepetal Designer Boutique", description: "Delivery information for Rosepetal orders within India." };
+export const metadata: Metadata = { title: "Delivery | Rosepetal Designer Boutique", description: "Delivery information for Rosepetal orders within India.", alternates: { canonical: "/shipping" } };
 
 export default function ShippingPage() {
   return <CustomerInfoPage eyebrow="Customer information" title="Delivery" intro="Rosepetal currently prepares website checkout for prepaid orders within India. A delivery charge must be available before you can pay." sections={[
