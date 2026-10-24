@@ -91,11 +91,12 @@ export default function CheckoutClient() {
     try {
       let current = session;
       if (!current || Date.parse(current.expiresAt) <= Date.now()) {
-        current = await createCheckoutSession(bag, buyer, address, crypto.randomUUID());
+        current = await createCheckoutSession(bag, buyer, address);
         setSession(current);
         sessionStorage.setItem('rosepetal_checkout_token', current.checkoutToken);
         if (current.totalPaise !== quote.totalPaise) {
           setError(`The final total changed to ${currency.format(current.totalPaise / 100)}. Review it and press Pay again.`);
+          setBusy(false);
           return;
         }
       }
@@ -106,7 +107,7 @@ export default function CheckoutClient() {
       const checkout = new Razorpay({
         key: current.keyId, amount: current.totalPaise, currency: 'INR', name: 'Rosepetal Boutique',
         description: `${itemCount} ${itemCount === 1 ? 'piece' : 'pieces'} · ${current.reference}`,
-        order_id: current.razorpayOrderId, prefill: buyer,
+        order_id: current.razorpayOrderId, prefill: { name: buyer.name, email: buyer.email, contact: buyer.phone },
         theme: { color: '#702039' },
         modal: { ondismiss: () => setBusy(false) },
         handler: payment => {

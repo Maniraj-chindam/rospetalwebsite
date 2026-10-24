@@ -1,6 +1,8 @@
 import type { BagLine } from './checkout-quote';
 
 const apiBase = (process.env.NEXT_PUBLIC_POS_API_BASE_URL || 'https://gpu272zv2g.execute-api.ap-south-1.amazonaws.com').replace(/\/$/, '');
+const attemptStorageKey = 'rosepetal_checkout_request';
+const attempts = new Map<string, { id: string; createdAt: number }>();
 
 export type CheckoutBuyer = { name: string; email: string; phone: string };
 export type CheckoutAddress = { line1: string; line2: string; city: string; state: string; pincode: string; country: 'IN' };
@@ -36,7 +38,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     const response = await fetch(`${apiBase}${path}`, { ...init, cache: 'no-store', signal: controller.signal });
     const body = await response.json().catch(() => null);
-    if (!response.ok) throw new Error(typeof body?.error === 'string' ? body.error : 'Checkout could not be completed. Please try again.');
+    if (!response.ok) throw Object.assign(new Error(typeof body?.error === 'string' ? body.error : 'Checkout could not be completed. Please try again.'), { status: response.status });
     return body as T;
   } catch (error) {
     if (controller.signal.aborted) throw new Error('Checkout timed out. Please check your order status before retrying.');
@@ -44,12 +46,34 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   } finally { clearTimeout(timeout); }
 }
 
-export async function createCheckoutSession(items: BagLine[], buyer: CheckoutBuyer, address: CheckoutAddress, requestId: string) {
-  const result = await request<unknown>('/api/checkout/session', {
+export async function createCheckoutSession(items: BagLine[], buyer: CheckoutBuyer, address: CheckoutAddress, requestId?: string) {
+  const fingerprint = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify({ items, buyer, address }))))].map(value => value.toString(16).padStart(2, '0')).join('');
+  if (!requestId) {
+    let attempt = attempts.get(fingerprint);
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(attemptStorageKey) || 'null');
+      if (saved?.fingerprint === fingerprint && /^[a-zA-Z0-9-]{16,100}$/.test(saved.id) && Number.isFinite(saved.createdAt)) attempt = saved;
+    } catch { /* Memory still protects retries when browser storage is unavailable. */ }
+    if (!attempt || attempt.createdAt > Date.now()) attempt = { id: crypto.randomUUID(), createdAt: Date.now() };
+    attempts.set(fingerprint, attempt);
+    requestId = attempt.id;
+    try { sessionStorage.setItem(attemptStorageKey, JSON.stringify({ fingerprint, ...attempt })); } catch {}
+  }
+  try {
+    const result = await request<unknown>('/api/checkout/session', {
     method: 'POST', headers: { 'content-type': 'application/json', 'x-request-id': requestId },
     body: JSON.stringify({ items, buyer, address }),
-  });
-  return checkoutSession(result);
+    });
+    return checkoutSession(result);
+  } catch (error) {
+    // A known expired/cancelled order may start a fresh attempt on the next click.
+    // An unknown outcome or preparation conflict must retain its original ID.
+    if (error instanceof Error && 'status' in error && error.status === 409 && error.message === 'Checkout expired. Please start again.') {
+      attempts.delete(fingerprint);
+      try { sessionStorage.removeItem(attemptStorageKey); } catch {}
+    }
+    throw error;
+  }
 }
 
 export async function verifyCheckout(session: CheckoutSession, payment: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) {
@@ -69,7 +93,7 @@ declare global {
   interface Window {
     Razorpay?: new (options: {
       key: string; amount: number; currency: string; name: string; description: string; order_id: string;
-      prefill: CheckoutBuyer; handler: (payment: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => void;
+      prefill: { name: string; email: string; contact: string }; handler: (payment: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => void;
       modal: { ondismiss: () => void }; theme: { color: string };
     }) => { open: () => void; on: (event: string, handler: () => void) => void };
   }

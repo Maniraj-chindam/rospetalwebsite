@@ -45,3 +45,47 @@ test("payment verification and status require a valid order acknowledgement", as
     await assert.rejects(getCheckoutStatus(session.checkoutToken), /status was invalid/);
   } finally { global.fetch = original; }
 });
+
+test("a lost checkout response reuses its request ID without storing customer details", async () => {
+  const original = global.fetch, originalStorage = global.sessionStorage;
+  const values = new Map(), ids = [];
+  global.sessionStorage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
+  let calls = 0;
+  global.fetch = async (_url, options) => {
+    ids.push(options.headers['x-request-id']); calls++;
+    if (calls === 1) throw new Error('Synthetic lost response');
+    return Response.json(session);
+  };
+  try {
+    const items = [{ productId: 'retry-variant', qty: 1 }];
+    await assert.rejects(createCheckoutSession(items, buyer, address), /lost response/);
+    assert.equal((await createCheckoutSession(items, buyer, address)).razorpayOrderId, session.razorpayOrderId);
+    assert.equal(ids[0], ids[1]);
+    const stored = [...values.values()].join('');
+    assert.ok(!stored.includes(buyer.email) && !stored.includes(address.line1) && !stored.includes(buyer.phone));
+    await createCheckoutSession([{ productId: 'different-variant', qty: 1 }], buyer, address);
+    assert.notEqual(ids[2], ids[1]);
+  } finally { global.fetch = original; if (originalStorage === undefined) delete global.sessionStorage; else global.sessionStorage = originalStorage; }
+});
+
+test("a definitive expired order can restart but a paid or uncertain order retains its request ID", async () => {
+  const original = global.fetch, originalStorage = global.sessionStorage;
+  const values = new Map(), ids = [];
+  global.sessionStorage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
+  let message = 'Checkout is being prepared or needs reconciliation. Please retry shortly.';
+  global.fetch = async (_url, options) => {
+    ids.push(options.headers['x-request-id']); return Response.json({ error: message }, { status: 409 });
+  };
+  try {
+    const items = [{ productId: 'expired-variant', qty: 1 }];
+    await assert.rejects(createCheckoutSession(items, buyer, address));
+    message = 'This checkout already has a payment. Check your order status before paying again.';
+    await assert.rejects(createCheckoutSession(items, buyer, address));
+    assert.equal(ids[0], ids[1]);
+    message = 'Checkout expired. Please start again.';
+    await assert.rejects(createCheckoutSession(items, buyer, address));
+    global.fetch = async (_url, options) => { ids.push(options.headers['x-request-id']); return Response.json(session); };
+    await createCheckoutSession(items, buyer, address);
+    assert.notEqual(ids[2], ids[3]);
+  } finally { global.fetch = original; if (originalStorage === undefined) delete global.sessionStorage; else global.sessionStorage = originalStorage; }
+});
