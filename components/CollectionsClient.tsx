@@ -69,6 +69,12 @@ export default function CollectionsClient() {
       variants: allGroups.get(matching[0].styleCode || matching[0].id) || matching,
     }));
   }, [filteredProducts, products]);
+  const collectionHasPieces = products.some((item) =>
+    (activeCategory === "All" || item.category === activeCategory) &&
+    (!collectionType || item.websiteType === collectionType)
+  );
+  const isWishlist = filterParam === "wishlist";
+  const showCatalogControls = products.length > 0 && collectionHasPieces && (!isWishlist || wishlist.length > 0);
 
   const resetFilters = () => {
     setActiveCategory("All");
@@ -89,7 +95,7 @@ export default function CollectionsClient() {
         <div className="mb-4 flex items-center justify-between"><h2 className="font-serif-luxury text-2xl text-rosepetal-text">Filter pieces</h2><button onClick={resetFilters} className="text-[10px] font-semibold uppercase tracking-[0.15em] text-rosepetal-wine hover:underline">Reset</button></div>
         <p className="text-xs leading-relaxed text-rosepetal-muted">Refine the live collection by price and colour.</p>
       </div>
-      {products.length > 0 && <fieldset className="border-t border-rosepetal-border/75 pt-5">
+      {rangeCeiling > rangeFloor && <fieldset className="border-t border-rosepetal-border/75 pt-5">
         <legend className="font-serif-luxury text-lg text-rosepetal-text">Price</legend>
         <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-rosepetal-text"><span className="rounded-lg border border-rosepetal-border bg-white/70 px-3 py-2">₹{minPrice.toLocaleString("en-IN")}</span><span className="rounded-lg border border-rosepetal-border bg-white/70 px-3 py-2 text-right">₹{maxPrice.toLocaleString("en-IN")}</span></div>
         <div className="mt-4 space-y-3"><input aria-label="Minimum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={1} value={minPrice} onChange={(event) => setMinPrice(Math.min(Number(event.target.value), maxPrice))} /><input aria-label="Maximum price" className="w-full accent-rosepetal-wine" type="range" min={rangeFloor} max={rangeCeiling} step={1} value={maxPrice} onChange={(event) => setMaxPrice(Math.max(Number(event.target.value), minPrice))} /></div>
@@ -151,10 +157,14 @@ export default function CollectionsClient() {
               TIMELESS INDIAN ELEGANCE
             </p>
             <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[42px] text-white font-normal leading-tight mt-1 drop-shadow-xs">
-              {collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}
+              {isWishlist ? "Your Wishlist" : collectionType || (activeCategory === "All" ? "Our Collections" : activeCategory)}
             </h1>
             <p className="mt-1 text-xs leading-relaxed text-white/90 font-light max-w-lg drop-shadow-xs line-clamp-1 sm:line-clamp-none">
-              {collectionType
+              {isWishlist
+                ? "The pieces you saved from the live collection."
+                : catalogStatus === "ready" && !collectionHasPieces
+                ? "No pieces are published here yet. Browse the current edit or enquire about future styles."
+                : collectionType
                 ? `A curated Rosepetal edit for ${collectionType.toLowerCase()}.`
                 : "From classic sarees to intricate maggam work, find outfits that tell your story."}
             </p>
@@ -164,7 +174,7 @@ export default function CollectionsClient() {
 
       {/* 2. Main Product Catalog & Filter Section */}
       <div className="mx-auto max-w-7xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-12 lg:px-8">
-        {products.length > 0 && <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+        {showCatalogControls && !isWishlist && <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
           {categories.map((category) => (
             <button
               key={category}
@@ -179,12 +189,12 @@ export default function CollectionsClient() {
             </button>
           ))}
         </div>}
-        <div className={`mt-7 grid items-start gap-8 ${products.length > 0 ? "lg:grid-cols-[260px_minmax(0,1fr)]" : ""}`}>
-          {products.length > 0 && <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/40 bg-white/90 backdrop-blur-md p-5 shadow-lg [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
+        <div className={`mt-7 grid items-start gap-8 ${showCatalogControls ? "lg:grid-cols-[260px_minmax(0,1fr)]" : ""}`}>
+          {showCatalogControls && <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/40 bg-white/90 backdrop-blur-md p-5 shadow-lg [scrollbar-width:thin] [scrollbar-color:rgba(82,31,42,0.15)_transparent]">
             {filterContent}
           </aside>}
           <div>
-            {products.length > 0 && <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
+            {showCatalogControls && <div className="mb-6 flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-serif-luxury text-xl text-white">
                 There {visibleGroups.length === 1 ? "is" : "are"}{" "}
                 <span className="font-semibold text-[#FDE8C5]">{visibleGroups.length}</span>{" "}
@@ -195,7 +205,7 @@ export default function CollectionsClient() {
                   <summary className="flex cursor-pointer list-none items-center gap-2 rounded-full border border-white/40 bg-white/90 px-4 py-2 text-xs text-rosepetal-text shadow-sm">
                     <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
                   </summary>
-                  <div className="absolute right-0 z-20 mt-3 w-[min(20rem,calc(100vw-2rem))] rounded-2xl border border-rosepetal-border bg-[#fff9f7] p-5 shadow-xl">
+                  <div className="absolute left-0 z-20 mt-3 max-h-[min(32rem,calc(100dvh-8rem))] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-rosepetal-border bg-[#fff9f7] p-5 shadow-xl">
                     {filterContent}
                   </div>
                 </details>
@@ -237,14 +247,14 @@ export default function CollectionsClient() {
             ) : (
               <div className="rounded-2xl border border-white/30 bg-white/90 backdrop-blur-md p-12 text-center shadow-lg">
                 <h2 className="font-serif-luxury text-2xl text-rosepetal-text">
-                  {products.length === 0 ? "Our next edit is being prepared." : "No pieces match these filters."}
+                  {products.length === 0 ? "Our next edit is being prepared." : isWishlist && wishlist.length === 0 ? "Your wishlist is empty." : !collectionHasPieces ? "No pieces are published in this collection yet." : "No pieces match these filters."}
                 </h2>
                 {products.length === 0 && <><p className="mt-3 text-sm text-rosepetal-muted">Ask the boutique about current and upcoming pieces.</p><a href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent("Hello Rosepetal Boutique, I would like to know about your upcoming collection.")}`} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-rosepetal-wine px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white">Enquire on WhatsApp</a></>}
                 {products.length > 0 && <button
                   onClick={resetFilters}
                   className="mt-4 rounded-full bg-rosepetal-wine px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white"
                 >
-                  Clear filters
+                  {isWishlist && wishlist.length === 0 || !collectionHasPieces ? "Browse available pieces" : "Clear filters"}
                 </button>}
               </div>
             )}

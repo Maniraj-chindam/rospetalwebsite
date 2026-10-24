@@ -9,6 +9,7 @@ import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import VariantSelector from "@/components/VariantSelector";
+import { productReadinessIssues } from "@/lib/product-readiness";
 
 function enquiryUrl(product: ProductItem) {
   const message = `Hello Rosepetal Boutique, I would like to enquire about ${product.name} (SKU ${product.sku ?? product.id})${product.size ? `, size ${product.size}` : ""}${product.color ? `, colour ${product.color}` : ""}. Is it available?`;
@@ -42,7 +43,9 @@ export default function ProductDetails() {
   const displayImage = selectedImage && photos.includes(selectedImage) ? selectedImage : photos[0];
   const bagQty = bag.find((line) => line.productId === productId)?.qty ?? 0;
   const stock = product?.availableStock ?? 0;
-  const canAdd = Boolean(product) && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
+  const readinessIssues = product ? productReadinessIssues(product, products) : [];
+  const needsConfirmation = readinessIssues.length > 0;
+  const canAdd = Boolean(product) && !needsConfirmation && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
   const isFavorited = wishlist.includes(productId);
 
   if (status === "loading") return <div role="status" className="mx-auto min-h-[65vh] max-w-7xl px-4 pt-32 text-center text-white">Loading this piece from the live collection…</div>;
@@ -74,7 +77,7 @@ export default function ProductDetails() {
       <article className="grid overflow-hidden rounded-2xl border border-white/30 bg-[#FFF7F7] shadow-2xl lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
         <div className="bg-[#F0E6E4] p-3 sm:p-5 lg:p-7">
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-[#E9DAD9]">
-            <Image src={displayImage} alt={`${product.name}${product.color ? ` in ${product.color}` : ""}`} fill priority sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover" />
+            <Image src={displayImage} alt={readinessIssues.some((issue) => issue.includes("individual photo")) ? `${product.name} colour options shown together` : `${product.name}${product.color ? ` in ${product.color}` : ""}`} fill priority sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover" />
           </div>
           {photos.length > 1 && <div aria-label="Product photos" className="mt-3 flex gap-2 overflow-x-auto pb-1">{photos.map((photo, index) => <button key={photo} type="button" onClick={() => setSelectedImage(photo)} aria-label={`Show photo ${index + 1} of ${product.name}`} aria-pressed={displayImage === photo} className={`relative h-20 w-16 shrink-0 overflow-hidden rounded border-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${displayImage === photo ? "border-rosepetal-wine" : "border-transparent"}`}><Image src={photo} alt="" fill sizes="64px" className="object-cover" /></button>)}</div>}
         </div>
@@ -83,20 +86,21 @@ export default function ProductDetails() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-rosepetal-wine">{product.websiteType || product.category}</p>
           <h1 className="mt-3 font-serif-luxury text-3xl leading-tight sm:text-4xl">{product.name}</h1>
           <p className="mt-4 text-2xl text-rosepetal-wine">{product.price}</p>
-          {product.description && <p className="mt-5 text-sm leading-7 text-rosepetal-muted">{product.description}</p>}
+          {product.description && !needsConfirmation && <p className="mt-5 text-sm leading-7 text-rosepetal-muted">{product.description}</p>}
+          {needsConfirmation && <div role="status" className="mt-5 rounded-lg border border-rosepetal-border bg-white p-4 text-sm leading-6 text-rosepetal-text"><strong>Details being confirmed</strong><p className="mt-1">This piece is available for enquiry while the boutique confirms its details and photos.</p><ul className="mt-2 list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
 
           {variants.length > 1 && <div className="mt-7 border-t border-rosepetal-border pt-5"><VariantSelector variants={variants} selected={product} onSelect={(item) => { setSelectedImage(null); setAddedId(null); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} /></div>}
 
-          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} available` : "Currently unavailable"}</p>
+          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{needsConfirmation ? "Availability to be confirmed" : stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} available` : "Currently unavailable"}</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
-            <button type="button" disabled={!canAdd} onClick={() => { addToBag(product.id); setAddedId(product.id); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine"><ShoppingBag className="h-4 w-4" aria-hidden="true" />{stock < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to bag"}</button>
+            {needsConfirmation ? <a href={enquiryUrl(product)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Enquire about this piece</a> : <button type="button" disabled={!canAdd} onClick={() => { addToBag(product.id); setAddedId(product.id); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine"><ShoppingBag className="h-4 w-4" aria-hidden="true" />{stock < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to bag"}</button>}
             <button type="button" onClick={() => toggleWishlist(product.id)} aria-pressed={isFavorited} aria-label={isFavorited ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`} className={`inline-flex min-h-12 items-center justify-center rounded-md border px-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${isFavorited ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-wine hover:border-rosepetal-wine"}`}><Heart className={`h-5 w-5 ${isFavorited ? "fill-current" : ""}`} aria-hidden="true" /></button>
           </div>
           {addedId === product.id && <p role="status" className="mt-3 text-sm text-rosepetal-wine">Added to your bag. <Link href="/bag" className="font-semibold underline underline-offset-4">Review bag</Link></p>}
-          <a href={enquiryUrl(product)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine/40 px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Ask about this piece</a>
+          {!needsConfirmation && <a href={enquiryUrl(product)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine/40 px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Ask about this piece</a>}
 
           <dl className="mt-8 divide-y divide-rosepetal-border border-y border-rosepetal-border text-sm">
-            {[["Size", product.size], ["Colour", product.color], ["Fabric", product.fabric], ["Care", product.care], ["Delivery", product.delivery], ["SKU", product.sku]].filter((entry): entry is string[] => Boolean(entry[1])).map(([label, value]) => <div key={label} className="grid grid-cols-[6rem_1fr] gap-3 py-3"><dt className="font-semibold text-rosepetal-wine">{label}</dt><dd className="leading-relaxed text-rosepetal-text">{value}</dd></div>)}
+            {[["Size", product.size], ["Colour", product.color], ["Fabric", needsConfirmation ? undefined : product.fabric], ["Care", needsConfirmation ? undefined : product.care], ["Delivery", needsConfirmation ? undefined : product.delivery], ["SKU", product.sku]].filter((entry): entry is string[] => Boolean(entry[1])).map(([label, value]) => <div key={label} className="grid grid-cols-[6rem_1fr] gap-3 py-3"><dt className="font-semibold text-rosepetal-wine">{label}</dt><dd className="leading-relaxed text-rosepetal-text">{value}</dd></div>)}
           </dl>
         </div>
       </article>

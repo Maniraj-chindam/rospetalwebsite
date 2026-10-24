@@ -90,28 +90,23 @@ export default function Footer() {
               }`}
             >
               <li>
-                <Link href="/collections?category=Sarees" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Heritage Sarees
+                <Link href="/collections" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
+                  Browse live pieces
                 </Link>
               </li>
               <li>
-                <Link href="/collections?category=Lehengas" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Bridal Lehengas
-                </Link>
-              </li>
-              <li>
-                <Link href="/collections?category=Designer+Suits" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Designer Suits
-                </Link>
-              </li>
-              <li>
-                <Link href="/collections?category=Handlooms" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Pure Handlooms
+                <Link href="/lookbook" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
+                  Style inspiration
                 </Link>
               </li>
               <li>
                 <Link href="/custom-design" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Bespoke Couture
+                  Custom designs
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
+                  Ask the boutique
                 </Link>
               </li>
             </ul>
@@ -152,6 +147,12 @@ export default function Footer() {
         </div>
 
         {/* Bottom divider & credits */}
+        <nav aria-label="Customer information" className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-rosepetal-border/60 pt-5 text-xs text-rosepetal-muted">
+          <Link href="/privacy" className="hover:text-rosepetal-wine">Privacy</Link>
+          <Link href="/shipping" className="hover:text-rosepetal-wine">Delivery</Link>
+          <Link href="/returns" className="hover:text-rosepetal-wine">Returns</Link>
+          <Link href="/terms" className="hover:text-rosepetal-wine">Terms</Link>
+        </nav>
         <div className="mt-8 pt-6 sm:mt-12 sm:pt-8 border-t border-rosepetal-border/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-rosepetal-muted text-center sm:text-left gap-2 sm:gap-0">
           <p>© {new Date().getFullYear()} Rosepetal Designer Boutique. All rights reserved.</p>
           <p className="font-script-accent text-lg text-rosepetal-wine/80">

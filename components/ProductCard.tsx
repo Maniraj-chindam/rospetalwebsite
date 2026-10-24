@@ -10,6 +10,7 @@ import { CONTACT_INFO } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { useModalKeyboard } from "@/hooks/useModalKeyboard";
 import VariantSelector from "@/components/VariantSelector";
+import { productReadinessIssues } from "@/lib/product-readiness";
 
 function enquiryUrl(product: ProductItem) {
   const message = `Hello Rosepetal Boutique, I would like to enquire about ${product.name} (SKU ${product.sku ?? product.id})${product.size ? `, size ${product.size}` : ""}${product.color ? `, colour ${product.color}` : ""}. Is it available?`;
@@ -33,7 +34,9 @@ export default function ProductCard({ product, variants = [product] }: { product
     : product.price;
   const isFavorited = wishlist.includes(product.id);
   const bagQty = bag.find((line) => line.productId === selected.id)?.qty ?? 0;
-  const canAdd = bagQty < Math.min(10, selected.availableStock ?? 0) && (bagQty > 0 || bag.length < 20);
+  const readinessIssues = productReadinessIssues(selected, variants);
+  const needsConfirmation = readinessIssues.length > 0;
+  const canAdd = !needsConfirmation && bagQty < Math.min(10, selected.availableStock ?? 0) && (bagQty > 0 || bag.length < 20);
   const productHref = `/product?id=${encodeURIComponent(product.id)}`;
 
   return (
@@ -54,7 +57,7 @@ export default function ProductCard({ product, variants = [product] }: { product
           <h3 className="font-serif-luxury text-base text-rosepetal-text"><Link href={productHref} className="hover:text-rosepetal-wine hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{product.name}</Link></h3>
           <p className="text-xs font-medium text-rosepetal-muted">{priceLabel}</p>
           {variants.length > 1 && <p className="text-xs text-rosepetal-muted">{variants.length} size/colour options</p>}
-          {!anyAvailable && <p className="text-xs text-rosepetal-wine">Currently unavailable</p>}
+          {productReadinessIssues(product, variants).length > 0 ? <p className="text-xs text-rosepetal-wine">Details being confirmed · enquiry only</p> : !anyAvailable && <p className="text-xs text-rosepetal-wine">Currently unavailable</p>}
           <Link href={productHref} className="inline-flex min-h-10 items-center text-left text-xs font-semibold text-rosepetal-wine underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">View piece & options</Link>
         </div>
       </article>
@@ -63,27 +66,28 @@ export default function ProductCard({ product, variants = [product] }: { product
         <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="product-dialog-title" tabIndex={-1} className="relative grid max-h-[calc(100dvh-1.5rem)] overscroll-contain sm:max-h-[calc(100dvh-3rem)] w-full max-w-4xl gap-5 overflow-y-auto rounded-xl border border-rosepetal-border bg-[#FFF5F6] p-5 shadow-2xl sm:p-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <button type="button" onClick={() => setIsQuickViewOpen(false)} className="absolute right-4 top-4 z-10 rounded-full bg-white/95 p-2 text-rosepetal-wine focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine" aria-label="Close details"><X className="h-5 w-5" /></button>
           <div>
-            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-rosepetal-card"><Image src={displayImage} alt={selected.name} fill sizes="(max-width: 768px) 100vw, 440px" className="object-cover" /></div>
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-rosepetal-card"><Image src={displayImage} alt={readinessIssues.some((issue) => issue.includes("individual photo")) ? `${selected.name} colour options shown together` : selected.name} fill sizes="(max-width: 768px) 100vw, 440px" className="object-cover" /></div>
             {photos.length > 1 && <div aria-label="Product photos" className="mt-3 flex gap-2 overflow-x-auto pb-1">{photos.map((photo, index) => <button key={photo} type="button" onClick={() => setSelectedImage(photo)} aria-label={`Show photo ${index + 1}`} aria-pressed={displayImage === photo} className={`relative h-16 w-14 shrink-0 overflow-hidden rounded border-2 ${displayImage === photo ? "border-rosepetal-wine" : "border-transparent"}`}><Image src={photo} alt="" fill sizes="56px" className="object-cover" /></button>)}</div>}
           </div>
           <div className="flex flex-col gap-3 pr-2 text-rosepetal-text">
             <p className="text-xs font-semibold uppercase tracking-widest text-rosepetal-wine">{selected.category}</p>
             <h2 id="product-dialog-title" className="font-serif-luxury text-3xl text-rosepetal-text">{selected.name}</h2>
             <p className="text-xl text-rosepetal-wine">{selected.price}</p>
-            {selected.description && <p className="text-sm leading-relaxed">{selected.description}</p>}
+            {selected.description && !needsConfirmation && <p className="text-sm leading-relaxed">{selected.description}</p>}
+            {needsConfirmation && <div role="status" className="rounded-lg border border-rosepetal-border bg-white p-3 text-sm leading-6"><strong>Details being confirmed</strong><ul className="list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
             {variants.length > 1 && <div className="border-t border-rosepetal-border pt-3"><VariantSelector variants={variants} selected={selected} onSelect={(item) => { setSelectedId(item.id); setSelectedImage(null); setAdded(false); }} /></div>}
             <dl className="grid gap-2 border-t border-rosepetal-border pt-3 text-sm">
               {selected.size && <div><dt className="inline font-semibold">Size: </dt><dd className="inline">{selected.size}</dd></div>}
               {selected.color && <div><dt className="inline font-semibold">Colour: </dt><dd className="inline">{selected.color}</dd></div>}
-              {selected.fabric && <div><dt className="inline font-semibold">Fabric: </dt><dd className="inline">{selected.fabric}</dd></div>}
-              {selected.care && <div><dt className="inline font-semibold">Care: </dt><dd className="inline">{selected.care}</dd></div>}
-              {selected.delivery && <div><dt className="inline font-semibold">Delivery: </dt><dd className="inline">{selected.delivery}</dd></div>}
-              <div><dt className="inline font-semibold">Availability: </dt><dd className="inline">{(selected.availableStock ?? 0) > 0 ? `${selected.availableStock} available` : "Currently unavailable"}</dd></div>
+              {!needsConfirmation && selected.fabric && <div><dt className="inline font-semibold">Fabric: </dt><dd className="inline">{selected.fabric}</dd></div>}
+              {!needsConfirmation && selected.care && <div><dt className="inline font-semibold">Care: </dt><dd className="inline">{selected.care}</dd></div>}
+              {!needsConfirmation && selected.delivery && <div><dt className="inline font-semibold">Delivery: </dt><dd className="inline">{selected.delivery}</dd></div>}
+              <div><dt className="inline font-semibold">Availability: </dt><dd className="inline">{needsConfirmation ? "To be confirmed" : (selected.availableStock ?? 0) > 0 ? `${selected.availableStock} available` : "Currently unavailable"}</dd></div>
               {selected.sku && <div><dt className="inline font-semibold">SKU: </dt><dd className="inline">{selected.sku}</dd></div>}
             </dl>
-            <button type="button" disabled={!canAdd} onClick={() => { addToBag(selected.id); setAdded(true); }} className="mt-2 rounded bg-rosepetal-wine px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{(selected.availableStock ?? 0) < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to bag"}</button>
+            {!needsConfirmation && <button type="button" disabled={!canAdd} onClick={() => { addToBag(selected.id); setAdded(true); }} className="mt-2 rounded bg-rosepetal-wine px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{(selected.availableStock ?? 0) < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to bag"}</button>}
             {added && <p role="status" className="text-sm text-rosepetal-wine">Added to your bag. <Link href="/bag" className="font-semibold underline underline-offset-4">Review bag</Link></p>}
-            <a href={enquiryUrl(selected)} target="_blank" rel="noopener noreferrer" className="rounded border border-rosepetal-wine/40 px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Ask about this piece</a>
+            <a href={enquiryUrl(selected)} target="_blank" rel="noopener noreferrer" className={`rounded px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${needsConfirmation ? "bg-rosepetal-wine text-white" : "border border-rosepetal-wine/40 text-rosepetal-wine hover:bg-white"}`}>{needsConfirmation ? "Enquire about this piece" : "Ask about this piece"}</a>
           </div>
         </div>
       </div>, document.body)}

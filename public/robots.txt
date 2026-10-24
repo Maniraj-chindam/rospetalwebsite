@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /bag
+Disallow: /checkout
+Disallow: /search
+
+Sitemap: https://rosepetalboutique.com/sitemap.xml

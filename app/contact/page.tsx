@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { Phone, ArrowRight } from "lucide-react";
 import { CONTACT_INFO } from "@/data/boutique-data";
 import { useEnquirySubmission } from "@/hooks/useEnquirySubmission";
@@ -48,41 +47,33 @@ export default function ContactPage() {
                 <Phone className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-rosepetal-text">
                   Call Us
-                </h4>
+                </h2>
                 <a
                   href={`tel:${CONTACT_INFO.phoneDial}`}
-                  className="text-xs text-rosepetal-muted hover:text-rosepetal-wine transition-colors font-sans"
+                  className="text-sm text-rosepetal-text hover:text-rosepetal-wine transition-colors font-sans"
                 >
                   {CONTACT_INFO.phone}
                 </a>
               </div>
             </div>
-            <div className="pl-14 text-xs"><span className="block font-semibold uppercase tracking-[0.16em] text-rosepetal-text">Email</span><a href={`mailto:${CONTACT_INFO.email}`} className="mt-1 inline-block text-rosepetal-muted underline-offset-2 hover:text-rosepetal-wine hover:underline">{CONTACT_INFO.email}</a></div>
+            <div className="pl-14 text-sm"><span className="block font-semibold uppercase tracking-[0.16em] text-rosepetal-text">Email</span><a href={`mailto:${CONTACT_INFO.email}`} className="mt-1 inline-block break-all text-rosepetal-text underline-offset-2 hover:text-rosepetal-wine hover:underline">{CONTACT_INFO.email}</a></div>
 
           </div>
 
-          {/* Floral Bouquet Artwork (matching the pink floral cluster in the mockup) */}
-          <div className="relative pt-6 max-w-[280px]">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-rosepetal-border/60">
-              <Image
-                src="/contact-studio-floral.png"
-                alt="Soft pink floral artwork"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
+          <p className="border-t border-rosepetal-border/70 pt-5 text-sm leading-6 text-rosepetal-muted">
+            For a particular piece, include its name or SKU in your message so the boutique can find it quickly.
+          </p>
         </div>
 
         {/* Right Column: Send Us a Message Form */}
         <div className="lg:col-span-7 bg-white/70 backdrop-blur-sm rounded-2xl p-8 sm:p-10 border border-rosepetal-border/80 shadow-md">
-          <h3 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text mb-6">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl text-rosepetal-text mb-6">
             Send Us a Message
-          </h3>
+          </h2>
 
-          {reference ? <div role="status" className="space-y-4 rounded-lg border border-rosepetal-wine/30 bg-white/80 p-5 text-sm text-rosepetal-text"><h4 className="font-serif-luxury text-2xl text-rosepetal-wine">Your message is saved</h4><p>We received your enquiry. Keep this reference if you need to follow up: <strong>{reference}</strong>.</p><button type="button" onClick={() => { setForm({ name: "", email: "", message: "" }); reset(); }} className="font-semibold text-rosepetal-wine underline underline-offset-4">Send another message</button></div> : <form onSubmit={handleSubmit} className="space-y-5">
+          {reference ? <div role="status" className="space-y-4 rounded-lg border border-rosepetal-wine/30 bg-white/80 p-5 text-sm text-rosepetal-text"><h3 className="font-serif-luxury text-2xl text-rosepetal-wine">Your message is saved</h3><p>We received your enquiry. Keep this reference if you need to follow up: <strong>{reference}</strong>.</p><button type="button" onClick={() => { setForm({ name: "", email: "", message: "" }); reset(); }} className="font-semibold text-rosepetal-wine underline underline-offset-4">Send another message</button></div> : <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label htmlFor="contact-name" className="mb-1.5 block text-xs font-semibold text-rosepetal-text">Your name</label>
                 <input
@@ -95,7 +86,7 @@ export default function ContactPage() {
                   placeholder="Your Name"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
+                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-base sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
                 />
               </div>
 
@@ -111,7 +102,7 @@ export default function ContactPage() {
                   placeholder="Your Email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
+                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-base sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors"
                 />
               </div>
 
@@ -127,7 +118,7 @@ export default function ContactPage() {
                   placeholder="Your Message"
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-xs sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-md bg-[#FFF5F6] border border-rosepetal-border text-base sm:text-sm text-rosepetal-text placeholder-rosepetal-muted/70 focus:outline-none focus:border-rosepetal-wine transition-colors resize-none"
                 />
               </div>
 

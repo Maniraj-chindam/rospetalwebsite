@@ -15,7 +15,7 @@ export default function AboutPage() {
   return (
     <div className="relative overflow-hidden">
       {/* ----------------- 01. OUR STORY HERO ----------------- */}
-      <section className="relative min-h-[75vh] flex items-center pt-6 pb-8 sm:pt-10 sm:pb-12 px-4 sm:px-6 lg:px-8">
+      <section className="relative min-h-[75vh] flex items-center pt-24 pb-8 sm:pt-32 sm:pb-12 px-4 sm:px-6 lg:px-8">
         <FloatingPetals />
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-12 border border-white/60 shadow-xl">
@@ -82,9 +82,9 @@ export default function AboutPage() {
                     {idx === 2 && <Users className="w-5 h-5 stroke-[1.5]" />}
                     {idx === 3 && <HeartHandshake className="w-5 h-5 stroke-[1.5]" />}
                   </div>
-                  <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-rosepetal-text">
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-rosepetal-text">
                     {pillar.title}
-                  </h3>
+                  </h2>
                   <p className="text-xs text-rosepetal-muted font-sans font-light">
                     {pillar.subtitle}
                   </p>

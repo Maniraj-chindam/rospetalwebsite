@@ -8,6 +8,7 @@ import MobileBottomDock from "@/components/MobileBottomDock";
 import { BoutiqueProvider } from "@/context/BoutiqueContext";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://rosepetalboutique.com"),
   title: "Rosepetal Designer Boutique | Where Tradition Blooms in Style",
   description:
     "Explore designer sarees, handlooms, bridal wear and bespoke creations from Rosepetal Designer Boutique.",

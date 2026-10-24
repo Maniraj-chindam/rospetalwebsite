@@ -6,27 +6,19 @@ import Link from "next/link";
 import {
   ArrowRight,
   Sparkles,
-  Scissors,
-  Globe,
-  Users,
-  HeartHandshake,
-  PencilRuler,
   Phone,
   ChevronLeft,
   ChevronRight,
-  Play,
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
 import ProductCard from "@/components/ProductCard";
 import { useEnquirySubmission } from "@/hooks/useEnquirySubmission";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import type { ProductItem } from "@/data/boutique-data";
+import { isProductReadyForCheckout } from "@/lib/product-readiness";
 import {
-  HOME_PILLARS,
   HERO_ARCHED_CATEGORIES,
-  SHOP_BY_CATEGORY_ITEMS,
   CONTACT_INFO,
-  SHOP_ALL_CATEGORY_CARDS,
 } from "@/data/boutique-data";
 
 const SHOP_BY_PRICE_CARDS = [
@@ -74,15 +66,25 @@ export default function MasterBoutiquePage() {
     return () => controller.abort();
   }, []);
   const arrivalGroups = groupCatalogByStyle(newArrivals).slice(0, 4);
+  const liveCategories = [...new Set(newArrivals.map((item) => item.category))].map((category) => ({
+    category,
+    product: newArrivals.find((item) => item.category === category)!,
+    count: groupCatalogByStyle(newArrivals.filter((item) => item.category === category)).length,
+  }));
+  const hasLivePiecesFor = (href: string) => {
+    const params = new URLSearchParams(href.split("?")[1] || "");
+    return newArrivals.some((item) =>
+      (!params.get("category") || item.category === params.get("category")) &&
+      (!params.get("type") || item.websiteType === params.get("type"))
+    );
+  };
+  const liveHeroCategories = HERO_ARCHED_CATEGORIES.filter((category) => hasLivePiecesFor(category.href));
   const availablePriceCards = SHOP_BY_PRICE_CARDS.flatMap((card) => {
-    const piece = newArrivals.find((item) => item.priceNum >= card.min && item.priceNum <= card.max && (item.availableStock ?? 0) > 0);
+    const piece = newArrivals.find((item) => item.priceNum >= card.min && item.priceNum <= card.max && (item.availableStock ?? 0) > 0 && isProductReadyForCheckout(item, newArrivals));
     return piece ? [{ ...card, image: piece.image, imageAlt: `${piece.name}, currently available` }] : [];
   });
 
   // Story video modal state
-  const [shopAllExpanded, setShopAllExpanded] = useState(false);
-  const [selectedShopAllId, setSelectedShopAllId] = useState<string | null>(null);
-  const shopAllGalleryRef = useRef<HTMLDivElement>(null);
   const collectionCarouselRef = useRef<HTMLDivElement>(null);
 
   const scrollCollections = (direction: "left" | "right") => {
@@ -104,38 +106,6 @@ export default function MasterBoutiquePage() {
     void homeEnquiry.submit({ kind: "contact", ...contactForm });
   };
 
-  useEffect(() => {
-    const selectShopAllCategory = (id: string | null) => {
-      if (id && SHOP_ALL_CATEGORY_CARDS.some((card) => card.id === id)) {
-        setSelectedShopAllId(id);
-        setShopAllExpanded(true);
-      }
-    };
-
-    const selectFromLocation = () => {
-      selectShopAllCategory(new URLSearchParams(window.location.search).get("shopAll"));
-    };
-
-    const handleHeaderSelection = (event: Event) => {
-      selectShopAllCategory((event as CustomEvent<string>).detail);
-    };
-
-    selectFromLocation();
-    window.addEventListener("popstate", selectFromLocation);
-    window.addEventListener("shop-all:select", handleHeaderSelection);
-
-    return () => {
-      window.removeEventListener("popstate", selectFromLocation);
-      window.removeEventListener("shop-all:select", handleHeaderSelection);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!selectedShopAllId || !shopAllExpanded) return;
-
-    const target = document.getElementById(`shop-all-card-${selectedShopAllId}`);
-    requestAnimationFrame(() => target?.scrollIntoView({ behavior: "smooth", block: "center" }));
-  }, [selectedShopAllId, shopAllExpanded]);
 
   return (
     <div className="relative">
@@ -221,8 +191,8 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
 
-        {/* ---------------- 8 ARCHED CATEGORIES ---------------- */}
-        <div className="relative overflow-hidden pt-5 pb-4 sm:pt-7 sm:pb-6 lg:pt-8 lg:pb-7">
+        {/* Available categories from the live POS catalog */}
+        {liveHeroCategories.length > 0 && <div className="relative overflow-hidden pt-5 pb-4 sm:pt-7 sm:pb-6 lg:pt-8 lg:pb-7">
           <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
             {/* Centered Heading */}
             <div className="mb-3.5 sm:mb-5 text-center">
@@ -249,7 +219,7 @@ export default function MasterBoutiquePage() {
                 ref={collectionCarouselRef}
                 className="flex snap-x snap-mandatory gap-2 sm:gap-3 overflow-x-auto scroll-smooth pb-3 px-2 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               >
-                {HERO_ARCHED_CATEGORIES.map((cat) => (
+                {liveHeroCategories.map((cat) => (
                   <Link
                     key={cat.id}
                     href={cat.href}
@@ -268,9 +238,9 @@ export default function MasterBoutiquePage() {
                     </div>
 
                     <div className="space-y-0.5 pt-0.5">
-                      <h4 className="font-serif-luxury text-[13px] sm:text-sm font-semibold tracking-wider text-white transition-colors group-hover:text-[#FDE8C5] uppercase">
+                      <h3 className="font-serif-luxury text-[13px] sm:text-sm font-semibold tracking-wider text-white transition-colors group-hover:text-[#FDE8C5] uppercase">
                         {cat.name}
-                      </h4>
+                      </h3>
                       <p className="text-[10px] font-light leading-tight text-rose-200/90">
                         {cat.subtitle}
                       </p>
@@ -289,171 +259,25 @@ export default function MasterBoutiquePage() {
               </button>
             </div>
           </div>
-        </div>
+        </div>}
       </section>
 
-
-
-
-
-      {/* ============================================================== */}
-      {/* 04B. SHOP ALL LUXURY STOREFRONT                                */}
-      {/* ============================================================== */}
-      <section id="shop-all" className="py-4 sm:py-6 lg:py-7 px-4 sm:px-6 lg:px-8">
-        <div className="relative isolate mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-rosepetal-border/50 bg-[#FFF5F6]/80 px-5 py-6 sm:px-8 sm:py-8 lg:px-12 lg:py-10 shadow-[0_16px_40px_rgba(103,34,49,0.06)]">
-          {/* Luxury Saree Backdrop */}
-          <Image
-            src="/shop-all-couture-backdrop.png"
-            alt="Rosepetal Boutique Saree Couture Backdrop"
-            fill
-            sizes="(max-width: 1280px) 100vw, 1280px"
-            className="-z-10 object-cover object-right pointer-events-none"
-            priority={false}
-          />
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#FFF5F6]/95 via-[#FFF5F6]/75 to-[#FFF5F6]/25 sm:from-[#FFF5F6]/95 sm:via-[#FFF5F6]/65 sm:to-transparent"
-            aria-hidden="true"
-          />
-
-          <div className="relative z-10 grid items-center gap-8 lg:min-h-[21rem] lg:grid-cols-[46%_54%] lg:gap-0">
-            <div className="max-w-xl py-1 sm:py-3 lg:pr-5">
-              <span className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.27em] text-rosepetal-wine before:h-px before:w-8 before:bg-[#B87280] before:content-['']">
-                The Rosepetal world
-              </span>
-              <h2 className="mt-4 font-serif-luxury text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.02] sm:leading-[0.94] tracking-[-0.03em] text-rosepetal-text">
-                Everything beautiful,
-                <span className="mt-1 block italic text-rosepetal-wine">all in one place.</span>
-              </h2>
-              <p className="mt-5 max-w-md text-sm leading-relaxed sm:leading-7 text-rosepetal-muted">
-                From timeless sarees and celebration-ready silhouettes to soft comforts for home—discover every collection, thoughtfully brought together.
-              </p>
-              <div className="mt-6 flex flex-wrap items-center gap-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShopAllExpanded((expanded) => !expanded);
-                    setSelectedShopAllId(null);
-                  }}
-                  aria-expanded={shopAllExpanded}
-                  aria-controls="shop-all-category-gallery"
-                  className="group inline-flex min-h-12 items-center gap-2.5 rounded-full bg-rosepetal-wine px-6 text-[10px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_10px_24px_rgba(125,24,49,0.22)] transition-all hover:-translate-y-0.5 hover:bg-rosepetal-wineHover hover:shadow-[0_14px_28px_rgba(125,24,49,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2"
-                >
-                  <span>{shopAllExpanded ? "Hide categories" : "Shop all collections"}</span>
-                  <ArrowRight className={`h-4 w-4 transition-transform ${shopAllExpanded ? "rotate-90" : "group-hover:translate-x-1"}`} />
-                </button>
-                <span className="font-serif-luxury text-sm italic text-[#8B6D73]">Sarees · Occasion wear · Home</span>
-              </div>
-            </div>
-
-            <div className="relative h-[15rem] sm:h-[18rem] lg:h-[21.25rem] mt-2 sm:mt-0" aria-label="Featured collections">
-              <Link href="/collections?category=Sarees" aria-label="Shop Sarees" className="group absolute bottom-1 left-0 h-[12.5rem] sm:h-[18rem] w-[38%] -rotate-[3deg] sm:-rotate-[4deg] overflow-hidden rounded-t-[5rem] sm:rounded-t-[7rem] rounded-b-2xl transition-all duration-300 hover:z-10 hover:-translate-y-2 hover:rotate-0 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine lg:left-[3%]">
-                <Image src="/shop-all-featured-saree.png" alt="Embroidered mauve saree collection" fill sizes="(max-width: 1024px) 38vw, 20vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
-                <span className="absolute inset-0 bg-gradient-to-t from-[#300C16]/60 via-transparent to-transparent" />
-                <span className="absolute inset-x-0 bottom-3 sm:bottom-4 z-10 text-center font-serif-luxury text-sm sm:text-lg text-white">Sarees</span>
-              </Link>
-
-              <Link href="/collections?category=Lehengas" aria-label="Shop Lehengas" className="group absolute bottom-2 left-[31%] z-[3] h-[13.75rem] sm:h-[20.25rem] w-[39%] -translate-y-2 overflow-hidden rounded-t-[5.5rem] sm:rounded-t-[8rem] rounded-b-2xl transition-transform duration-300 hover:-translate-y-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine">
-                <Image src="/shop-all-featured-lehenga.png" alt="Ivory bridal lehenga collection" fill sizes="(max-width: 1024px) 39vw, 21vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
-                <span className="absolute inset-0 bg-gradient-to-t from-[#300C16]/60 via-transparent to-transparent" />
-                <span className="absolute inset-x-0 bottom-3 sm:bottom-4 z-10 text-center font-serif-luxury text-sm sm:text-lg text-white">Lehengas</span>
-              </Link>
-
-              <Link href="/collections?category=Dresses" aria-label="Shop Dresses" className="group absolute bottom-1 right-0 h-[12.5rem] sm:h-[18rem] w-[38%] rotate-[3deg] sm:rotate-[4deg] overflow-hidden rounded-t-[5rem] sm:rounded-t-[7rem] rounded-b-2xl transition-all duration-300 hover:z-10 hover:-translate-y-2 hover:rotate-0 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine lg:right-[2%]">
-                <Image src="/shop-all-featured-dress.png" alt="Rose designer dress collection" fill sizes="(max-width: 1024px) 38vw, 20vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
-                <span className="absolute inset-0 bg-gradient-to-t from-[#300C16]/60 via-transparent to-transparent" />
-                <span className="absolute inset-x-0 bottom-3 sm:bottom-4 z-10 text-center font-serif-luxury text-sm sm:text-lg text-white">Dresses</span>
-              </Link>
-
-              <span className="absolute right-0 top-0 z-[6] grid h-[3.75rem] w-[3.75rem] sm:h-[5.5rem] sm:w-[5.5rem] rotate-[7deg] place-items-center text-center font-serif-luxury text-[9.5px] sm:text-[13px] leading-tight text-rosepetal-wine sm:right-[1%]">
-                Curated<br />with love
-              </span>
-            </div>
+      {/* Only published POS categories are presented as shoppable. */}
+      {liveCategories.length > 0 && <section id="shop-all" className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
+        <div className="rounded-[2rem] border border-white/40 bg-[#FFF5F6] p-6 shadow-xl sm:p-10">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-rosepetal-wine">The live edit</p>
+          <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div><h2 className="font-serif-luxury text-3xl text-rosepetal-text sm:text-5xl">Shop what is here now.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-rosepetal-muted">These categories come from pieces currently published by the boutique. Explore the lookbook for style inspiration beyond the live edit.</p></div>
+            <Link href="/lookbook" className="text-sm font-semibold text-rosepetal-wine underline underline-offset-4">Explore the lookbook</Link>
           </div>
-
-          <div className="relative z-10 mt-5 flex flex-col items-start justify-between gap-4 border-t border-rosepetal-wine/15 pt-5 lg:flex-row lg:items-center">
-            <nav aria-label="Shop all categories" className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full pb-1">
-              {[
-                ["Designer Dresses", "/collections?category=Dresses"],
-                ["Handloom Collection", "/collections?category=Handlooms"],
-                ["Designer Frocks", "/collections?category=Dresses"],
-                ["Lehenga Collection", "/collections?category=Lehengas"],
-              ].map(([label, href]) => (
-                <Link key={label} href={href} className="inline-flex min-h-[2.125rem] shrink-0 items-center rounded-full border border-rosepetal-wine/15 bg-white/70 px-3 text-[9px] font-medium uppercase tracking-[0.1em] text-[#723047] transition-colors hover:border-rosepetal-wine/35 hover:bg-white hover:text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            <Link href="/collections" className="group inline-flex items-center gap-2 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.15em] text-rosepetal-wine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2">
-              <span>View everything</span>
-              <ArrowRight className="h-3.5 w-3.5 -rotate-45 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-          </div>
-
-          <div
-            ref={shopAllGalleryRef}
-            id="shop-all-category-gallery"
-            aria-hidden={!shopAllExpanded}
-            className={`relative z-10 grid overflow-hidden transition-[grid-template-rows,opacity,margin] duration-500 ease-out ${
-              shopAllExpanded ? "mt-8 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0 pointer-events-none"
-            }`}
-          >
-            <div className={shopAllExpanded ? "min-h-0 bg-white px-5 py-7 sm:px-8 sm:py-9" : "min-h-0 p-0"}>
-              <div className="border-t border-rosepetal-wine/15 pt-7">
-                <div className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-rosepetal-wine">All collections</p>
-                    <h3 className="mt-1 font-serif-luxury text-3xl text-rosepetal-text sm:text-4xl">Find the piece that feels like you.</h3>
-                  </div>
-                  <p className="max-w-sm text-sm leading-6 text-rosepetal-muted">Choose a category to view its live pieces. Category images are styling inspiration.</p>
-                </div>
-
-                {(["Designer Dresses", "Handloom Collection", "Designer Frocks", "Lehenga Collection"] as const).map((group) => (
-                  <div key={group} className="mb-10 last:mb-0">
-                    <div className="mb-4 flex items-center gap-3">
-                      <span className="h-px w-8 bg-rosepetal-wine/35" />
-                      <h4 className="font-serif-luxury text-xl text-rosepetal-wine">{group}</h4>
-                    </div>
-                    <div className={`grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:gap-5 ${
-                      group === "Lehenga Collection" ? "lg:grid-cols-5" : "lg:grid-cols-4"
-                    }`}>
-                      {SHOP_ALL_CATEGORY_CARDS.filter((card) => card.group === group).map((card) => {
-                        const isSelected = selectedShopAllId === card.id;
-
-                        return (
-                          <Link
-                            key={card.id}
-                            id={`shop-all-card-${card.id}`}
-                            data-shop-all-category-card
-                            href={card.href}
-                            className={`group relative isolate aspect-[4/5] overflow-hidden rounded-[1.35rem] border bg-[#ECD7D3] shadow-[0_10px_24px_rgba(91,28,47,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_32px_rgba(91,28,47,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosepetal-wine focus-visible:ring-offset-2 ${
-                              isSelected ? "border-rosepetal-wine ring-2 ring-rosepetal-wine ring-offset-2" : "border-white/80"
-                            }`}
-                          >
-                            <Image
-                              src={card.image}
-                              alt={card.name}
-                              fill
-                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                              className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                            <span className="absolute inset-0 bg-gradient-to-t from-[#270914]/80 via-[#270914]/10 to-transparent" />
-                            <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 sm:p-4">
-                              <span className="font-serif-luxury text-[15px] leading-[1.05] text-white sm:text-lg">{card.name}</span>
-                              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-white/60 bg-white/15 text-white backdrop-blur-sm">
-                                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-                              </span>
-                            </span>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {liveCategories.map(({ category, product, count }) => <Link key={category} href={`/collections?category=${encodeURIComponent(category)}`} className="group flex items-center gap-4 rounded-xl border border-rosepetal-border bg-white p-3 transition-shadow hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">
+              <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-lg bg-rosepetal-card"><Image src={product.image} alt="" fill sizes="96px" className="object-cover transition-transform group-hover:scale-105" /></div>
+              <div><h3 className="font-serif-luxury text-xl text-rosepetal-text">{category}</h3><p className="mt-2 text-xs text-rosepetal-muted">{count} {count === 1 ? "design" : "designs"} in the live edit</p><span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-rosepetal-wine">Explore <ArrowRight className="size-3.5" /></span></div>
+            </Link>)}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ============================================================== */}
       {/* 05. NEW ARRIVALS SECTION                                        */}
@@ -466,10 +290,10 @@ export default function MasterBoutiquePage() {
         <div className="relative z-10 mb-6 flex items-end justify-between border-b border-white/20 pb-2.5">
           <div>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white font-normal drop-shadow-sm">
-              New Arrivals
+              Current Pieces
             </h2>
             <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-[#FDE8C5] mt-1 block">
-              FRESH STYLES, NEW STORIES
+              THE LIVE BOUTIQUE EDIT
             </span>
           </div>
           <Link
@@ -488,54 +312,6 @@ export default function MasterBoutiquePage() {
           {arrivalGroups.length > 0 && <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">{arrivalGroups.map((variants) => <div key={variants[0].styleCode || variants[0].id} className="rounded-xl bg-white p-3"><ProductCard product={variants[0]} variants={variants} /></div>)}</div>}
         </div>
 
-        {/* Row 2: 2 Promotional Banners */}
-        {newArrivals.length > 0 && <div className="relative z-10 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
-          {/* Banner 1: Elegant Dresses */}
-          <div className="relative overflow-hidden group min-h-[170px] sm:min-h-[220px] rounded-xl sm:rounded-2xl">
-            <div className="relative aspect-[1024/412] sm:aspect-auto sm:h-full min-h-[170px] sm:min-h-[220px] w-full">
-              <Image
-                src="/elegant-dresses-clean-banner.png"
-                alt="Elegant Dresses for Every Occasion - Premium Collection"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover object-center group-hover:scale-[1.01] transition-transform duration-500"
-              />
-              {/* Live Interactive Button outside/over the image */}
-              <div className="absolute left-3 bottom-3 sm:left-[7%] sm:bottom-[22%] z-10">
-                <Link
-                  href="/collections?category=Dresses"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase rounded-sm shadow-sm transition-all group/btn"
-                >
-                  <span>SHOP DRESSES</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Banner 2: Bed & Bath */}
-          <div className="relative overflow-hidden group min-h-[170px] sm:min-h-[220px] rounded-xl sm:rounded-2xl">
-            <div className="relative aspect-[1024/429] sm:aspect-auto sm:h-full min-h-[170px] sm:min-h-[220px] w-full">
-              <Image
-                src="/bed-bath-clean-banner.png"
-                alt="Comfort Looks Beautiful Too - Bed & Bath Collection"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover object-center group-hover:scale-[1.01] transition-transform duration-500"
-              />
-              {/* Live Interactive Button outside/over the image */}
-              <div className="absolute left-3 bottom-3 sm:left-[7.4%] sm:bottom-[14%] z-10">
-                <Link
-                  href="/collections?category=Bed+Linens"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 bg-rosepetal-wine hover:bg-rosepetal-wineHover text-white text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase rounded-sm shadow-sm transition-all group/btn"
-                >
-                  <span>EXPLORE COLLECTION</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>}
       </section>
 
       {/* ============================================================== */}
