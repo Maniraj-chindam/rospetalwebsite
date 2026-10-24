@@ -4,7 +4,7 @@
 
 ## Where the project stands
 
-- The public website is deployed at [rosepetalboutique.com](https://rosepetalboutique.com/) through Firebase Hosting. The source is pushed to the `feature/rosepetal-boutique-website` branch of [rosepetal-website](https://github.com/janagamsathwikpatel-art/rosepetal-website).
+- The public website is deployed at [rosepetalboutique.com](https://rosepetalboutique.com/) through Firebase Hosting. The source is on the `feature/rosepetal-boutique-website` branch of [rosepetal-website](https://github.com/janagamsathwikpatel-art/rosepetal-website) and is mirrored to the `main` branch of [rospetalwebsite](https://github.com/Maniraj-chindam/rospetalwebsite).
 - Visitors can browse the POS-backed collection, open product pages, select available size and colour variants, save a wishlist, keep a local bag, search, and submit contact or consultation enquiries. The POS has acknowledged test enquiries with references.
 - **Customers cannot complete a live online purchase or book a shipment yet.** Website checkout code is connected to POS endpoints, but the POS payment and fulfilment switches are off. No captured payment-to-Shiprocket test has been completed.
 - The POS is intended to manage products and website content. A separate website admin account was not added.
