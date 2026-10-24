@@ -26,4 +26,4 @@ The build exports to `out/`. Firebase Hosting serves static files only; Next.js 
 - `POST /api/checkout/quote` supplies live POS pricing and a Shiprocket estimate when each piece has confirmed packed measurements. The website rejects an inconsistent or expired payable total.
 - Razorpay session, verification and status calls remain gated by the POS release switch and merchant credentials. The website also blocks provisional or missing catalog items from payment.
 
-See [release readiness](docs/release-readiness-2026-10-24.md) for the current evidence, owner inputs and acceptance gates. The confirmed public contact details are `+91 91823 18862` and `rosepetalfashionstudio@gmail.com`. Founder, artisan, studio, photography, return and sale-policy claims still need owner approval.
+See the [current website progress](docs/website-progress-2026-10-24.md) for completed work and remaining steps, and [release readiness](docs/release-readiness-2026-10-24.md) for acceptance gates. The confirmed public contact details are `+91 91823 18862` and `rosepetalfashionstudio@gmail.com`. Founder, artisan, studio, photography, return and sale-policy claims still need owner approval.
