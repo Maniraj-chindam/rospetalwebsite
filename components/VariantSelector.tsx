@@ -42,10 +42,10 @@ export default function VariantSelector({ variants, selected, onSelect }: {
       {colours.length > 0 && <fieldset>
         <legend className="text-xs font-semibold uppercase tracking-[0.17em] text-rosepetal-wine">Colour <span className="ml-2 font-normal normal-case tracking-normal text-rosepetal-muted">{selected.color}</span></legend>
         <div className="mt-3 flex flex-wrap gap-2">
-          {colours.map((colour, index) => {
+          {colours.map((colour) => {
             const option = variants.find((item) => item.size === selected.size && item.color === colour);
             const selectedColour = selected.color === colour;
-            return <button key={colour} type="button" onClick={() => chooseColour(colour)} disabled={!option} aria-pressed={selectedColour} aria-label={`Colour ${index + 1}: ${colour}${option && (option.availableStock ?? 0) < 1 ? ", sold out" : ""}`} className={`flex min-h-14 min-w-[5.5rem] flex-col items-center justify-center rounded-md border px-3 py-2 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${selectedColour ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-text hover:border-rosepetal-wine"} disabled:cursor-not-allowed disabled:opacity-40`}><span className="text-base font-semibold leading-tight">{index + 1}</span><span className={`mt-0.5 text-[10px] leading-tight ${selectedColour ? "text-white/85" : "text-rosepetal-muted"}`}>{colour}</span></button>;
+            return <button key={colour} type="button" onClick={() => chooseColour(colour)} disabled={!option} aria-pressed={selectedColour} aria-label={`Colour ${colour}${option && (option.availableStock ?? 0) < 1 ? ", sold out" : ""}`} className={`min-h-11 rounded-md border px-4 py-2 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${selectedColour ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-text hover:border-rosepetal-wine"} disabled:cursor-not-allowed disabled:opacity-40`}>{colour}</button>;
           })}
         </div>
       </fieldset>}
