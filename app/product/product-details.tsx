@@ -120,7 +120,7 @@ export default function ProductDetails() {
           {!needsConfirmation && <a href={enquiryUrl(product)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine/40 px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Ask about this piece</a>}
 
           <dl className="mt-8 divide-y divide-rosepetal-border border-y border-rosepetal-border text-sm">
-            {[["Size", product.size], ["Colour", product.color], ["Fabric", needsConfirmation ? undefined : product.fabric], ["Care", needsConfirmation ? undefined : product.care], ["Delivery", needsConfirmation ? undefined : product.delivery], ["SKU", product.sku]].filter((entry): entry is string[] => Boolean(entry[1])).map(([label, value]) => <div key={label} className="grid grid-cols-[6rem_1fr] gap-3 py-3"><dt className="font-semibold text-rosepetal-wine">{label}</dt><dd className="leading-relaxed text-rosepetal-text">{value}</dd></div>)}
+            {[["Size", product.size], ["Measurements", product.sizeMeasurements], ["Colour", product.color], ["Fabric", needsConfirmation ? undefined : product.fabric], ["Care", needsConfirmation ? undefined : product.care], ["Delivery", needsConfirmation ? undefined : product.delivery], ["SKU", product.sku]].filter((entry): entry is string[] => Boolean(entry[1])).map(([label, value]) => <div key={label} className="grid grid-cols-[6rem_1fr] gap-3 py-3"><dt className="font-semibold text-rosepetal-wine">{label}</dt><dd className="leading-relaxed text-rosepetal-text">{value}</dd></div>)}
           </dl>
         </div>
       </article>

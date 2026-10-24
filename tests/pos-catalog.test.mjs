@@ -17,6 +17,7 @@ const variant = (id, overrides = {}) => ({
   care: "Gentle wash",
   delivery: "Dispatch after boutique confirmation.",
   size: "M",
+  sizeMeasurements: "Bust 96 cm; length 110 cm",
   color: "Rose",
   pricePaise: 185000,
   image: "/uploads/rose.jpg",
@@ -42,6 +43,7 @@ test("maps paginated POS variants, money and safe images", async () => {
     assert.equal(products[0].priceNum, 1850);
     assert.equal(products[0].price, "₹1,850");
     assert.equal(products[0].images?.[1], "https://assets.example.invalid/uploads/detail.jpg");
+    assert.equal(products[0].sizeMeasurements, "Bust 96 cm; length 110 cm");
     assert.equal(products[1].availableStock, 0);
     assert.equal(groupCatalogByStyle(products).length, 1);
     assert.equal(groupCatalogByStyle(products)[0][0].id, "one");

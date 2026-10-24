@@ -6,7 +6,7 @@ const { assessBagProducts, productReadinessIssues } = await import("../lib/produ
 const product = (id, overrides = {}) => ({
   id, styleCode: "RP-01", name: "Rose kurta", category: "Dresses", description: "Cotton kurta with a floral print.",
   fabric: "Cotton", care: "Gentle wash", delivery: "Dispatch timing confirmed with the boutique.",
-  size: "M", color: "Rose", image: `https://assets.example.invalid/uploads/${id}.jpg`,
+  size: "M", sizeMeasurements: "Bust 96 cm; length 110 cm", color: "Rose", image: `https://assets.example.invalid/uploads/${id}.jpg`,
   priceNum: 1850, availableStock: 2, ...overrides,
 });
 
@@ -33,5 +33,11 @@ test("stale and provisional bag items cannot proceed to payment", () => {
 test("a generic test name cannot become buyable by changing only the description", () => {
   const item = product("test-item", { name: "Designer Frock 1" });
   assert.match(productReadinessIssues(item, [item]).join(" "), /name needs boutique confirmation/i);
+  assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, false);
+});
+
+test("a size label without actual measurements is enquiry only", () => {
+  const item = product("no-measurements", { sizeMeasurements: undefined });
+  assert.match(productReadinessIssues(item, [item]).join(" "), /size measurements/i);
   assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, false);
 });

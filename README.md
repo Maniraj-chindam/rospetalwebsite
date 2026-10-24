@@ -21,7 +21,7 @@ The build exports to `out/`. Firebase Hosting serves static files only; Next.js 
 
 ## Live integrations
 
-- `GET /api/catalog` supplies owner-published POS variants. A published variant is display data, not a reservation or permission to charge.
+- `GET /api/catalog` supplies owner-published POS variants. A published variant is display data, not a reservation or permission to charge. Clothing stays enquiry-only until each variant also supplies approved `sizeMeasurements` text; the current POS contract does not yet expose that optional field.
 - `POST /api/enquiries` saves contact and consultation requests. A reference appears only after POS acknowledges the save. The sender email still requires SES verification before boutique inbox delivery can be claimed.
 - `POST /api/checkout/quote` supplies live POS pricing and a Shiprocket estimate when each piece has confirmed packed measurements. The website rejects an inconsistent or expired payable total.
 - Razorpay session, verification and status calls remain gated by the POS release switch and merchant credentials. The website also blocks provisional or missing catalog items from payment.

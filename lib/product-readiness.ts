@@ -11,6 +11,9 @@ export function productReadinessIssues(product: ProductItem, catalog: ProductIte
   if ([product.description, product.fabric, product.care, product.delivery].some((value) => !value?.trim() || draftCopy.test(value))) {
     issues.push("Product details and availability need boutique confirmation.");
   }
+  if (!product.sizeMeasurements?.trim() || draftCopy.test(product.sizeMeasurements)) {
+    issues.push("Size measurements need boutique confirmation.");
+  }
 
   const style = catalog.filter((item) => (item.styleCode || item.id) === (product.styleCode || product.id));
   if (style.some((item) => item.id !== product.id && item.color !== product.color && item.image === product.image)) {

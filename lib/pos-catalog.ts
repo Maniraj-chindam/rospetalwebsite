@@ -18,6 +18,7 @@ type CatalogVariant = {
   care: string;
   delivery: string;
   size: string;
+  sizeMeasurements?: string;
   color: string;
   pricePaise: number;
   image: string;
@@ -36,6 +37,8 @@ function toProduct(value: CatalogVariant): ProductItem {
       !categories.has(value.category) || typeof value.websiteType !== "string" || value.websiteType.length > 100 || !nonEmpty(value.description, 2000) ||
       !nonEmpty(value.fabric, 300) || !nonEmpty(value.care, 500) ||
       !nonEmpty(value.delivery, 500) || !nonEmpty(value.size, 40) ||
+      (value.sizeMeasurements !== undefined && typeof value.sizeMeasurements !== "string") ||
+      (typeof value.sizeMeasurements === "string" && value.sizeMeasurements.length > 500) ||
       typeof value.color !== "string" || value.color.length > 60 ||
       !photoPath.test(value.image) || !Array.isArray(value.images) ||
       value.images.length < 1 || value.images.length > 5 ||
@@ -59,6 +62,7 @@ function toProduct(value: CatalogVariant): ProductItem {
     care: value.care,
     delivery: value.delivery,
     size: value.size,
+    sizeMeasurements: value.sizeMeasurements?.trim(),
     color: value.color,
     priceNum,
     price: rupees.format(priceNum),

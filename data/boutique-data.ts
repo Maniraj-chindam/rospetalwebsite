@@ -9,6 +9,7 @@ export interface ProductItem {
   description?: string;
   sku?: string;
   size?: string;
+  sizeMeasurements?: string;
   color?: string;
   availableStock?: number;
   styleCode?: string;
