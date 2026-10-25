@@ -4,6 +4,8 @@ const draftCopy = /website publishing test|stock availability is to be confirmed
 const draftName = /^(?:designer frock\s*\d+|.*\b(?:test|sample|demo|placeholder)\b.*)$/i;
 
 export function productReadinessIssues(product: ProductItem, catalog: ProductItem[]): string[] {
+  if(isPaymentTestProduct(product))return [];
+  if(product.checkoutAllowed===false)return ['Checkout is limited to the ₹1 Razorpay Test Saree. Other products remain enquiry-only.'];
   const issues: string[] = [];
   if (draftName.test(product.name.trim())) {
     issues.push("The product name needs boutique confirmation.");
@@ -20,6 +22,10 @@ export function productReadinessIssues(product: ProductItem, catalog: ProductIte
     issues.push("An individual photo of the selected colour is still needed.");
   }
   return issues;
+}
+
+export function isPaymentTestProduct(product: ProductItem): boolean {
+  return product.paymentTestOnly===true&&product.checkoutAllowed===true&&product.id==='7552dfbd-31bf-4ef8-8b1c-98f84cb8784a'&&product.styleCode==='RP-RAZORPAY-TEST-SAREE'&&product.priceNum===1;
 }
 
 export function isProductReadyForCheckout(product: ProductItem, catalog: ProductItem[]): boolean {

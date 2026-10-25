@@ -49,3 +49,15 @@ test("a quote error reaches the customer without a false payable total", async (
   try { await assert.rejects(quoteBag(lines, "560001"), /Packed measurements are missing/); }
   finally { global.fetch = original; }
 });
+
+test('one-rupee payment-only quote needs no courier and rejects forged exceptions',async()=>{
+ const original=global.fetch,id='7552dfbd-31bf-4ef8-8b1c-98f84cb8784a';
+ const testLines=[{productId:id,qty:1}];
+ const value=quote({checkoutMode:'payment_test',items:[{productId:id,sku:'TEST',name:'Razorpay Test Saree',size:'Test size',color:'Test colour',qty:1,unitPricePaise:100,lineTotalPaise:100}],subtotalPaise:100,deliveryPincode:null,deliveryStatus:'not_required',deliveryQuote:null,shippingPaise:0,totalPaise:100});
+ try{
+  global.fetch=async()=>Response.json(value);assert.equal((await quoteBag(testLines)).totalPaise,100);
+  for(const patch of [{totalPaise:101},{shippingPaise:1},{subtotalPaise:200},{checkoutMode:undefined},{items:[{...value.items[0],productId:'other'}]}]){
+   global.fetch=async()=>Response.json({...value,...patch});await assert.rejects(quoteBag(testLines),/invalid/);
+  }
+ }finally{global.fetch=original;}
+});

@@ -6,7 +6,7 @@ const attempts = new Map<string, { id: string; createdAt: number }>();
 
 export type CheckoutBuyer = { name: string; email: string; phone: string };
 export type CheckoutAddress = { line1: string; line2: string; city: string; state: string; pincode: string; country: 'IN' };
-export type CheckoutStatus = { reference: string; paymentStatus: string; fulfillmentStatus: string; totalPaise: number; expiresAt?: string };
+export type CheckoutStatus = { reference: string; paymentStatus: string; fulfillmentStatus: string; totalPaise: number; expiresAt?: string; paymentTestOnly?: boolean };
 export type CheckoutSession = CheckoutStatus & { checkoutToken: string; razorpayOrderId: string; keyId: string; currency: 'INR'; expiresAt: string };
 
 function checkoutStatus(value: unknown): CheckoutStatus {

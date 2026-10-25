@@ -19,6 +19,8 @@ export interface ProductItem {
   delivery?: string;
   images?: string[];
   updatedAt?: string;
+  paymentTestOnly?: boolean;
+  checkoutAllowed?: boolean;
 }
 
 export interface LookbookItem {

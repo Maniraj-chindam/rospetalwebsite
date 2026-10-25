@@ -25,6 +25,8 @@ type CatalogVariant = {
   images: string[];
   availableStock: number;
   updatedAt: string;
+  paymentTestOnly?: boolean;
+  checkoutAllowed?: boolean;
 };
 
 function nonEmpty(value: unknown, max: number): value is string {
@@ -45,6 +47,8 @@ function toProduct(value: CatalogVariant): ProductItem {
       !value.images.includes(value.image) || !value.images.every((photo) => typeof photo === "string" && photoPath.test(photo)) ||
       !Number.isSafeInteger(value.pricePaise) || value.pricePaise <= 0 ||
       !Number.isSafeInteger(value.availableStock) || value.availableStock < 0 ||
+      (value.paymentTestOnly !== undefined && typeof value.paymentTestOnly !== 'boolean') ||
+      (value.checkoutAllowed !== undefined && typeof value.checkoutAllowed !== 'boolean') ||
       !nonEmpty(value.updatedAt, 40)) {
     throw new Error("The catalog response was invalid.");
   }
@@ -60,7 +64,7 @@ function toProduct(value: CatalogVariant): ProductItem {
     description: value.description,
     fabric: value.fabric,
     care: value.care,
-    delivery: value.delivery,
+    delivery: value.paymentTestOnly ? 'Payment test only. No physical delivery. Other product checkout and Shiprocket booking remain disabled.' : value.delivery,
     size: value.size,
     sizeMeasurements: value.sizeMeasurements?.trim(),
     color: value.color,
@@ -70,6 +74,8 @@ function toProduct(value: CatalogVariant): ProductItem {
     images: value.images.map((photo) => `${assetBase}${photo}`),
     availableStock: value.availableStock,
     updatedAt: value.updatedAt,
+    paymentTestOnly: value.paymentTestOnly,
+    checkoutAllowed: value.checkoutAllowed,
   };
 }
 

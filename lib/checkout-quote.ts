@@ -3,10 +3,11 @@ const apiBase = (process.env.NEXT_PUBLIC_POS_API_BASE_URL || "https://gpu272zv2g
 export type BagLine = { productId: string; qty: number };
 export type BagQuote = {
   currency: "INR";
+  checkoutMode?: 'payment_test';
   items: Array<{ productId: string; sku: string; name: string; size: string; color: string; qty: number; unitPricePaise: number; lineTotalPaise: number }>;
   subtotalPaise: number;
   deliveryPincode: string | null;
-  deliveryStatus: "pin_required" | "packaging_required" | "available" | "unserviceable" | "unavailable";
+  deliveryStatus: "pin_required" | "packaging_required" | "available" | "unserviceable" | "unavailable" | "not_required";
   deliveryQuote: { courierCompanyId: number; courierName: string; estimatedChargePaise: number; estimatedDeliveryDays: number | null } | null;
   quotedAt: string;
   expiresAt: string;
@@ -34,7 +35,9 @@ export async function quoteBag(items: BagLine[], deliveryPincode?: string, signa
   } finally { clearTimeout(timeout); signal?.removeEventListener("abort", abort); }
   const body = await response.json().catch(() => null);
   if (!response.ok) throw new Error(typeof body?.error === "string" ? body.error : "The bag could not be checked. Please try again.");
-  if (!body || body.currency !== "INR" || !Array.isArray(body.items) || body.items.length !== items.length ||
+  const paymentTest = body?.checkoutMode === 'payment_test';
+  const validTest = paymentTest && body.items?.length===1 && body.items[0].productId==='7552dfbd-31bf-4ef8-8b1c-98f84cb8784a' && body.items[0].qty===1 && body.items[0].unitPricePaise===100 && body.subtotalPaise===100 && body.deliveryStatus==='not_required' && body.deliveryQuote===null && body.deliveryPincode===null;
+  if (!body || body.currency !== "INR" || (body.checkoutMode!==undefined&&!paymentTest) || paymentTest&&!validTest || !Array.isArray(body.items) || body.items.length !== items.length ||
       !Number.isSafeInteger(body.subtotalPaise) || body.subtotalPaise < 0 ||
       !body.items.every((item: BagQuote["items"][number], index: number) => item && item.productId === items[index].productId && item.qty === items[index].qty &&
         Number.isSafeInteger(item.qty) && item.qty > 0 && Number.isSafeInteger(item.unitPricePaise) && item.unitPricePaise > 0 &&
@@ -42,7 +45,7 @@ export async function quoteBag(items: BagLine[], deliveryPincode?: string, signa
         item.lineTotalPaise === item.qty * item.unitPricePaise) ||
       body.items.reduce((sum: number, item: BagQuote["items"][number]) => sum + item.lineTotalPaise, 0) !== body.subtotalPaise ||
       typeof body.checkoutAvailable !== "boolean" || typeof body.reason !== "string" ||
-      !["pin_required", "packaging_required", "available", "unserviceable", "unavailable"].includes(body.deliveryStatus) ||
+      !["pin_required", "packaging_required", "available", "unserviceable", "unavailable", ...(validTest?['not_required']:[])].includes(body.deliveryStatus) ||
       (body.deliveryQuote !== null && (!body.deliveryQuote || !Number.isSafeInteger(body.deliveryQuote.courierCompanyId) || body.deliveryQuote.courierCompanyId <= 0 ||
         !Number.isSafeInteger(body.deliveryQuote.estimatedChargePaise) || body.deliveryQuote.estimatedChargePaise < 0 ||
         typeof body.deliveryQuote.courierName !== "string" || !body.deliveryQuote.courierName.trim() ||
@@ -51,7 +54,7 @@ export async function quoteBag(items: BagLine[], deliveryPincode?: string, signa
       typeof body.quotedAt !== "string" || !Number.isFinite(Date.parse(body.quotedAt)) ||
       typeof body.expiresAt !== "string" || !Number.isFinite(Date.parse(body.expiresAt)) ||
       Date.parse(body.expiresAt) <= Date.parse(body.quotedAt) || Date.parse(body.expiresAt) <= Date.now() ||
-      (body.checkoutAvailable && (body.deliveryStatus !== "available" || body.shippingPaise !== body.deliveryQuote?.estimatedChargePaise ||
+      (body.checkoutAvailable && (paymentTest ? body.shippingPaise!==0||body.totalPaise!==100 : body.deliveryStatus !== "available" || body.shippingPaise !== body.deliveryQuote?.estimatedChargePaise ||
         !Number.isSafeInteger(body.totalPaise) || body.totalPaise !== body.subtotalPaise + body.shippingPaise)) ||
       (!body.checkoutAvailable && (body.shippingPaise !== null || body.totalPaise !== null))) {
     throw new Error("The bag quote was invalid. Please refresh and try again.");

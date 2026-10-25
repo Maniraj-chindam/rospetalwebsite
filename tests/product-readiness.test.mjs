@@ -41,3 +41,11 @@ test("a size label without actual measurements is enquiry only", () => {
   assert.match(productReadinessIssues(item, [item]).join(" "), /size measurements/i);
   assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, false);
 });
+
+test('only the server-approved exact rupee test item bypasses garment readiness',()=>{
+ const id='7552dfbd-31bf-4ef8-8b1c-98f84cb8784a';
+ const approved=product(id,{styleCode:'RP-RAZORPAY-TEST-SAREE',name:'Razorpay Test Saree',priceNum:1,paymentTestOnly:true,checkoutAllowed:true,sizeMeasurements:undefined});
+ assert.equal(productReadinessIssues(approved,[approved]).length,0);
+ for(const patch of [{id:'another'},{priceNum:2},{paymentTestOnly:false},{checkoutAllowed:false}])assert.ok(productReadinessIssues({...approved,...patch},[approved]).length>0);
+ assert.equal(assessBagProducts([{productId:id,qty:1},{productId:'other',qty:1}],[approved,product('other',{checkoutAllowed:false})]).ready,false);
+});
