@@ -51,9 +51,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     if (status !== "ready" || !product) return;
-    const previousTitle = document.title;
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    const previousDescription = description?.content;
     const canonical = document.createElement("link");
     canonical.rel = "canonical";
     canonical.href = `https://rosepetalboutique.com/product?id=${encodeURIComponent(product.id)}`;
@@ -64,8 +62,6 @@ export default function ProductDetails() {
       : (product.description ?? "").slice(0, 155);
     return () => {
       canonical.remove();
-      document.title = previousTitle;
-      if (description && previousDescription !== undefined) description.content = previousDescription;
     };
   }, [needsConfirmation, product, status]);
 

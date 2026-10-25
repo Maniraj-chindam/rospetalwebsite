@@ -41,13 +41,16 @@ export default function ProductCard({ product, variants = [product] }: { product
   const needsConfirmation = readinessIssues.length > 0;
   const canAdd = !needsConfirmation && bagQty < Math.min(10, selected.availableStock ?? 0) && (bagQty > 0 || bag.length < 20);
   const productHref = `/product?id=${encodeURIComponent(product.id)}`;
+  const cardImageAlt = productReadinessIssues(product, variants).some((issue) => issue.includes("individual photo"))
+    ? `${product.name} colour options shown together`
+    : `${product.name}${product.color ? ` in ${product.color}` : ""}`;
 
   return (
     <>
       <article className="group flex flex-col text-left">
         <div className="relative aspect-[3/4] w-full overflow-hidden rounded-md bg-[#F2E8E7]">
           <Link href={productHref} aria-label={`View ${product.name}`} className="relative block h-full w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">
-            <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+            <Image src={product.image} alt={cardImageAlt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover object-center transition-transform duration-700 group-hover:scale-105" />
           </Link>
           <button type="button" onClick={() => toggleWishlist(product.id)} className={`absolute right-3 top-3 z-10 rounded-full p-2 ${isFavorited ? "bg-rosepetal-wine text-white" : "bg-white/90 text-rosepetal-text"}`} aria-label={isFavorited ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`} aria-pressed={isFavorited}>
             <Heart className={`h-4 w-4 ${isFavorited ? "fill-white" : ""}`} aria-hidden="true" />

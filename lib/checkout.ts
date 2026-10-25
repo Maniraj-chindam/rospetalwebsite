@@ -85,6 +85,15 @@ export async function verifyCheckout(session: CheckoutSession, payment: { razorp
   return checkoutStatus(result);
 }
 
+// Razorpay may invoke its success handler more than once for the same payment.
+// Keep a single verification request in flight; an uncertain result is reconciled
+// through the saved checkout token instead of submitting the callback again.
+export function reservePaymentCallback(handledPaymentIds: Set<string>, paymentId: string): boolean {
+  if (!/^pay_[A-Za-z0-9]+$/.test(paymentId) || handledPaymentIds.has(paymentId)) return false;
+  handledPaymentIds.add(paymentId);
+  return true;
+}
+
 export async function getCheckoutStatus(token: string) {
   return checkoutStatus(await request<unknown>(`/api/checkout/status?token=${encodeURIComponent(token)}`));
 }

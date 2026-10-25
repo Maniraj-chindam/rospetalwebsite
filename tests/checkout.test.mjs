@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 process.env.NEXT_PUBLIC_POS_API_BASE_URL = "https://api.example.invalid";
-const { createCheckoutSession, verifyCheckout, getCheckoutStatus } = await import("../lib/checkout.ts");
+const { createCheckoutSession, verifyCheckout, getCheckoutStatus, reservePaymentCallback } = await import("../lib/checkout.ts");
 const session = {
   reference: "RP-W-ABCDEF12", paymentStatus: "AwaitingPayment", fulfillmentStatus: "On hold",
   totalPaise: 193000, expiresAt: new Date(Date.now() + 900_000).toISOString(), currency: "INR",
@@ -31,6 +31,14 @@ test("a mismatched Razorpay callback is rejected before contacting POS", async (
   global.fetch = async () => { throw new Error("The API must not be called"); };
   try { await assert.rejects(verifyCheckout(session, { razorpay_order_id: "order_OTHER", razorpay_payment_id: "pay_123", razorpay_signature: "signature" }), /did not match/); }
   finally { global.fetch = original; }
+});
+
+test("the same synthetic payment callback can be verified only once", () => {
+  const handled = new Set();
+  assert.equal(reservePaymentCallback(handled, "pay_SYNTHETIC123"), true);
+  assert.equal(reservePaymentCallback(handled, "pay_SYNTHETIC123"), false);
+  assert.equal(reservePaymentCallback(handled, "pay_SYNTHETIC456"), true);
+  assert.equal(reservePaymentCallback(handled, "invalid"), false);
 });
 
 test("payment verification and status require a valid order acknowledgement", async () => {

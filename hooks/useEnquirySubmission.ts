@@ -8,9 +8,11 @@ export function useEnquirySubmission() {
   const [error, setError] = useState("");
   const [reference, setReference] = useState("");
   const pending = useRef<{ key: string; id: string } | null>(null);
+  const inFlight = useRef(false);
 
   const submit = async (payload: EnquiryPayload) => {
-    if (submitting) return;
+    if (inFlight.current) return;
+    inFlight.current = true;
     const key = JSON.stringify(payload);
     if (pending.current?.key !== key) pending.current = { key, id: crypto.randomUUID() };
     setSubmitting(true);
@@ -22,6 +24,7 @@ export function useEnquirySubmission() {
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Your enquiry could not be saved. Please retry.");
     } finally {
+      inFlight.current = false;
       setSubmitting(false);
     }
   };

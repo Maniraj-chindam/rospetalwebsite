@@ -1,11 +1,11 @@
 'use client';
 
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, LockKeyhole, PackageCheck } from 'lucide-react';
 import { useBoutique } from '@/context/BoutiqueContext';
 import { quoteBag, type BagQuote } from '@/lib/checkout-quote';
-import { createCheckoutSession, getCheckoutStatus, loadRazorpayCheckout, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
+import { createCheckoutSession, getCheckoutStatus, loadRazorpayCheckout, reservePaymentCallback, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
 import { fetchPosCatalog } from '@/lib/pos-catalog';
 import { assessBagProducts, isPaymentTestProduct } from '@/lib/product-readiness';
 import type { ProductItem } from '@/data/boutique-data';
@@ -30,6 +30,7 @@ export default function CheckoutClient() {
   const [error, setError] = useState('');
   const [outcome, setOutcome] = useState<CheckoutStatus | null>(null);
   const [recovering, setRecovering] = useState(true);
+  const handledPaymentIds = useRef(new Set<string>());
   const paymentTestOnly = catalogState==='ready' && bag.length===1 && bag[0].qty===1 && catalog.some(p=>p.id===bag[0].productId&&isPaymentTestProduct(p));
   const pinReady = paymentTestOnly || /^[1-9][0-9]{5}$/.test(address.pincode);
 
@@ -105,13 +106,17 @@ export default function CheckoutClient() {
       const Razorpay = window.Razorpay;
       if (!Razorpay) throw new Error('Secure payment could not load.');
       const activeSession = current;
+      let callbackStarted = false;
+      let paymentFailed = false;
       const checkout = new Razorpay({
         key: current.keyId, amount: current.totalPaise, currency: 'INR', name: 'Rosepetal Boutique',
         description: current.paymentTestOnly ? `₹1 payment test — no shipment · ${current.reference}` : `${itemCount} ${itemCount === 1 ? 'piece' : 'pieces'} · ${current.reference}`,
         order_id: current.razorpayOrderId, prefill: { name: buyer.name, email: buyer.email, contact: buyer.phone },
         theme: { color: '#702039' },
-        modal: { ondismiss: () => setBusy(false) },
+        modal: { ondismiss: () => { if (callbackStarted) return; if (!paymentFailed) setError('Payment window closed without confirmation. Check this order’s status before trying again.'); setBusy(false); } },
         handler: payment => {
+          if (!reservePaymentCallback(handledPaymentIds.current, payment.razorpay_payment_id)) return;
+          callbackStarted = true;
           setBusy(true);
           verifyCheckout(activeSession, payment).then(value => {
             setOutcome(value);
@@ -122,7 +127,7 @@ export default function CheckoutClient() {
           }).finally(() => setBusy(false));
         },
       });
-      checkout.on('payment.failed', () => { setError('Payment did not complete. You can try again with the same order.'); setBusy(false); });
+      checkout.on('payment.failed', () => { paymentFailed = true; setError('Payment did not complete. You can try again with the same order.'); setBusy(false); });
       checkout.open();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : 'Payment could not start. Please try again.');

@@ -42,6 +42,16 @@ test("a size label without actual measurements is enquiry only", () => {
   assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, false);
 });
 
+test("checkout gate does not conceal missing colour photos or provisional details", () => {
+  const red = product("red", { color: "Red", name: "Designer Frock 1", sizeMeasurements: undefined, checkoutAllowed: false });
+  const ivory = product("ivory", { color: "Ivory", image: red.image, checkoutAllowed: false });
+  const issues = productReadinessIssues(red, [red, ivory]).join(" ");
+  assert.match(issues, /individual photo/i);
+  assert.match(issues, /measurements/i);
+  assert.match(issues, /name needs boutique confirmation/i);
+  assert.match(issues, /checkout is limited/i);
+});
+
 test('only the server-approved exact rupee test item bypasses garment readiness',()=>{
  const id='7552dfbd-31bf-4ef8-8b1c-98f84cb8784a';
  const approved=product(id,{styleCode:'RP-RAZORPAY-TEST-SAREE',name:'Razorpay Test Saree',priceNum:1,paymentTestOnly:true,checkoutAllowed:true,sizeMeasurements:undefined});

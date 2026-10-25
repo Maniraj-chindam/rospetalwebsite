@@ -50,6 +50,21 @@ test("a quote error reaches the customer without a false payable total", async (
   finally { global.fetch = original; }
 });
 
+test("a stalled courier quote times out and can be retried", async () => {
+  const original = global.fetch;
+  let calls = 0;
+  global.fetch = async (_url, options) => {
+    calls += 1;
+    if (calls > 1) return Response.json(quote());
+    return new Promise((_resolve, reject) => options.signal.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")), { once: true }));
+  };
+  try {
+    await assert.rejects(quoteBag(lines, "560001"), /timed out/i);
+    assert.equal((await quoteBag(lines, "560001")).totalPaise, 193000);
+    assert.equal(calls, 2);
+  } finally { global.fetch = original; }
+});
+
 test('one-rupee payment-only quote needs no courier and rejects forged exceptions',async()=>{
  const original=global.fetch,id='7552dfbd-31bf-4ef8-8b1c-98f84cb8784a';
  const testLines=[{productId:id,qty:1}];
