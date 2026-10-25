@@ -7,6 +7,7 @@ interface BoutiqueContextType {
   toggleWishlist: (id: string) => void;
   bag: Array<{ productId: string; qty: number }>;
   addToBag: (productId: string) => void;
+  buyNow: (productId: string) => void;
   setBagQuantity: (productId: string, qty: number) => void;
   removeFromBag: (productId: string) => void;
   clearBag: () => void;
@@ -74,6 +75,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
   const setBagQuantity = (productId: string, qty: number) => saveBag((items) => items.map((item) => item.productId === productId ? { ...item, qty: Math.min(10, Math.max(1, Math.trunc(qty))) } : item));
   const removeFromBag = (productId: string) => saveBag((items) => items.filter((item) => item.productId !== productId));
   const clearBag = () => saveBag(() => []);
+  const buyNow = (productId: string) => saveBag(() => [{productId,qty:1}]);
 
   return (
     <BoutiqueContext.Provider
@@ -82,6 +84,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
         toggleWishlist,
         bag,
         addToBag,
+        buyNow,
         setBagQuantity,
         removeFromBag,
         clearBag,

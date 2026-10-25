@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
+import {useRouter} from 'next/navigation';
 import { Eye, Heart, X } from "lucide-react";
 import type { ProductItem } from "@/data/boutique-data";
 import { CONTACT_INFO } from "@/data/boutique-data";
@@ -18,7 +19,8 @@ function enquiryUrl(product: ProductItem) {
 }
 
 export default function ProductCard({ product, variants = [product] }: { product: ProductItem; variants?: ProductItem[] }) {
-  const { wishlist, toggleWishlist, bag, addToBag } = useBoutique();
+  const { wishlist, toggleWishlist, bag, addToBag, buyNow } = useBoutique();
+  const router=useRouter();
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(product.id);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -59,6 +61,7 @@ export default function ProductCard({ product, variants = [product] }: { product
           {variants.length > 1 && <p className="text-xs text-rosepetal-muted">{variants.length} size/colour options</p>}
           {productReadinessIssues(product, variants).length > 0 ? <p className="text-xs text-rosepetal-wine">Details being confirmed · enquiry only</p> : !anyAvailable && <p className="text-xs text-rosepetal-wine">Currently unavailable</p>}
           <Link href={productHref} className="inline-flex min-h-10 items-center text-left text-xs font-semibold text-rosepetal-wine underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">View piece & options</Link>
+          {productReadinessIssues(product,variants).length===0&&<button type="button" disabled={!anyAvailable} onClick={()=>{buyNow(product.id);router.push('/checkout');}} className="block w-full rounded bg-rosepetal-wine px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white disabled:opacity-50">Buy now</button>}
         </div>
       </article>
 
@@ -86,8 +89,9 @@ export default function ProductCard({ product, variants = [product] }: { product
               <div><dt className="inline font-semibold">Availability: </dt><dd className="inline">{needsConfirmation ? "To be confirmed" : (selected.availableStock ?? 0) > 0 ? `${selected.availableStock} available` : "Currently unavailable"}</dd></div>
               {selected.sku && <div><dt className="inline font-semibold">SKU: </dt><dd className="inline">{selected.sku}</dd></div>}
             </dl>
-            {!needsConfirmation && <button type="button" disabled={!canAdd} onClick={() => { addToBag(selected.id); setAdded(true); }} className="mt-2 rounded bg-rosepetal-wine px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{(selected.availableStock ?? 0) < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to bag"}</button>}
+            {!needsConfirmation && <button type="button" disabled={!canAdd} onClick={() => { addToBag(selected.id); setAdded(true); }} className="mt-2 rounded bg-rosepetal-wine px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{(selected.availableStock ?? 0) < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to cart"}</button>}
             {added && <p role="status" className="text-sm text-rosepetal-wine">Added to your bag. <Link href="/bag" className="font-semibold underline underline-offset-4">Review bag</Link></p>}
+            {!needsConfirmation&&<button type="button" disabled={(selected.availableStock??0)<1} onClick={()=>{buyNow(selected.id);setIsQuickViewOpen(false);router.push('/checkout');}} className="rounded bg-rosepetal-wine px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white disabled:opacity-50">Buy now</button>}
             <a href={enquiryUrl(selected)} target="_blank" rel="noopener noreferrer" className={`rounded px-4 py-3 text-center text-xs font-semibold uppercase tracking-widest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${needsConfirmation ? "bg-rosepetal-wine text-white" : "border border-rosepetal-wine/40 text-rosepetal-wine hover:bg-white"}`}>{needsConfirmation ? "Enquire about this piece" : "Ask about this piece"}</a>
           </div>
         </div>
