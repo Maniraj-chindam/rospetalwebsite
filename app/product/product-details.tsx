@@ -10,7 +10,7 @@ import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import ProductPrice from '@/components/ProductPrice';
 import VariantSelector from "@/components/VariantSelector";
-import { productReadinessIssues } from "@/lib/product-readiness";
+import { customerVisibleCatalog, productReadinessIssues } from "@/lib/product-readiness";
 
 function enquiryUrl(product: ProductItem) {
   const message = `Hello Rosepetal Boutique, I would like to enquire about ${product.name} (SKU ${product.sku ?? product.id})${product.size ? `, size ${product.size}` : ""}${product.color ? `, colour ${product.color}` : ""}. Is it available?`;
@@ -31,7 +31,7 @@ export default function ProductDetails() {
     const controller = new AbortController();
     setStatus("loading");
     fetchPosCatalog(controller.signal)
-      .then((items) => { setProducts(items); setStatus("ready"); })
+      .then((items) => { setProducts(customerVisibleCatalog(items)); setStatus("ready"); })
       .catch(() => { if (!controller.signal.aborted) setStatus("error"); });
     return () => controller.abort();
   }, [retryKey]);

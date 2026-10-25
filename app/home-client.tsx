@@ -15,7 +15,7 @@ import ProductCard from "@/components/ProductCard";
 import { useEnquirySubmission } from "@/hooks/useEnquirySubmission";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import type { ProductItem } from "@/data/boutique-data";
-import { isProductReadyForCheckout } from "@/lib/product-readiness";
+import { customerVisibleCatalog, isProductReadyForCheckout } from "@/lib/product-readiness";
 import {
   HERO_ARCHED_CATEGORIES,
   CONTACT_INFO,
@@ -58,7 +58,7 @@ export default function MasterBoutiquePage() {
   useEffect(() => {
     const controller = new AbortController();
     fetchPosCatalog(controller.signal).then((items) => {
-      setNewArrivals(items);
+      setNewArrivals(customerVisibleCatalog(items));
       setArrivalStatus("ready");
     }).catch(() => {
       if (!controller.signal.aborted) setArrivalStatus("error");

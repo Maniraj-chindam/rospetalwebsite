@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { HEADER_NAV_LINKS, type ProductItem } from "@/data/boutique-data";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
+import { customerVisibleCatalog } from "@/lib/product-readiness";
 
 const collectionLinks = [
   { name: "Sarees", href: "/collections?category=Sarees" },
@@ -28,7 +29,7 @@ export default function SearchResults() {
   useEffect(() => {
     const controller = new AbortController();
     fetchPosCatalog(controller.signal)
-      .then((items) => { setProducts(items); setStatus("ready"); })
+      .then((items) => { setProducts(customerVisibleCatalog(items)); setStatus("ready"); })
       .catch(() => { if (!controller.signal.aborted) setStatus("error"); });
     return () => controller.abort();
   }, []);

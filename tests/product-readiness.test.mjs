@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-const { assessBagProducts, productReadinessIssues } = await import("../lib/product-readiness.ts");
+const { assessBagProducts, customerVisibleCatalog, productContentIssues, productReadinessIssues } = await import("../lib/product-readiness.ts");
 
 const product = (id, overrides = {}) => ({
   id, styleCode: "RP-01", name: "Rose kurta", category: "Dresses", description: "Cotton kurta with a floral print.",
@@ -50,6 +50,20 @@ test("checkout gate does not conceal missing colour photos or provisional detail
   assert.match(issues, /measurements/i);
   assert.match(issues, /name needs boutique confirmation/i);
   assert.match(issues, /checkout is limited/i);
+});
+
+test("public catalog hides provisional garments and every payment test item", () => {
+  const red = product("red", { color: "Red", name: "Designer Frock 1", sizeMeasurements: undefined, checkoutAllowed: false });
+  const ivory = product("ivory", { color: "Ivory", image: red.image, checkoutAllowed: false });
+  const paymentTest = product("payment-test", { name: "Razorpay Test Saree", paymentTestOnly: true, availableStock: 0 });
+  assert.deepEqual(customerVisibleCatalog([red, ivory, paymentTest]), []);
+  assert.match(productContentIssues(red, [red, ivory]).join(" "), /measurements/i);
+});
+
+test("a corrected POS variant appears for enquiry without opening checkout", () => {
+  const corrected = product("corrected", { checkoutAllowed: false });
+  assert.deepEqual(customerVisibleCatalog([corrected]).map((item) => item.id), ["corrected"]);
+  assert.equal(assessBagProducts([{ productId: corrected.id, qty: 1 }], [corrected]).ready, false);
 });
 
 test('only the server-approved exact rupee test item bypasses garment readiness',()=>{

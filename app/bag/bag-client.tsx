@@ -8,7 +8,7 @@ import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog } from "@/lib/pos-catalog";
 import { quoteBag, type BagQuote } from "@/lib/checkout-quote";
 import type { ProductItem } from "@/data/boutique-data";
-import { assessBagProducts } from "@/lib/product-readiness";
+import { assessBagProducts, customerVisibleCatalog } from "@/lib/product-readiness";
 
 const currency = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
 
@@ -27,7 +27,7 @@ export default function BagClient() {
   useEffect(() => {
     const controller = new AbortController();
     setCatalogState("loading");
-    fetchPosCatalog(controller.signal).then((items) => { setProducts(items); setCatalogState("ready"); }).catch(() => { if (!controller.signal.aborted) setCatalogState("error"); });
+    fetchPosCatalog(controller.signal).then((items) => { setProducts(customerVisibleCatalog(items)); setCatalogState("ready"); }).catch(() => { if (!controller.signal.aborted) setCatalogState("error"); });
     return () => controller.abort();
   }, [catalogRetry]);
   useEffect(() => {

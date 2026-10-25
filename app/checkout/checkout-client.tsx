@@ -7,7 +7,7 @@ import { useBoutique } from '@/context/BoutiqueContext';
 import { quoteBag, type BagQuote } from '@/lib/checkout-quote';
 import { createCheckoutSession, getCheckoutStatus, loadRazorpayCheckout, reservePaymentCallback, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
 import { fetchPosCatalog } from '@/lib/pos-catalog';
-import { assessBagProducts, isPaymentTestProduct } from '@/lib/product-readiness';
+import { assessBagProducts, customerVisibleCatalog, isPaymentTestProduct } from '@/lib/product-readiness';
 import type { ProductItem } from '@/data/boutique-data';
 
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
@@ -36,7 +36,7 @@ export default function CheckoutClient() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchPosCatalog(controller.signal).then(items => { setCatalog(items); setCatalogState('ready'); }).catch(() => {
+    fetchPosCatalog(controller.signal).then(items => { setCatalog(customerVisibleCatalog(items)); setCatalogState('ready'); }).catch(() => {
       if (!controller.signal.aborted) setCatalogState('error');
     });
     return () => controller.abort();

@@ -8,6 +8,7 @@ import ProductCard from "@/components/ProductCard";
 import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
+import { customerVisibleCatalog } from "@/lib/product-readiness";
 
 export default function CollectionsClient() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function CollectionsClient() {
     const controller = new AbortController();
     setCatalogStatus("loading");
     fetchPosCatalog(controller.signal).then((items) => {
-      setProducts(items);
+      setProducts(customerVisibleCatalog(items));
       setCatalogStatus("ready");
     }).catch(() => {
       if (!controller.signal.aborted) setCatalogStatus("error");

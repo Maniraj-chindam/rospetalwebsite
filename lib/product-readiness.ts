@@ -3,8 +3,7 @@ import type { ProductItem } from "@/data/boutique-data";
 const draftCopy = /website publishing test|stock availability is to be confirmed|contact the boutique for details|online checkout is not active yet|\b(?:tbd|tbc|placeholder|sample product|demo product)\b/i;
 const draftName = /^(?:designer frock\s*\d+|.*\b(?:test|sample|demo|placeholder)\b.*)$/i;
 
-export function productReadinessIssues(product: ProductItem, catalog: ProductItem[]): string[] {
-  if(isPaymentTestProduct(product))return [];
+export function productContentIssues(product: ProductItem, catalog: ProductItem[]): string[] {
   const issues: string[] = [];
   if (draftName.test(product.name.trim())) {
     issues.push("The product name needs boutique confirmation.");
@@ -15,11 +14,24 @@ export function productReadinessIssues(product: ProductItem, catalog: ProductIte
   if (!product.sizeMeasurements?.trim() || draftCopy.test(product.sizeMeasurements)) {
     issues.push("Size measurements need boutique confirmation.");
   }
+  if (!product.color?.trim()) {
+    issues.push("The product colour needs boutique confirmation.");
+  }
 
   const style = catalog.filter((item) => (item.styleCode || item.id) === (product.styleCode || product.id));
   if (style.some((item) => item.id !== product.id && item.color !== product.color && item.image === product.image)) {
     issues.push("An individual photo of the selected colour is still needed.");
   }
+  return issues;
+}
+
+export function customerVisibleCatalog(catalog: ProductItem[]): ProductItem[] {
+  return catalog.filter((product) => !product.paymentTestOnly && productContentIssues(product, catalog).length === 0);
+}
+
+export function productReadinessIssues(product: ProductItem, catalog: ProductItem[]): string[] {
+  if (isPaymentTestProduct(product)) return [];
+  const issues = productContentIssues(product, catalog);
   if (product.checkoutAllowed === false) {
     issues.push("Checkout is limited to the ₹1 Razorpay Test Saree. Other products remain enquiry-only.");
   }

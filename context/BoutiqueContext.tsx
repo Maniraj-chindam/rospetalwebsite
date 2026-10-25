@@ -1,6 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { fetchPosCatalog } from "@/lib/pos-catalog";
+import { customerVisibleCatalog } from "@/lib/product-readiness";
 
 interface BoutiqueContextType {
   wishlist: string[];
@@ -49,6 +51,30 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Fallback if localStorage is not accessible
     }
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchPosCatalog(controller.signal).then((items) => {
+      const visibleIds = new Set(customerVisibleCatalog(items).map((item) => item.id));
+      setWishlist((previous) => {
+        const next = previous.filter((id) => visibleIds.has(id));
+        if (next.length !== previous.length) {
+          try { localStorage.setItem("rosepetal_wishlist", JSON.stringify(next)); } catch {}
+        }
+        return next;
+      });
+      setBag((previous) => {
+        const next = previous.filter((line) => visibleIds.has(line.productId));
+        if (next.length !== previous.length) {
+          try { localStorage.setItem("rosepetal_bag_v1", JSON.stringify(next)); } catch {}
+        }
+        return next;
+      });
+    }).catch(() => {
+      // Preserve saved selections when the live catalog cannot be checked.
+    });
+    return () => controller.abort();
   }, []);
 
   const toggleWishlist = (id: string) => {
