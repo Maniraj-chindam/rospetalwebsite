@@ -50,6 +50,17 @@ test("maps paginated POS variants, money and safe images", async () => {
   } finally { global.fetch = original; }
 });
 
+test('maps actual and sale prices while keeping the payable price authoritative',async()=>{
+ const original=global.fetch;
+ try{
+  global.fetch=async()=>Response.json({contractVersion:2,items:[variant('sale',{pricePaise:150000,actualPricePaise:200000,salePricePaise:150000})],nextCursor:null});
+  const [product]=await fetchPosCatalog();assert.equal(product.priceNum,1500);assert.equal(product.price,'₹1,500');assert.equal(product.actualPriceNum,2000);assert.equal(product.actualPrice,'₹2,000');
+  for(const extra of [{actualPricePaise:100000},{actualPricePaise:200000,salePricePaise:123}]){
+   global.fetch=async()=>Response.json({contractVersion:2,items:[variant('invalid',extra)],nextCursor:null});await assert.rejects(fetchPosCatalog(),/invalid/);
+  }
+ }finally{global.fetch=original;}
+});
+
 test("rejects contract drift and unsafe or repeated products", async () => {
   const original = global.fetch;
   try {

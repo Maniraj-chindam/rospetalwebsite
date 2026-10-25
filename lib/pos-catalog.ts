@@ -21,6 +21,8 @@ type CatalogVariant = {
   sizeMeasurements?: string;
   color: string;
   pricePaise: number;
+  actualPricePaise?: number;
+  salePricePaise?: number | null;
   image: string;
   images: string[];
   availableStock: number;
@@ -46,6 +48,8 @@ function toProduct(value: CatalogVariant): ProductItem {
       value.images.length < 1 || value.images.length > 5 ||
       !value.images.includes(value.image) || !value.images.every((photo) => typeof photo === "string" && photoPath.test(photo)) ||
       !Number.isSafeInteger(value.pricePaise) || value.pricePaise <= 0 ||
+      (value.actualPricePaise !== undefined && (!Number.isSafeInteger(value.actualPricePaise) || value.actualPricePaise < value.pricePaise)) ||
+      (value.salePricePaise != null && (!Number.isSafeInteger(value.salePricePaise) || value.salePricePaise !== value.pricePaise || value.actualPricePaise === undefined)) ||
       !Number.isSafeInteger(value.availableStock) || value.availableStock < 0 ||
       (value.paymentTestOnly !== undefined && typeof value.paymentTestOnly !== 'boolean') ||
       (value.checkoutAllowed !== undefined && typeof value.checkoutAllowed !== 'boolean') ||
@@ -70,6 +74,8 @@ function toProduct(value: CatalogVariant): ProductItem {
     color: value.color,
     priceNum,
     price: rupees.format(priceNum),
+    actualPriceNum: (value.actualPricePaise ?? value.pricePaise) / 100,
+    actualPrice: rupees.format((value.actualPricePaise ?? value.pricePaise) / 100),
     image: `${assetBase}${value.image}`,
     images: value.images.map((photo) => `${assetBase}${photo}`),
     availableStock: value.availableStock,

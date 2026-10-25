@@ -8,6 +8,7 @@ import { ArrowLeft, Heart, ShoppingBag } from "lucide-react";
 import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
+import ProductPrice from '@/components/ProductPrice';
 import VariantSelector from "@/components/VariantSelector";
 import { productReadinessIssues } from "@/lib/product-readiness";
 
@@ -105,7 +106,7 @@ export default function ProductDetails() {
         <div className="flex flex-col p-6 text-rosepetal-text sm:p-9 lg:p-12">
           <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-rosepetal-wine">{product.websiteType || product.category}</p>
           <h1 className="mt-3 font-serif-luxury text-3xl leading-tight sm:text-4xl">{product.name}</h1>
-          <p className="mt-4 text-2xl text-rosepetal-wine">{product.price}</p>
+          <p className="mt-4 text-2xl text-rosepetal-wine">{<ProductPrice product={product}/>}</p>
           {product.description && !needsConfirmation && <p className="mt-5 text-sm leading-7 text-rosepetal-muted">{product.description}</p>}
           {needsConfirmation && <div role="status" className="mt-5 rounded-lg border border-rosepetal-border bg-white p-4 text-sm leading-6 text-rosepetal-text"><strong>Details being confirmed</strong><p className="mt-1">This piece is available for enquiry while the boutique confirms its details and photos.</p><ul className="mt-2 list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
 

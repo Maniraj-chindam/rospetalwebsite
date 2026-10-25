@@ -10,6 +10,7 @@ import type { ProductItem } from "@/data/boutique-data";
 import { CONTACT_INFO } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
 import { useModalKeyboard } from "@/hooks/useModalKeyboard";
+import ProductPrice from '@/components/ProductPrice';
 import VariantSelector from "@/components/VariantSelector";
 import { productReadinessIssues } from "@/lib/product-readiness";
 
@@ -57,7 +58,7 @@ export default function ProductCard({ product, variants = [product] }: { product
         </div>
         <div className="mt-3 space-y-1">
           <h3 className="font-serif-luxury text-base text-rosepetal-text"><Link href={productHref} className="hover:text-rosepetal-wine hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">{product.name}</Link></h3>
-          <p className="text-xs font-medium text-rosepetal-muted">{priceLabel}</p>
+          <p className="text-xs font-medium text-rosepetal-muted">{variants.some(item=>item.priceNum!==minPrice)?priceLabel:<ProductPrice product={product}/>}</p>
           {variants.length > 1 && <p className="text-xs text-rosepetal-muted">{variants.length} size/colour options</p>}
           {productReadinessIssues(product, variants).length > 0 ? <p className="text-xs text-rosepetal-wine">Details being confirmed · enquiry only</p> : !anyAvailable && <p className="text-xs text-rosepetal-wine">Currently unavailable</p>}
           <Link href={productHref} className="inline-flex min-h-10 items-center text-left text-xs font-semibold text-rosepetal-wine underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">View piece & options</Link>
@@ -75,7 +76,7 @@ export default function ProductCard({ product, variants = [product] }: { product
           <div className="flex flex-col gap-3 pr-2 text-rosepetal-text">
             <p className="text-xs font-semibold uppercase tracking-widest text-rosepetal-wine">{selected.category}</p>
             <h2 id="product-dialog-title" className="font-serif-luxury text-3xl text-rosepetal-text">{selected.name}</h2>
-            <p className="text-xl text-rosepetal-wine">{selected.price}</p>
+            <p className="text-xl text-rosepetal-wine">{<ProductPrice product={selected}/>}</p>
             {selected.description && !needsConfirmation && <p className="text-sm leading-relaxed">{selected.description}</p>}
             {needsConfirmation && <div role="status" className="rounded-lg border border-rosepetal-border bg-white p-3 text-sm leading-6"><strong>Details being confirmed</strong><ul className="list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
             {variants.length > 1 && <div className="border-t border-rosepetal-border pt-3"><VariantSelector variants={variants} selected={selected} onSelect={(item) => { setSelectedId(item.id); setSelectedImage(null); setAdded(false); }} /></div>}

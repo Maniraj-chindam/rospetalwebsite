@@ -3,6 +3,8 @@ export interface ProductItem {
   name: string;
   price: string;
   priceNum: number;
+  actualPrice?: string;
+  actualPriceNum?: number;
   category: string;
   image: string;
   tag?: string;
