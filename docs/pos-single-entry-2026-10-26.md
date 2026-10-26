@@ -25,9 +25,9 @@ the old app/page.tsx structure and tests requiring a separate localhost:3002
 server; those fail outside the configured test command. They are unrelated to
 the changed catalog files and were left intact.
 
-Not deployed. Deploy this website adapter before the matching POS API/UI change
-to avoid an older adapter rejecting new custom categories. Keep checkout and
-Shiprocket booking disabled.
+Deployed to the live website before the matching POS UI/API change on 26 October
+2026. The final live verification is in [`deployment-2026-10-26.md`](deployment-2026-10-26.md).
+Checkout and Shiprocket booking remain disabled.
 
 Evidence is saved in the POS repository under
 `output/qa/catalog-single-entry-2026-10-26/`.

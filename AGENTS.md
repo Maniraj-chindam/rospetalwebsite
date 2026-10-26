@@ -12,6 +12,7 @@
 - Preserve uncommitted work. Use Harsha
   <reddyharshavardhan145@gmail.com> for commits. The authorized website push remote
   is `maniraj`, currently on `main`; do not push to the unrelated `origin` remote.
-- This catalog change has been checked locally and is not deployed. For the
-  matching POS change, deploy the website's custom-category adapter before the
-  POS API/UI. Keep checkout and Shiprocket booking disabled.
+- On 2026-10-26, this catalog change was deployed to Firebase Hosting from
+  `a1dc270`, before the matching POS UI/API release. The live website reads the
+  main POS product category, prices and text through the catalog. Checkout and
+  Shiprocket booking remain disabled. See `docs/deployment-2026-10-26.md`.
