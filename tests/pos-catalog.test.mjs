@@ -61,6 +61,20 @@ test('maps actual and sale prices while keeping the payable price authoritative'
  }finally{global.fetch=original;}
 });
 
+test('accepts the POS category and preserves entered product details without website re-entry',async()=>{
+ const original=global.fetch;
+ try{
+  const entered=variant('custom-category',{category:'Occasion wear',description:'Entered once in POS',fabric:'POS fabric',care:'POS care',delivery:'POS delivery',pricePaise:90000,actualPricePaise:120000,salePricePaise:90000});
+  global.fetch=async()=>Response.json({contractVersion:2,items:[entered],nextCursor:null});
+  const [product]=await fetchPosCatalog();
+  for(const key of ['category','name','description','fabric','care','delivery','size','color','sku'])assert.equal(product[key],entered[key]);
+  assert.equal(product.priceNum,900);assert.equal(product.actualPriceNum,1200);
+  for(const category of ['', ' '.repeat(2), 'x'.repeat(61), 123]){
+   global.fetch=async()=>Response.json({contractVersion:2,items:[{...entered,category}],nextCursor:null});await assert.rejects(fetchPosCatalog(),/invalid/);
+  }
+ }finally{global.fetch=original;}
+});
+
 test("rejects contract drift and unsafe or repeated products", async () => {
   const original = global.fetch;
   try {

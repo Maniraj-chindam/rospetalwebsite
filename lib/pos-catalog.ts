@@ -4,7 +4,6 @@ const apiBase = (process.env.NEXT_PUBLIC_POS_API_BASE_URL || "https://gpu272zv2g
 const assetBase = (process.env.NEXT_PUBLIC_POS_ASSET_BASE_URL || "https://d1xuisyba3w17i.cloudfront.net").replace(/\/$/, "");
 const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 const photoPath = /^\/(assets|uploads)\/[a-zA-Z0-9_.-]+$/;
-const categories = new Set(["Sarees", "Dresses", "Lehengas", "Designer Suits", "Handlooms", "Bed Linens", "Blankets & Quilts", "Accessories", "Bridal Wear", "Home Decor"]);
 
 type CatalogVariant = {
   id: string;
@@ -38,7 +37,7 @@ function nonEmpty(value: unknown, max: number): value is string {
 function toProduct(value: CatalogVariant): ProductItem {
   if (!value || !nonEmpty(value.id, 100) || !nonEmpty(value.sku, 60) ||
       !nonEmpty(value.styleCode, 60) || !nonEmpty(value.name, 200) ||
-      !categories.has(value.category) || typeof value.websiteType !== "string" || value.websiteType.length > 100 || !nonEmpty(value.description, 2000) ||
+      !nonEmpty(value.category, 60) || typeof value.websiteType !== "string" || value.websiteType.length > 100 || !nonEmpty(value.description, 2000) ||
       !nonEmpty(value.fabric, 300) || !nonEmpty(value.care, 500) ||
       !nonEmpty(value.delivery, 500) || !nonEmpty(value.size, 40) ||
       (value.sizeMeasurements !== undefined && typeof value.sizeMeasurements !== "string") ||

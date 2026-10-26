@@ -80,16 +80,16 @@ export default function ProductCard({ product, variants = [product] }: { product
             <p className="text-xs font-semibold uppercase tracking-widest text-rosepetal-wine">{selected.category}</p>
             <h2 id="product-dialog-title" className="font-serif-luxury text-3xl text-rosepetal-text">{selected.name}</h2>
             <p className="text-xl text-rosepetal-wine">{<ProductPrice product={selected}/>}</p>
-            {selected.description && !needsConfirmation && <p className="text-sm leading-relaxed">{selected.description}</p>}
+            {selected.description && <p className="text-sm leading-relaxed">{selected.description}</p>}
             {needsConfirmation && <div role="status" className="rounded-lg border border-rosepetal-border bg-white p-3 text-sm leading-6"><strong>Details being confirmed</strong><ul className="list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
             {variants.length > 1 && <div className="border-t border-rosepetal-border pt-3"><VariantSelector variants={variants} selected={selected} onSelect={(item) => { setSelectedId(item.id); setSelectedImage(null); setAdded(false); }} /></div>}
             <dl className="grid gap-2 border-t border-rosepetal-border pt-3 text-sm">
               {selected.size && <div><dt className="inline font-semibold">Size: </dt><dd className="inline">{selected.size}</dd></div>}
               {selected.sizeMeasurements && <div><dt className="inline font-semibold">Measurements: </dt><dd className="inline">{selected.sizeMeasurements}</dd></div>}
               {selected.color && <div><dt className="inline font-semibold">Colour: </dt><dd className="inline">{selected.color}</dd></div>}
-              {!needsConfirmation && selected.fabric && <div><dt className="inline font-semibold">Fabric: </dt><dd className="inline">{selected.fabric}</dd></div>}
-              {!needsConfirmation && selected.care && <div><dt className="inline font-semibold">Care: </dt><dd className="inline">{selected.care}</dd></div>}
-              {!needsConfirmation && selected.delivery && <div><dt className="inline font-semibold">Delivery: </dt><dd className="inline">{selected.delivery}</dd></div>}
+              {selected.fabric && <div><dt className="inline font-semibold">Fabric: </dt><dd className="inline">{selected.fabric}</dd></div>}
+              {selected.care && <div><dt className="inline font-semibold">Care: </dt><dd className="inline">{selected.care}</dd></div>}
+              {selected.delivery && <div><dt className="inline font-semibold">Delivery: </dt><dd className="inline">{selected.delivery}</dd></div>}
               <div><dt className="inline font-semibold">Availability: </dt><dd className="inline">{needsConfirmation ? "To be confirmed" : (selected.availableStock ?? 0) > 0 ? `${selected.availableStock} available` : "Currently unavailable"}</dd></div>
               {selected.sku && <div><dt className="inline font-semibold">SKU: </dt><dd className="inline">{selected.sku}</dd></div>}
             </dl>
