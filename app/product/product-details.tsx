@@ -5,17 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Heart, ShoppingBag } from "lucide-react";
-import { CONTACT_INFO, type ProductItem } from "@/data/boutique-data";
+import type { ProductItem } from "@/data/boutique-data";
 import { useBoutique } from "@/context/BoutiqueContext";
+import PreBookPanel from "@/components/PreBookPanel";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import ProductPrice from '@/components/ProductPrice';
 import VariantSelector from "@/components/VariantSelector";
 import { customerVisibleCatalog, productReadinessIssues } from "@/lib/product-readiness";
-
-function enquiryUrl(product: ProductItem) {
-  const message = `Hello Rosepetal Boutique, I would like to enquire about ${product.name} (SKU ${product.sku ?? product.id})${product.size ? `, size ${product.size}` : ""}${product.color ? `, colour ${product.color}` : ""}. Is it available?`;
-  return `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`;
-}
 
 export default function ProductDetails() {
   const productId = useSearchParams().get("id") ?? "";
@@ -26,6 +22,7 @@ export default function ProductDetails() {
   const [retryKey, setRetryKey] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
+  const [preBookOpen, setPreBookOpen] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -46,7 +43,8 @@ export default function ProductDetails() {
   const stock = product?.availableStock ?? 0;
   const readinessIssues = product ? productReadinessIssues(product, products) : [];
   const needsConfirmation = readinessIssues.length > 0;
-  const canAdd = Boolean(product) && !needsConfirmation && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
+  const canAdd = Boolean(product) && stock > 0 && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
+  const canBuy = Boolean(product) && stock > 0 && !needsConfirmation && product?.checkoutAllowed !== false;
   const isFavorited = wishlist.includes(productId);
 
   useEffect(() => {
@@ -106,16 +104,18 @@ export default function ProductDetails() {
           {product.description && <p className="mt-5 text-sm leading-7 text-rosepetal-muted">{product.description}</p>}
           {needsConfirmation && <div role="status" className="mt-5 rounded-lg border border-rosepetal-border bg-white p-4 text-sm leading-6 text-rosepetal-text"><strong>Details being confirmed</strong><p className="mt-1">This piece is available for enquiry while the boutique confirms its details and photos.</p><ul className="mt-2 list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
 
-          {variants.length > 1 && <div className="mt-7 border-t border-rosepetal-border pt-5"><VariantSelector variants={variants} selected={product} onSelect={(item) => { setSelectedImage(null); setAddedId(null); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} /></div>}
+          {variants.length > 1 && <div className="mt-7 border-t border-rosepetal-border pt-5"><VariantSelector variants={variants} selected={product} onSelect={(item) => { setSelectedImage(null); setAddedId(null); setPreBookOpen(false); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} /></div>}
 
-          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{needsConfirmation ? "Availability to be confirmed" : stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} available` : "Currently unavailable"}</p>
-          {!needsConfirmation&&<button type="button" disabled={stock<1} onClick={()=>{buyNow(product.id);router.push('/checkout');}} className="mt-5 min-h-12 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-rosepetal-wine">Buy now</button>}
-          <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
-            {needsConfirmation ? <a href={enquiryUrl(product)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Enquire about this piece</a> : <button type="button" disabled={!canAdd} onClick={() => { addToBag(product.id); setAddedId(product.id); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine"><ShoppingBag className="h-4 w-4" aria-hidden="true" />{stock < 1 ? "Currently unavailable" : bagQty === 0 && bag.length >= 20 ? "Bag is full" : !canAdd ? "Maximum quantity in bag" : "Add to cart"}</button>}
+          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} listed${needsConfirmation ? " · boutique confirmation needed before payment" : ""}` : "Currently out of stock"}</p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <button type="button" disabled={!canAdd} onClick={() => { addToBag(product.id); setAddedId(product.id); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine"><ShoppingBag className="h-4 w-4" aria-hidden="true" />Add to cart</button>
+            <button type="button" disabled={!canBuy} onClick={() => { buyNow(product.id); router.push('/checkout'); }} className="inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine bg-white px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-rosepetal-card disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Buy now</button>
+            <button type="button" aria-expanded={preBookOpen} aria-controls="product-pre-book" onClick={() => setPreBookOpen((open) => !open)} className="inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine/50 bg-rosepetal-card px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Pre-book</button>
             <button type="button" onClick={() => toggleWishlist(product.id)} aria-pressed={isFavorited} aria-label={isFavorited ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`} className={`inline-flex min-h-12 items-center justify-center rounded-md border px-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${isFavorited ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-wine hover:border-rosepetal-wine"}`}><Heart className={`h-5 w-5 ${isFavorited ? "fill-current" : ""}`} aria-hidden="true" /></button>
           </div>
+          {!canBuy && <p className="mt-2 text-xs leading-5 text-rosepetal-muted">{stock < 1 ? "Buy now is unavailable for this size. You can request a pre-book." : "Buy now will open when secure checkout and the piece’s details are ready. You can save it in your cart or request a pre-book now."}</p>}
           {addedId === product.id && <p role="status" className="mt-3 text-sm text-rosepetal-wine">Added to your bag. <Link href="/bag" className="font-semibold underline underline-offset-4">Review bag</Link></p>}
-          {!needsConfirmation && <a href={enquiryUrl(product)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine/40 px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Ask about this piece</a>}
+          <div hidden={!preBookOpen}><PreBookPanel key={product.id} product={product} /></div>
 
           <dl className="mt-8 divide-y divide-rosepetal-border border-y border-rosepetal-border text-sm">
             {[["Size", product.size], ["Measurements", product.sizeMeasurements], ["Colour", product.color], ["Fabric", product.fabric], ["Care", product.care], ["Delivery", product.delivery], ["SKU", product.sku]].filter((entry): entry is string[] => Boolean(entry[1])).map(([label, value]) => <div key={label} className="grid grid-cols-[6rem_1fr] gap-3 py-3"><dt className="font-semibold text-rosepetal-wine">{label}</dt><dd className="leading-relaxed text-rosepetal-text">{value}</dd></div>)}
