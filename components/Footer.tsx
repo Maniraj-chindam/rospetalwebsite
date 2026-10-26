@@ -2,9 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
 import RosepetalLogo from "./RosepetalLogo";
 import { CONTACT_INFO, NAV_LINKS } from "@/data/boutique-data";
+
+const SOCIAL_LINKS = [
+  { name: "Instagram", href: "https://www.instagram.com/rosepetals_designerboutique?rpxt=MXN2a2xraXVoanlydA%3D%3D&utm_source=qr", Icon: Instagram },
+  { name: "Facebook", href: "https://www.facebook.com/share/1CdwrmmqeG/?mibextid=wwXIfr", Icon: Facebook },
+  { name: "YouTube", href: "https://youtube.com/@rosepetalsdesignerboutique?si=EZ8yrSayu-wyYFT0", Icon: Youtube },
+];
 
 export default function Footer() {
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -28,6 +34,13 @@ export default function Footer() {
                 Where Tradition Blooms in Style
               </span>
             </div>
+            <nav aria-label="Rosepetal social profiles" className="flex items-center gap-2 pt-1">
+              {SOCIAL_LINKS.map(({ name, href, Icon }) => (
+                <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Rosepetal on ${name}`} title={name} className="inline-flex size-11 items-center justify-center rounded-full border border-rosepetal-border bg-white text-rosepetal-wine transition-colors hover:border-rosepetal-wine hover:bg-rosepetal-wine hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">
+                  <Icon className="size-5" aria-hidden="true" />
+                </a>
+              ))}
+            </nav>
           </div>
 
           {/* Quick Links */}
