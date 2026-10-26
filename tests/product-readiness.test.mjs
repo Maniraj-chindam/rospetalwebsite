@@ -52,12 +52,13 @@ test("checkout gate does not conceal missing colour photos or provisional detail
   assert.match(issues, /checkout is limited/i);
 });
 
-test("public catalog hides provisional garments and every payment test item", () => {
+test("every POS-published variant stays visible even when its details need confirmation", () => {
   const red = product("red", { color: "Red", name: "Designer Frock 1", sizeMeasurements: undefined, checkoutAllowed: false });
   const ivory = product("ivory", { color: "Ivory", image: red.image, checkoutAllowed: false });
   const paymentTest = product("payment-test", { name: "Razorpay Test Saree", paymentTestOnly: true, availableStock: 0 });
-  assert.deepEqual(customerVisibleCatalog([red, ivory, paymentTest]), []);
+  assert.deepEqual(customerVisibleCatalog([red, ivory, paymentTest]).map((item) => item.id), ["red", "ivory", "payment-test"]);
   assert.match(productContentIssues(red, [red, ivory]).join(" "), /measurements/i);
+  assert.equal(assessBagProducts([{ productId: red.id, qty: 1 }], [red, ivory, paymentTest]).ready, false);
 });
 
 test("a corrected POS variant appears for enquiry without opening checkout", () => {

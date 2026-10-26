@@ -26,7 +26,10 @@ export function productContentIssues(product: ProductItem, catalog: ProductItem[
 }
 
 export function customerVisibleCatalog(catalog: ProductItem[]): ProductItem[] {
-  return catalog.filter((product) => !product.paymentTestOnly && productContentIssues(product, catalog).length === 0);
+  // The POS Website checkbox controls publication. Its public catalog has
+  // already excluded unpublished variants; missing editorial details must not
+  // silently hide a product that the boutique chose to publish.
+  return catalog;
 }
 
 export function productReadinessIssues(product: ProductItem, catalog: ProductItem[]): string[] {
