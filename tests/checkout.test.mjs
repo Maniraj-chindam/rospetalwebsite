@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 process.env.NEXT_PUBLIC_POS_API_BASE_URL = "https://api.example.invalid";
-const { createCheckoutSession, verifyCheckout, getCheckoutStatus, reservePaymentCallback } = await import("../lib/checkout.ts");
+const { assertCheckoutSessionCurrent, createCheckoutSession, verifyCheckout, getCheckoutStatus, reservePaymentCallback } = await import("../lib/checkout.ts");
 const session = {
   reference: "RP-W-ABCDEF12", paymentStatus: "AwaitingPayment", fulfillmentStatus: "On hold",
   totalPaise: 193000, expiresAt: new Date(Date.now() + 900_000).toISOString(), currency: "INR",
@@ -10,6 +10,28 @@ const session = {
 };
 const buyer = { name: "Synthetic Test", email: "qa@example.invalid", phone: "+919000000000" };
 const address = { line1: "Test address", line2: "", city: "Bengaluru", state: "Karnataka", pincode: "560001", country: "IN" };
+
+test('a prepared payment cannot reopen against changed items, contact, address or quote', async () => {
+  const original = global.fetch;
+  let requests = 0;
+  global.fetch = async () => { requests++; return Response.json(session); };
+  const items = [{ productId: 'original-variant', qty: 1 }];
+  try {
+    const prepared = await createCheckoutSession(items, buyer, address, 'request-id-binding-123456');
+    await assertCheckoutSessionCurrent(prepared, items, buyer, address, session.totalPaise);
+    for (const [changedItems, changedBuyer, changedAddress] of [
+      [[{ productId: 'different-variant', qty: 1 }], buyer, address],
+      [[{ productId: 'original-variant', qty: 2 }], buyer, address],
+      [items, { ...buyer, email: 'different@example.invalid' }, address],
+      [items, buyer, { ...address, pincode: '524001' }],
+    ]) await assert.rejects(assertCheckoutSessionCurrent(prepared, changedItems, changedBuyer, changedAddress, session.totalPaise), /changed after/);
+    await assert.rejects(assertCheckoutSessionCurrent(prepared, items, buyer, address, session.totalPaise + 100), /quote differs/);
+    await assert.rejects(assertCheckoutSessionCurrent({ ...prepared, expiresAt: new Date(0).toISOString() }, items, buyer, address, session.totalPaise), /expired/);
+    await assert.rejects(assertCheckoutSessionCurrent({ ...prepared, inputFingerprint: undefined }, items, buyer, address, session.totalPaise), /changed after/);
+    assert.equal(requests, 1, 'Checking a prepared session never creates another gateway order');
+    assert.ok(!prepared.inputFingerprint.includes(buyer.email));
+  } finally { global.fetch = original; }
+});
 
 test("checkout sends items to POS and validates the gateway session", async () => {
   const original = global.fetch;

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, LockKeyhole, PackageCheck } from 'lucide-react';
 import { useBoutique } from '@/context/BoutiqueContext';
 import { quoteBag, type BagQuote } from '@/lib/checkout-quote';
-import { createCheckoutSession, getCheckoutStatus, loadRazorpayCheckout, reservePaymentCallback, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
+import { assertCheckoutSessionCurrent, createCheckoutSession, getCheckoutStatus, loadRazorpayCheckout, reservePaymentCallback, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
 import { fetchPosCatalog } from '@/lib/pos-catalog';
 import { assessBagProducts, customerVisibleCatalog, isPaymentTestProduct } from '@/lib/product-readiness';
 import type { ProductItem } from '@/data/boutique-data';
@@ -102,6 +102,7 @@ export default function CheckoutClient() {
           return;
         }
       }
+      await assertCheckoutSessionCurrent(current, bag, buyer, address, quote.totalPaise!);
       await loadRazorpayCheckout();
       const Razorpay = window.Razorpay;
       if (!Razorpay) throw new Error('Secure payment could not load.');

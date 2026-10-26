@@ -7,7 +7,20 @@ const attempts = new Map<string, { id: string; createdAt: number }>();
 export type CheckoutBuyer = { name: string; email: string; phone: string };
 export type CheckoutAddress = { line1: string; line2: string; city: string; state: string; pincode: string; country: 'IN' };
 export type CheckoutStatus = { reference: string; paymentStatus: string; fulfillmentStatus: string; totalPaise: number; expiresAt?: string; paymentTestOnly?: boolean };
-export type CheckoutSession = CheckoutStatus & { checkoutToken: string; razorpayOrderId: string; keyId: string; currency: 'INR'; expiresAt: string };
+export type CheckoutSession = CheckoutStatus & { checkoutToken: string; razorpayOrderId: string; keyId: string; currency: 'INR'; expiresAt: string; inputFingerprint?: string };
+
+async function inputFingerprint(items: BagLine[], buyer: CheckoutBuyer, address: CheckoutAddress) {
+  const bytes = new TextEncoder().encode(JSON.stringify({ items, buyer, address }));
+  return [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(value => value.toString(16).padStart(2, '0')).join('');
+}
+
+export async function assertCheckoutSessionCurrent(session: CheckoutSession, items: BagLine[], buyer: CheckoutBuyer, address: CheckoutAddress, quotedTotalPaise: number) {
+  if (Date.parse(session.expiresAt) <= Date.now()) throw new Error('This checkout expired. Review your bag and start again.');
+  if (!session.inputFingerprint || session.inputFingerprint !== await inputFingerprint(items, buyer, address)) {
+    throw new Error('Your bag, contact details or address changed after this checkout was prepared. Restore those details or wait for the previous checkout to expire before paying.');
+  }
+  if (session.totalPaise !== quotedTotalPaise) throw new Error('The current quote differs from the prepared checkout. Check the previous order before making another payment.');
+}
 
 function checkoutStatus(value: unknown): CheckoutStatus {
   const status = value as Partial<CheckoutStatus> | null;
@@ -47,7 +60,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export async function createCheckoutSession(items: BagLine[], buyer: CheckoutBuyer, address: CheckoutAddress, requestId?: string) {
-  const fingerprint = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify({ items, buyer, address }))))].map(value => value.toString(16).padStart(2, '0')).join('');
+  const fingerprint = await inputFingerprint(items, buyer, address);
   if (!requestId) {
     let attempt = attempts.get(fingerprint);
     try {
@@ -64,7 +77,7 @@ export async function createCheckoutSession(items: BagLine[], buyer: CheckoutBuy
     method: 'POST', headers: { 'content-type': 'application/json', 'x-request-id': requestId },
     body: JSON.stringify({ items, buyer, address }),
     });
-    return checkoutSession(result);
+    return { ...checkoutSession(result), inputFingerprint: fingerprint };
   } catch (error) {
     // A known expired/cancelled order may start a fresh attempt on the next click.
     // An unknown outcome or preparation conflict must retain its original ID.
