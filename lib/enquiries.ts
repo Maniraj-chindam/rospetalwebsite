@@ -1,11 +1,12 @@
 export type EnquiryPayload = {
-  kind: "contact" | "consultation";
+  kind: "contact" | "consultation" | "prebook";
   name: string;
   email: string;
   phone?: string;
   message: string;
   occasion?: string;
   preferredDate?: string;
+  productId?: string;
 };
 
 const apiBase = (process.env.NEXT_PUBLIC_POS_API_BASE_URL || "https://gpu272zv2g.execute-api.ap-south-1.amazonaws.com").replace(/\/$/, "");

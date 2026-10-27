@@ -33,6 +33,7 @@ export function customerVisibleCatalog(catalog: ProductItem[]): ProductItem[] {
 }
 
 export function productReadinessIssues(product: ProductItem, catalog: ProductItem[]): string[] {
+  if (product.prebookOnly === true) return ["This piece is available by prebook request only."];
   if (isPaymentTestProduct(product)) return [];
   const issues = productContentIssues(product, catalog);
   if (product.checkoutAllowed === false) {

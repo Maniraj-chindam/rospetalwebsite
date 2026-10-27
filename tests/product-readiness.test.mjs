@@ -67,6 +67,13 @@ test("a corrected POS variant appears for enquiry without opening checkout", () 
   assert.equal(assessBagProducts([{ productId: corrected.id, qty: 1 }], [corrected]).ready, false);
 });
 
+test('prebook-only pieces stay visible but cannot enter checkout even when otherwise approved',()=>{
+ const selected=product('prebook',{prebookOnly:true,checkoutAllowed:true});
+ assert.deepEqual(customerVisibleCatalog([selected]),[selected]);
+ assert.match(productReadinessIssues(selected,[selected]).join(' '),/prebook request only/i);
+ assert.equal(assessBagProducts([{productId:selected.id,qty:1}],[selected]).ready,false);
+});
+
 test('only the server-approved exact rupee test item bypasses garment readiness',()=>{
  const id='7552dfbd-31bf-4ef8-8b1c-98f84cb8784a';
  const approved=product(id,{styleCode:'RP-RAZORPAY-TEST-SAREE',name:'Razorpay Test Saree',priceNum:1,paymentTestOnly:true,checkoutAllowed:true,sizeMeasurements:undefined});

@@ -61,6 +61,16 @@ test('maps actual and sale prices while keeping the payable price authoritative'
  }finally{global.fetch=original;}
 });
 
+test('maps the POS prebook flag and rejects malformed values',async()=>{
+ const original=global.fetch;
+ try{
+  global.fetch=async()=>Response.json({contractVersion:2,items:[variant('prebook',{prebookOnly:true,checkoutAllowed:false})],nextCursor:null});
+  const [product]=await fetchPosCatalog();assert.equal(product.prebookOnly,true);
+  global.fetch=async()=>Response.json({contractVersion:2,items:[variant('prebook',{prebookOnly:'yes'})],nextCursor:null});
+  await assert.rejects(fetchPosCatalog(),/invalid/);
+ }finally{global.fetch=original;}
+});
+
 test('accepts the POS category and preserves entered product details without website re-entry',async()=>{
  const original=global.fetch;
  try{

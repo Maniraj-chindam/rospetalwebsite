@@ -14,7 +14,8 @@ import VariantSelector from "@/components/VariantSelector";
 import { customerVisibleCatalog, productReadinessIssues } from "@/lib/product-readiness";
 
 export default function ProductDetails() {
-  const productId = useSearchParams().get("id") ?? "";
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("id") ?? "";
   const router = useRouter();
   const { wishlist, toggleWishlist, bag, addToBag, buyNow } = useBoutique();
   const [products, setProducts] = useState<ProductItem[]>([]);
@@ -22,7 +23,7 @@ export default function ProductDetails() {
   const [retryKey, setRetryKey] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
-  const [preBookOpen, setPreBookOpen] = useState(false);
+  const [preBookOpen, setPreBookOpen] = useState(searchParams.get("prebook") === "1");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -42,9 +43,9 @@ export default function ProductDetails() {
   const bagQty = bag.find((line) => line.productId === productId)?.qty ?? 0;
   const stock = product?.availableStock ?? 0;
   const readinessIssues = product ? productReadinessIssues(product, products) : [];
-  const needsConfirmation = readinessIssues.length > 0;
-  const canAdd = Boolean(product) && stock > 0 && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
-  const canBuy = Boolean(product) && stock > 0 && !needsConfirmation && product?.checkoutAllowed !== false;
+  const needsConfirmation = product?.prebookOnly !== true && readinessIssues.length > 0;
+  const canAdd = Boolean(product) && product?.prebookOnly !== true && stock > 0 && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
+  const canBuy = Boolean(product) && product?.prebookOnly !== true && stock > 0 && !needsConfirmation && product?.checkoutAllowed !== false;
   const isFavorited = wishlist.includes(productId);
 
   useEffect(() => {
@@ -106,14 +107,14 @@ export default function ProductDetails() {
 
           {variants.length > 1 && <div className="mt-7 border-t border-rosepetal-border pt-5"><VariantSelector variants={variants} selected={product} onSelect={(item) => { setSelectedImage(null); setAddedId(null); setPreBookOpen(false); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} /></div>}
 
-          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} listed${needsConfirmation ? " · boutique confirmation needed before payment" : ""}` : "Currently out of stock"}</p>
+          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{product.prebookOnly ? "Available by prebook request · the boutique will confirm availability" : stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} listed${needsConfirmation ? " · boutique confirmation needed before payment" : ""}` : "Currently out of stock"}</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <button type="button" disabled={!canAdd} onClick={() => { addToBag(product.id); setAddedId(product.id); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine"><ShoppingBag className="h-4 w-4" aria-hidden="true" />Add to cart</button>
-            <button type="button" disabled={!canBuy} onClick={() => { buyNow(product.id); router.push('/checkout'); }} className="inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine bg-white px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-rosepetal-card disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Buy now</button>
-            <button type="button" aria-expanded={preBookOpen} aria-controls="product-pre-book" onClick={() => setPreBookOpen((open) => !open)} className="inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine/50 bg-rosepetal-card px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Pre-book</button>
+            {!product.prebookOnly && <button type="button" disabled={!canAdd} onClick={() => { addToBag(product.id); setAddedId(product.id); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine"><ShoppingBag className="h-4 w-4" aria-hidden="true" />Add to cart</button>}
+            {!product.prebookOnly && <button type="button" disabled={!canBuy} onClick={() => { buyNow(product.id); router.push('/checkout'); }} className="inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine bg-white px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-rosepetal-card disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Buy now</button>}
+            <button type="button" aria-expanded={preBookOpen} aria-controls="product-pre-book" onClick={() => setPreBookOpen((open) => !open)} className={`inline-flex min-h-12 items-center justify-center rounded-md px-5 py-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${product.prebookOnly ? "bg-rosepetal-wine text-white" : "border border-rosepetal-wine/50 bg-rosepetal-card text-rosepetal-wine hover:bg-white"}`}>Prebook</button>
             <button type="button" onClick={() => toggleWishlist(product.id)} aria-pressed={isFavorited} aria-label={isFavorited ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`} className={`inline-flex min-h-12 items-center justify-center rounded-md border px-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${isFavorited ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-wine hover:border-rosepetal-wine"}`}><Heart className={`h-5 w-5 ${isFavorited ? "fill-current" : ""}`} aria-hidden="true" /></button>
           </div>
-          {!canBuy && <p className="mt-2 text-xs leading-5 text-rosepetal-muted">{stock < 1 ? "Buy now is unavailable for this size. You can request a pre-book." : "Buy now will open when secure checkout and the piece’s details are ready. You can save it in your cart or request a pre-book now."}</p>}
+          {!canBuy && <p className="mt-2 text-xs leading-5 text-rosepetal-muted">{product.prebookOnly ? "Send a request for this size and colour. The boutique will follow up; no payment or stock hold is made." : stock < 1 ? "Buy now is unavailable for this size. You can request a pre-book." : "Buy now will open when secure checkout and the piece’s details are ready. You can save it in your cart or request a pre-book now."}</p>}
           {addedId === product.id && <p role="status" className="mt-3 text-sm text-rosepetal-wine">Added to your bag. <Link href="/bag" className="font-semibold underline underline-offset-4">Review bag</Link></p>}
           <div hidden={!preBookOpen}><PreBookPanel key={product.id} product={product} /></div>
 

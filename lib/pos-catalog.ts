@@ -28,6 +28,7 @@ type CatalogVariant = {
   updatedAt: string;
   paymentTestOnly?: boolean;
   checkoutAllowed?: boolean;
+  prebookOnly?: boolean;
 };
 
 function nonEmpty(value: unknown, max: number): value is string {
@@ -52,6 +53,7 @@ function toProduct(value: CatalogVariant): ProductItem {
       !Number.isSafeInteger(value.availableStock) || value.availableStock < 0 ||
       (value.paymentTestOnly !== undefined && typeof value.paymentTestOnly !== 'boolean') ||
       (value.checkoutAllowed !== undefined && typeof value.checkoutAllowed !== 'boolean') ||
+      (value.prebookOnly !== undefined && typeof value.prebookOnly !== 'boolean') ||
       !nonEmpty(value.updatedAt, 40)) {
     throw new Error("The catalog response was invalid.");
   }
@@ -81,6 +83,7 @@ function toProduct(value: CatalogVariant): ProductItem {
     updatedAt: value.updatedAt,
     paymentTestOnly: value.paymentTestOnly,
     checkoutAllowed: value.checkoutAllowed,
+    prebookOnly: value.prebookOnly,
   };
 }
 

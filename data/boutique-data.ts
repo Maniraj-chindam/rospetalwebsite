@@ -23,6 +23,7 @@ export interface ProductItem {
   updatedAt?: string;
   paymentTestOnly?: boolean;
   checkoutAllowed?: boolean;
+  prebookOnly?: boolean;
 }
 
 export interface LookbookItem {
