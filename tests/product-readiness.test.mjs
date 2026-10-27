@@ -7,7 +7,7 @@ const product = (id, overrides = {}) => ({
   id, styleCode: "RP-01", name: "Rose kurta", category: "Dresses", description: "Cotton kurta with a floral print.",
   fabric: "Cotton", care: "Gentle wash", delivery: "Dispatch timing confirmed with the boutique.",
   size: "M", sizeMeasurements: "Bust 96 cm; length 110 cm", color: "Rose", image: `https://assets.example.invalid/uploads/${id}.jpg`,
-  priceNum: 1850, availableStock: 2, ...overrides,
+  priceNum: 1850, availableStock: 2, checkoutAllowed: true, ...overrides,
 });
 
 test("a bag with confirmed, individually photographed variants is ready", () => {
@@ -17,7 +17,7 @@ test("a bag with confirmed, individually photographed variants is ready", () => 
   });
 });
 
-test("stale and provisional bag items cannot proceed to payment", () => {
+test("a missing product blocks checkout but provisional copy stays visible as a notice", () => {
   const catalog = [
     product("one", { description: "Website publishing test; stock availability is to be confirmed by the boutique." }),
     product("two", { color: "Ivory", image: "https://assets.example.invalid/uploads/one.jpg" }),
@@ -25,21 +25,21 @@ test("stale and provisional bag items cannot proceed to payment", () => {
   const result = assessBagProducts([{ productId: "one", qty: 1 }, { productId: "missing", qty: 1 }], catalog);
   assert.equal(result.ready, false);
   assert.deepEqual(result.missingIds, ["missing"]);
-  assert.deepEqual(result.unconfirmedIds, ["one"]);
+  assert.deepEqual(result.unconfirmedIds, []);
   assert.match(productReadinessIssues(catalog[1], catalog).join(" "), /individual photo/i);
   assert.equal(assessBagProducts([], catalog).ready, false);
 });
 
-test("a generic test name cannot become buyable by changing only the description", () => {
+test("a generic test name is flagged without overriding POS checkout eligibility", () => {
   const item = product("test-item", { name: "Designer Frock 1" });
   assert.match(productReadinessIssues(item, [item]).join(" "), /name needs boutique confirmation/i);
-  assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, false);
+  assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, true);
 });
 
-test("a size label without actual measurements is enquiry only", () => {
+test("missing garment measurements remain visible without overriding POS checkout eligibility", () => {
   const item = product("no-measurements", { sizeMeasurements: undefined });
   assert.match(productReadinessIssues(item, [item]).join(" "), /size measurements/i);
-  assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, false);
+  assert.equal(assessBagProducts([{ productId: item.id, qty: 1 }], [item]).ready, true);
 });
 
 test("checkout gate does not conceal missing colour photos or provisional details", () => {
@@ -74,7 +74,7 @@ test('POS prebook pieces remain request-only until approved, then can use checko
  assert.equal(assessBagProducts([{productId:selected.id,qty:1}],[selected]).ready,false);
  const approved={...selected,checkoutAllowed:true};
  assert.equal(assessBagProducts([{productId:approved.id,qty:1}],[approved]).ready,true);
- assert.equal(assessBagProducts([{productId:approved.id,qty:1}],[{...approved,sizeMeasurements:''}]).ready,false);
+ assert.equal(assessBagProducts([{productId:approved.id,qty:1}],[{...approved,sizeMeasurements:''}]).ready,true);
 });
 
 test('only the server-approved exact rupee test item bypasses garment readiness',()=>{

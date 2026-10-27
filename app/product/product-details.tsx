@@ -45,8 +45,8 @@ export default function ProductDetails() {
   const readinessIssues = product ? productReadinessIssues(product, products) : [];
   const needsConfirmation = readinessIssues.length > 0;
   const canAdd = Boolean(product) && product?.prebookOnly !== true && stock > 0 && bagQty < Math.min(10, stock) && (bagQty > 0 || bag.length < 20);
-  const canBuy = Boolean(product) && product?.prebookOnly !== true && stock > 0 && !needsConfirmation && product?.checkoutAllowed !== false;
-  const canPayPrebook = Boolean(product?.prebookOnly) && stock > 0 && !needsConfirmation && product?.checkoutAllowed === true;
+  const canBuy = Boolean(product) && product?.prebookOnly !== true && stock > 0 && product?.checkoutAllowed === true;
+  const canPayPrebook = Boolean(product?.prebookOnly) && stock > 0 && product?.checkoutAllowed === true;
   const isFavorited = wishlist.includes(productId);
 
   useEffect(() => {
@@ -104,11 +104,11 @@ export default function ProductDetails() {
           <h1 className="mt-3 font-serif-luxury text-3xl leading-tight sm:text-4xl">{product.name}</h1>
           <p className="mt-4 text-2xl text-rosepetal-wine">{<ProductPrice product={product}/>}</p>
           {product.description && <p className="mt-5 text-sm leading-7 text-rosepetal-muted">{product.description}</p>}
-          {needsConfirmation && <div role="status" className="mt-5 rounded-lg border border-rosepetal-border bg-white p-4 text-sm leading-6 text-rosepetal-text"><strong>Details being confirmed</strong><p className="mt-1">This piece is available for enquiry while the boutique confirms its details and photos.</p><ul className="mt-2 list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
+          {needsConfirmation && <div role="status" className="mt-5 rounded-lg border border-rosepetal-border bg-white p-4 text-sm leading-6 text-rosepetal-text"><strong>Details being confirmed</strong><p className="mt-1">Review these details with the boutique if they matter for your order.</p><ul className="mt-2 list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
 
           {variants.length > 1 && <div className="mt-7 border-t border-rosepetal-border pt-5"><VariantSelector variants={variants} selected={product} onSelect={(item) => { setSelectedImage(null); setAddedId(null); setPreBookOpen(false); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} /></div>}
 
-          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{product.prebookOnly ? canPayPrebook ? "Prebook · secure checkout available" : "Available by prebook request · the boutique will confirm availability" : stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} listed${needsConfirmation ? " · boutique confirmation needed before payment" : ""}` : "Currently out of stock"}</p>
+          <p className="mt-6 text-sm font-medium text-rosepetal-text" role="status">{product.prebookOnly ? canPayPrebook ? "Prebook · continue to checkout for the live delivery charge" : "Available by prebook request · the boutique will confirm availability" : stock > 0 ? `${stock} ${stock === 1 ? "piece" : "pieces"} available${!canBuy ? " · checkout is being prepared" : ""}` : "Currently out of stock"}</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {!product.prebookOnly && <button type="button" disabled={!canAdd} onClick={() => { addToBag(product.id); setAddedId(product.id); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-rosepetal-wine px-5 py-3 text-sm font-semibold text-white hover:bg-rosepetal-wineHover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine"><ShoppingBag className="h-4 w-4" aria-hidden="true" />Add to cart</button>}
             {!product.prebookOnly && <button type="button" disabled={!canBuy} onClick={() => { buyNow(product.id); router.push('/checkout'); }} className="inline-flex min-h-12 items-center justify-center rounded-md border border-rosepetal-wine bg-white px-5 py-3 text-sm font-semibold text-rosepetal-wine hover:bg-rosepetal-card disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">Buy now</button>}

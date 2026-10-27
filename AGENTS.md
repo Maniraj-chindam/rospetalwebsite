@@ -1,5 +1,7 @@
 # Rosepetal website product decisions
 
+- On 2026-10-27, the owner clarified that a POS-published variant with available stock is saleable stock. When the POS enables published-product checkout, do not block its cart or Buy now action solely for missing garment measurements or colour text; continue to display honest detail notices. A Razorpay charge still requires the server's live courier quote from measured packing dimensions. This supersedes the earlier editorial readiness gate for shopping actions.
+
 - On 2026-10-27, the owner clarified that the Prebook purchase action appears only when POS marks a published product **Prebook only**. For an unapproved piece it opens a variant-specific request; once the POS approves that in-stock piece for payment and a live delivery quote is available, the same action opens ordinary secure checkout. Other products show their normal cart/buy actions without a Prebook button. Retain server approval, stock, quote and payment gates.
 
 - On 2026-10-27, live prepaid checkout is gated by POS-approved variant IDs and a controlled one-run acceptance path while general payment/booking switches remain off. Unapproved pieces stay enquiry-only; the site accepts the POS `approval_required` quote status and never creates a payable session from it. Do not invent product, packing, recipient or price facts for launch.

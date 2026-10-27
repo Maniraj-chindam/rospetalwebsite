@@ -48,7 +48,10 @@ export function isPaymentTestProduct(product: ProductItem): boolean {
 }
 
 export function isProductReadyForCheckout(product: ProductItem, catalog: ProductItem[]): boolean {
-  return productReadinessIssues(product, catalog).length === 0;
+  void catalog;
+  // The POS decides which published variants may enter checkout. The courier
+  // quote and current stock are checked again by the server before payment.
+  return product.checkoutAllowed === true && (product.availableStock ?? 0) > 0;
 }
 
 export function assessBagProducts(lines: Array<{ productId: string; qty: number }>, catalog: ProductItem[]) {
