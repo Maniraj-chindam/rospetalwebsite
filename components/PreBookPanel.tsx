@@ -14,12 +14,12 @@ export default function PreBookPanel({ product }: { product: ProductItem }) {
     event.preventDefault();
     const note = form.note.trim();
     void submit({
-      kind: product.prebookOnly ? "prebook" : "contact",
-      ...(product.prebookOnly ? { productId: product.id } : {}),
+      kind: "prebook",
+      productId: product.id,
       name: form.name,
       email: form.email,
       phone: form.phone,
-      message: product.prebookOnly ? note : `Pre-book request for ${product.name} (SKU ${product.sku ?? product.id}), size ${product.size || "not specified"}, colour ${product.color || "not specified"}.${note ? ` Customer note: ${note}` : ""} No payment or stock reservation has been made.`,
+      message: note,
     });
   };
 
@@ -36,7 +36,7 @@ export default function PreBookPanel({ product }: { product: ProductItem }) {
           <div>
             <h2 className="font-serif-luxury text-xl text-rosepetal-wine">Request this piece</h2>
             <p className="mt-1 text-xs leading-5 text-rosepetal-muted">The boutique will confirm the selected size, availability and next steps. This request takes no payment and does not reserve stock.</p>
-            {product.prebookOnly && <p className="mt-3 rounded-md bg-rosepetal-card p-3 text-sm text-rosepetal-text">{product.name} · {product.size || "No size"} · {product.color || "No colour"} · SKU {product.sku}</p>}
+            <p className="mt-3 rounded-md bg-rosepetal-card p-3 text-sm text-rosepetal-text">{product.name} · {product.size || "No size"} · {product.color || "No colour"} · SKU {product.sku}</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="text-xs font-semibold text-rosepetal-text">Your name

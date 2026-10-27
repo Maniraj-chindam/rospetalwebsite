@@ -67,11 +67,14 @@ test("a corrected POS variant appears for enquiry without opening checkout", () 
   assert.equal(assessBagProducts([{ productId: corrected.id, qty: 1 }], [corrected]).ready, false);
 });
 
-test('prebook-only pieces stay visible but cannot enter checkout even when otherwise approved',()=>{
- const selected=product('prebook',{prebookOnly:true,checkoutAllowed:true});
+test('POS prebook pieces remain request-only until approved, then can use checkout',()=>{
+ const selected=product('prebook',{prebookOnly:true,checkoutAllowed:false});
  assert.deepEqual(customerVisibleCatalog([selected]),[selected]);
- assert.match(productReadinessIssues(selected,[selected]).join(' '),/prebook request only/i);
+ assert.match(productReadinessIssues(selected,[selected]).join(' '),/prebook payment is not available yet/i);
  assert.equal(assessBagProducts([{productId:selected.id,qty:1}],[selected]).ready,false);
+ const approved={...selected,checkoutAllowed:true};
+ assert.equal(assessBagProducts([{productId:approved.id,qty:1}],[approved]).ready,true);
+ assert.equal(assessBagProducts([{productId:approved.id,qty:1}],[{...approved,sizeMeasurements:''}]).ready,false);
 });
 
 test('only the server-approved exact rupee test item bypasses garment readiness',()=>{

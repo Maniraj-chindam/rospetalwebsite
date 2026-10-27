@@ -33,11 +33,12 @@ export function customerVisibleCatalog(catalog: ProductItem[]): ProductItem[] {
 }
 
 export function productReadinessIssues(product: ProductItem, catalog: ProductItem[]): string[] {
-  if (product.prebookOnly === true) return ["This piece is available by prebook request only."];
   if (isPaymentTestProduct(product)) return [];
   const issues = productContentIssues(product, catalog);
   if (product.checkoutAllowed === false) {
-    issues.push("This piece is currently available for enquiry while boutique checkout approval is completed.");
+    issues.push(product.prebookOnly
+      ? "Secure prebook payment is not available yet; you can send a request to the boutique."
+      : "This piece is currently available for enquiry while boutique checkout approval is completed.");
   }
   return issues;
 }
