@@ -38,6 +38,14 @@ test("paused delivery accepts a zero-fee payable total and rejects extra charges
   }finally{global.fetch=original;}
 });
 
+test("free delivery can be booked while the customer charge remains zero", async () => {
+  const original=global.fetch;
+  try{
+    global.fetch=async()=>Response.json(quote({deliveryStatus:'free',deliveryQuote:null,shippingPaise:0,totalPaise:185000}));
+    assert.equal((await quoteBag(lines,'560001')).totalPaise,185000);
+  }finally{global.fetch=original;}
+});
+
 test("unpriced shipping and inconsistent totals cannot open checkout", async () => {
   const original = global.fetch;
   try {
