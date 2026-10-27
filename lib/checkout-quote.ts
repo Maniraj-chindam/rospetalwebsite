@@ -7,7 +7,7 @@ export type BagQuote = {
   items: Array<{ productId: string; sku: string; name: string; size: string; color: string; qty: number; unitPricePaise: number; lineTotalPaise: number }>;
   subtotalPaise: number;
   deliveryPincode: string | null;
-  deliveryStatus: "pin_required" | "packaging_required" | "available" | "unserviceable" | "unavailable" | "approval_required" | "not_required";
+  deliveryStatus: "pin_required" | "packaging_required" | "available" | "unserviceable" | "unavailable" | "approval_required" | "not_required" | "paused";
   deliveryQuote: { courierCompanyId: number; courierName: string; estimatedChargePaise: number; estimatedDeliveryDays: number | null } | null;
   quotedAt: string;
   expiresAt: string;
@@ -45,16 +45,17 @@ export async function quoteBag(items: BagLine[], deliveryPincode?: string, signa
         item.lineTotalPaise === item.qty * item.unitPricePaise) ||
       body.items.reduce((sum: number, item: BagQuote["items"][number]) => sum + item.lineTotalPaise, 0) !== body.subtotalPaise ||
       typeof body.checkoutAvailable !== "boolean" || typeof body.reason !== "string" ||
-      !["pin_required", "packaging_required", "available", "unserviceable", "unavailable", "approval_required", ...(validTest?['not_required']:[])].includes(body.deliveryStatus) ||
+      !["pin_required", "packaging_required", "available", "unserviceable", "unavailable", "approval_required", "paused", ...(validTest?['not_required']:[])].includes(body.deliveryStatus) ||
       (body.deliveryQuote !== null && (!body.deliveryQuote || !Number.isSafeInteger(body.deliveryQuote.courierCompanyId) || body.deliveryQuote.courierCompanyId <= 0 ||
         !Number.isSafeInteger(body.deliveryQuote.estimatedChargePaise) || body.deliveryQuote.estimatedChargePaise < 0 ||
         typeof body.deliveryQuote.courierName !== "string" || !body.deliveryQuote.courierName.trim() ||
         (body.deliveryQuote.estimatedDeliveryDays !== null && (!Number.isSafeInteger(body.deliveryQuote.estimatedDeliveryDays) || body.deliveryQuote.estimatedDeliveryDays < 0)))) ||
       (body.deliveryStatus === "available") !== (body.deliveryQuote !== null) ||
+      (body.deliveryStatus === "paused" && (paymentTest || body.deliveryQuote !== null || body.shippingPaise !== (body.checkoutAvailable ? 0 : null))) ||
       typeof body.quotedAt !== "string" || !Number.isFinite(Date.parse(body.quotedAt)) ||
       typeof body.expiresAt !== "string" || !Number.isFinite(Date.parse(body.expiresAt)) ||
       Date.parse(body.expiresAt) <= Date.parse(body.quotedAt) || Date.parse(body.expiresAt) <= Date.now() ||
-      (body.checkoutAvailable && (paymentTest ? body.shippingPaise!==0||body.totalPaise!==100 : body.deliveryStatus !== "available" || body.shippingPaise !== body.deliveryQuote?.estimatedChargePaise ||
+      (body.checkoutAvailable && (paymentTest ? body.shippingPaise!==0||body.totalPaise!==100 : body.deliveryStatus === "paused" ? body.shippingPaise !== 0 || body.totalPaise !== body.subtotalPaise : body.deliveryStatus !== "available" || body.shippingPaise !== body.deliveryQuote?.estimatedChargePaise ||
         !Number.isSafeInteger(body.totalPaise) || body.totalPaise !== body.subtotalPaise + body.shippingPaise)) ||
       (!body.checkoutAvailable && (body.shippingPaise !== null || body.totalPaise !== null))) {
     throw new Error("The bag quote was invalid. Please refresh and try again.");

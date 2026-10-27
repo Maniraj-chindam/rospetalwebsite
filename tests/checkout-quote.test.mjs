@@ -25,6 +25,19 @@ test("a live quote supplies the exact payable total", async () => {
   finally { global.fetch = original; }
 });
 
+test("paused delivery accepts a zero-fee payable total and rejects extra charges", async () => {
+  const original=global.fetch;
+  const paused=quote({deliveryStatus:'paused',deliveryQuote:null,shippingPaise:0,totalPaise:185000});
+  try{
+    global.fetch=async()=>Response.json(paused);
+    assert.equal((await quoteBag(lines,'560001')).totalPaise,185000);
+    for(const patch of [{shippingPaise:1},{totalPaise:185001},{deliveryQuote:quote().deliveryQuote}]){
+      global.fetch=async()=>Response.json({...paused,...patch});
+      await assert.rejects(quoteBag(lines,'560001'),/invalid/);
+    }
+  }finally{global.fetch=original;}
+});
+
 test("unpriced shipping and inconsistent totals cannot open checkout", async () => {
   const original = global.fetch;
   try {

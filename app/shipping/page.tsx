@@ -4,9 +4,9 @@ import CustomerInfoPage from "@/components/CustomerInfoPage";
 export const metadata: Metadata = { title: "Delivery | Rosepetal Designer Boutique", description: "Delivery information for Rosepetal orders within India.", alternates: { canonical: "/shipping" } };
 
 export default function ShippingPage() {
-  return <CustomerInfoPage eyebrow="Customer information" title="Delivery" intro="Rosepetal currently prepares website checkout for prepaid orders within India. A delivery charge must be available before you can pay." sections={[
-    { heading: "Delivery estimate", text: "Enter a six-digit India PIN code in your bag or at checkout. When the piece has confirmed packed measurements and a courier serves the destination, the site shows a live Shiprocket estimate and checks the final total again before payment." },
-    { heading: "When an estimate is unavailable", text: "Checkout stays unavailable if packed measurements, a courier quote, or another required order detail is missing. Contact the boutique for help with a particular piece or destination." },
-    { heading: "Dispatch and tracking", text: "The boutique confirms preparation and dispatch details for an accepted order. A courier estimate is not a guaranteed delivery date." },
+  return <CustomerInfoPage eyebrow="Customer information" title="Delivery" intro="The delivery fee is ₹0 for now. Rosepetal is accepting prepaid orders within India, but courier dispatch is paused until the boutique resumes delivery." sections={[
+    { heading: "At checkout", text: "Enter your six-digit India PIN code and address. The order summary shows the exact item total and a ₹0 delivery fee before Razorpay opens. The boutique checks stock and the payable total again before payment." },
+    { heading: "Dispatch is paused", text: "A paid order will be recorded and its stock reserved, but no courier shipment or pickup is booked while delivery is paused. The boutique will contact you about dispatch when delivery resumes." },
+    { heading: "Questions about an order", text: "Contact the boutique with your order reference for help with a piece or delivery destination." },
   ]} />;
 }
