@@ -107,6 +107,20 @@ export function reservePaymentCallback(handledPaymentIds: Set<string>, paymentId
   return true;
 }
 
+export function razorpayFailureMessage(response: unknown): string {
+  const error = response && typeof response === 'object' && 'error' in response ? response.error : null;
+  const details = error && typeof error === 'object' ? error as { description?: unknown; reason?: unknown } : null;
+  const description = typeof details?.description === 'string' ? details.description : '';
+  if (/website.{0,60}(mismatch|does not match|not registered|not allowed)|not allowed.{0,80}website/i.test(description)) {
+    return 'Razorpay blocked this payment because of a website verification check. Please contact the boutique with your order reference before trying again.';
+  }
+  return 'Payment did not complete. Check this order’s status before trying again.';
+}
+
+export function isApprovedPaymentOrigin(origin: string): boolean {
+  return origin === 'https://rosepetalboutique.com';
+}
+
 export async function getCheckoutStatus(token: string) {
   return checkoutStatus(await request<unknown>(`/api/checkout/status?token=${encodeURIComponent(token)}`));
 }
@@ -117,7 +131,7 @@ declare global {
       key: string; amount: number; currency: string; name: string; description: string; order_id: string;
       prefill: { name: string; email: string; contact: string }; handler: (payment: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => void;
       modal: { ondismiss: () => void }; theme: { color: string };
-    }) => { open: () => void; on: (event: string, handler: () => void) => void };
+    }) => { open: () => void; on: (event: string, handler: (response: unknown) => void) => void };
   }
 }
 

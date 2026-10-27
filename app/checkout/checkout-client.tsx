@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, LockKeyhole, PackageCheck } from 'lucide-react';
 import { useBoutique } from '@/context/BoutiqueContext';
 import { quoteBag, type BagQuote } from '@/lib/checkout-quote';
-import { assertCheckoutSessionCurrent, createCheckoutSession, getCheckoutStatus, loadRazorpayCheckout, reservePaymentCallback, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
+import { assertCheckoutSessionCurrent, createCheckoutSession, getCheckoutStatus, isApprovedPaymentOrigin, loadRazorpayCheckout, razorpayFailureMessage, reservePaymentCallback, verifyCheckout, type CheckoutAddress, type CheckoutBuyer, type CheckoutSession, type CheckoutStatus } from '@/lib/checkout';
 import { fetchPosCatalog } from '@/lib/pos-catalog';
 import { assessBagProducts, customerVisibleCatalog, isPaymentTestProduct } from '@/lib/product-readiness';
 import type { ProductItem } from '@/data/boutique-data';
@@ -88,6 +88,10 @@ export default function CheckoutClient() {
 
   async function pay(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (process.env.NODE_ENV === 'production' && !isApprovedPaymentOrigin(window.location.origin)) {
+      setError('Payments must start at https://rosepetalboutique.com. Please open the official website and add your piece there before paying.');
+      return;
+    }
     if (!ready || !pinReady || !bag.length || busy) return;
     setError(''); setBusy(true);
     try {
@@ -128,7 +132,7 @@ export default function CheckoutClient() {
           }).finally(() => setBusy(false));
         },
       });
-      checkout.on('payment.failed', () => { paymentFailed = true; setError('Payment did not complete. You can try again with the same order.'); setBusy(false); });
+      checkout.on('payment.failed', response => { paymentFailed = true; setError(razorpayFailureMessage(response)); setBusy(false); });
       checkout.open();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : 'Payment could not start. Please try again.');

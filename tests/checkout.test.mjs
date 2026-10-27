@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 process.env.NEXT_PUBLIC_POS_API_BASE_URL = "https://api.example.invalid";
-const { assertCheckoutSessionCurrent, createCheckoutSession, verifyCheckout, getCheckoutStatus, reservePaymentCallback } = await import("../lib/checkout.ts");
+const { assertCheckoutSessionCurrent, createCheckoutSession, verifyCheckout, getCheckoutStatus, isApprovedPaymentOrigin, razorpayFailureMessage, reservePaymentCallback } = await import("../lib/checkout.ts");
 const session = {
   reference: "RP-W-ABCDEF12", paymentStatus: "AwaitingPayment", fulfillmentStatus: "On hold",
   totalPaise: 193000, expiresAt: new Date(Date.now() + 900_000).toISOString(), currency: "INR",
@@ -61,6 +61,22 @@ test("the same synthetic payment callback can be verified only once", () => {
   assert.equal(reservePaymentCallback(handled, "pay_SYNTHETIC123"), false);
   assert.equal(reservePaymentCallback(handled, "pay_SYNTHETIC456"), true);
   assert.equal(reservePaymentCallback(handled, "invalid"), false);
+});
+
+test('a Razorpay website rejection gives a clear non-retry message without echoing gateway data', () => {
+  const response = { error: { description: 'The payment could not be completed as this business is not allowed to accept payments on this website.', reason: 'payment_risk_check_failed', metadata: { payment_id: 'pay_SYNTHETIC123' } } };
+  const message = razorpayFailureMessage(response);
+  assert.match(message, /website verification check/);
+  assert.match(message, /contact the boutique/);
+  assert.doesNotMatch(message, /pay_SYNTHETIC123/);
+  assert.match(razorpayFailureMessage({ error: { description: 'Bank declined' } }), /Check this order’s status/);
+});
+
+test('only the merchant-approved website can start a production payment', () => {
+  assert.equal(isApprovedPaymentOrigin('https://rosepetalboutique.com'), true);
+  assert.equal(isApprovedPaymentOrigin('https://rosepetal-boutique-live.web.app'), false);
+  assert.equal(isApprovedPaymentOrigin('https://www.rosepetalboutique.com'), false);
+  assert.equal(isApprovedPaymentOrigin('http://rosepetalboutique.com'), false);
 });
 
 test("payment verification and status require a valid order acknowledgement", async () => {
