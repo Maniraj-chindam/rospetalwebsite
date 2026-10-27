@@ -104,6 +104,7 @@ export default function ProductDetails() {
           <h1 className="mt-3 font-serif-luxury text-3xl leading-tight sm:text-4xl">{product.name}</h1>
           <p className="mt-4 text-2xl text-rosepetal-wine">{<ProductPrice product={product}/>}</p>
           {product.description && <p className="mt-5 text-sm leading-7 text-rosepetal-muted">{product.description}</p>}
+          <p role="status" className="mt-5 rounded-lg border border-rosepetal-border bg-white p-4 text-sm leading-6 text-rosepetal-text">Delivery fee is ₹0 for now. Courier dispatch is paused, and the boutique will contact you before sending a paid order.</p>
           {needsConfirmation && <div role="status" className="mt-5 rounded-lg border border-rosepetal-border bg-white p-4 text-sm leading-6 text-rosepetal-text"><strong>Details being confirmed</strong><p className="mt-1">Review these details with the boutique if they matter for your order.</p><ul className="mt-2 list-inside list-disc text-rosepetal-muted">{readinessIssues.map((issue) => <li key={issue}>{issue}</li>)}</ul></div>}
 
           {variants.length > 1 && <div className="mt-7 border-t border-rosepetal-border pt-5"><VariantSelector variants={variants} selected={product} onSelect={(item) => { setSelectedImage(null); setAddedId(null); setPreBookOpen(false); router.replace(`/product?id=${encodeURIComponent(item.id)}`, { scroll: false }); }} /></div>}
