@@ -50,6 +50,13 @@ test("a quote error reaches the customer without a false payable total", async (
   finally { global.fetch = original; }
 });
 
+test("an unapproved POS variant remains enquiry-only even when the quote endpoint responds", async () => {
+  const original = global.fetch;
+  global.fetch = async () => Response.json(quote({ deliveryStatus: "approval_required", deliveryQuote: null, shippingPaise: null, totalPaise: null, checkoutAvailable: false, reason: "Boutique approval pending." }));
+  try { const value = await quoteBag(lines, "560001"); assert.equal(value.checkoutAvailable, false); assert.equal(value.totalPaise, null); }
+  finally { global.fetch = original; }
+});
+
 test("a stalled courier quote times out and can be retried", async () => {
   const original = global.fetch;
   let calls = 0;

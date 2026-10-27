@@ -7,7 +7,7 @@ export type BagQuote = {
   items: Array<{ productId: string; sku: string; name: string; size: string; color: string; qty: number; unitPricePaise: number; lineTotalPaise: number }>;
   subtotalPaise: number;
   deliveryPincode: string | null;
-  deliveryStatus: "pin_required" | "packaging_required" | "available" | "unserviceable" | "unavailable" | "not_required";
+  deliveryStatus: "pin_required" | "packaging_required" | "available" | "unserviceable" | "unavailable" | "approval_required" | "not_required";
   deliveryQuote: { courierCompanyId: number; courierName: string; estimatedChargePaise: number; estimatedDeliveryDays: number | null } | null;
   quotedAt: string;
   expiresAt: string;
@@ -45,7 +45,7 @@ export async function quoteBag(items: BagLine[], deliveryPincode?: string, signa
         item.lineTotalPaise === item.qty * item.unitPricePaise) ||
       body.items.reduce((sum: number, item: BagQuote["items"][number]) => sum + item.lineTotalPaise, 0) !== body.subtotalPaise ||
       typeof body.checkoutAvailable !== "boolean" || typeof body.reason !== "string" ||
-      !["pin_required", "packaging_required", "available", "unserviceable", "unavailable", ...(validTest?['not_required']:[])].includes(body.deliveryStatus) ||
+      !["pin_required", "packaging_required", "available", "unserviceable", "unavailable", "approval_required", ...(validTest?['not_required']:[])].includes(body.deliveryStatus) ||
       (body.deliveryQuote !== null && (!body.deliveryQuote || !Number.isSafeInteger(body.deliveryQuote.courierCompanyId) || body.deliveryQuote.courierCompanyId <= 0 ||
         !Number.isSafeInteger(body.deliveryQuote.estimatedChargePaise) || body.deliveryQuote.estimatedChargePaise < 0 ||
         typeof body.deliveryQuote.courierName !== "string" || !body.deliveryQuote.courierName.trim() ||

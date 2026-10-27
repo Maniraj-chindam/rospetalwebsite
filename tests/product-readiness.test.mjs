@@ -49,7 +49,7 @@ test("checkout gate does not conceal missing colour photos or provisional detail
   assert.match(issues, /individual photo/i);
   assert.match(issues, /measurements/i);
   assert.match(issues, /name needs boutique confirmation/i);
-  assert.match(issues, /checkout is limited/i);
+  assert.match(issues, /available for enquiry/i);
 });
 
 test("every POS-published variant stays visible even when its details need confirmation", () => {

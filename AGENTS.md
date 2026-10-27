@@ -1,5 +1,7 @@
 # Rosepetal website product decisions
 
+- On 2026-10-27, live prepaid checkout is gated by POS-approved variant IDs and a controlled one-run acceptance path while general payment/booking switches remain off. Unapproved pieces stay enquiry-only; the site accepts the POS `approval_required` quote status and never creates a payable session from it. Do not invent product, packing, recipient or price facts for launch.
+
 - On 2026-10-26, the owner required one product entry in POS, with matching
   categories, actual/sale prices, descriptions, fabric, care, delivery, variants
   and photos on the website. Fetch published POS catalog data; do not introduce

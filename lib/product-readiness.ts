@@ -36,7 +36,7 @@ export function productReadinessIssues(product: ProductItem, catalog: ProductIte
   if (isPaymentTestProduct(product)) return [];
   const issues = productContentIssues(product, catalog);
   if (product.checkoutAllowed === false) {
-    issues.push("Checkout is limited to the ₹1 Razorpay Test Saree. Other products remain enquiry-only.");
+    issues.push("This piece is currently available for enquiry while boutique checkout approval is completed.");
   }
   return issues;
 }
