@@ -107,3 +107,282 @@ body {
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
 }
+
+/* Homepage editorial story. All typography and navigation remain live HTML. */
+.atelier-story {
+  display: grid;
+  grid-template-columns: minmax(0, 53%) minmax(0, 47%);
+  min-height: clamp(640px, 46vw, 800px);
+  overflow: hidden;
+  background: #fff8f5;
+}
+
+.atelier-story__media,
+.atelier-story__content {
+  position: relative;
+  min-width: 0;
+}
+
+.atelier-story__photo {
+  object-fit: cover;
+  object-position: 44% center;
+}
+
+.atelier-story__media::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 77%, #fff8f5 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.atelier-story__content {
+  display: flex;
+  align-items: center;
+  padding: 72px clamp(30px, 4.4vw, 84px) 72px clamp(36px, 4.7vw, 88px);
+}
+
+.atelier-story__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 590px;
+}
+
+.atelier-story__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 32px;
+  color: #a04459;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+}
+
+.atelier-story__eyebrow::after {
+  display: block;
+  width: 76px;
+  height: 1px;
+  background: #a04459;
+  content: "";
+}
+
+.atelier-story__title {
+  margin: 0;
+  color: #421525;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.6rem, 4.55vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.99;
+}
+
+.atelier-story__title em {
+  color: #934657;
+  font-weight: 400;
+}
+
+.atelier-story__divider {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 200px;
+  margin: 31px 0 37px;
+  color: #bd967b;
+}
+
+.atelier-story__divider span {
+  height: 1px;
+  flex: 1;
+  background: #bd967b;
+}
+
+.atelier-story__link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid currentColor;
+  color: #8e334a;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  line-height: 1.25;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: gap 180ms ease, color 180ms ease;
+}
+
+.atelier-story__link:hover {
+  gap: 26px;
+  color: #5f1c32;
+}
+
+.atelier-story__detail {
+  position: absolute;
+  top: 19%;
+  right: 0;
+  width: clamp(105px, 11.5vw, 190px);
+  height: 55%;
+  overflow: hidden;
+  opacity: 0.88;
+}
+
+.atelier-story__detail-photo {
+  object-fit: cover;
+  object-position: 90% center;
+}
+
+/* Homepage fit, delivery and returns guidance. */
+.buying-guidance {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: clamp(650px, 46vw, 800px);
+  align-items: center;
+  overflow: hidden;
+  background: #280611;
+}
+
+.buying-guidance__photo {
+  z-index: 0;
+  object-fit: cover;
+  object-position: center right;
+}
+
+.buying-guidance__shade {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(90deg, #260510 0%, #300713 34%, rgb(47 7 18 / 92%) 45%, rgb(47 7 18 / 42%) 68%, transparent 100%);
+}
+
+.buying-guidance__content {
+  position: relative;
+  z-index: 2;
+  width: min(65%, 930px);
+  margin-left: clamp(26px, 5.7vw, 105px);
+  padding: 70px 25px 80px 0;
+  color: #fff8f4;
+}
+
+.buying-guidance__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 23px;
+  margin: 0 0 28px;
+  color: #eac589;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.31em;
+  text-transform: uppercase;
+}
+
+.buying-guidance__eyebrow::after {
+  display: block;
+  width: 70px;
+  height: 1px;
+  background: #eac589;
+  content: "";
+}
+
+.buying-guidance__title {
+  margin: 0 0 35px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.9rem, 5.1vw, 6rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.94;
+}
+
+.buying-guidance__links {
+  max-width: 820px;
+  border-top: 1px solid #cfac76;
+}
+
+.buying-guidance__row {
+  display: grid;
+  min-height: 94px;
+  grid-template-columns: 56px minmax(150px, 230px) 24px 1fr;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid #cfac76;
+  color: #fff8f4;
+  text-decoration: none;
+  transition: background 180ms ease, padding 180ms ease;
+}
+
+.buying-guidance__row:hover {
+  padding-left: 8px;
+  background: rgb(255 255 255 / 6%);
+}
+
+.buying-guidance__row > svg:first-child {
+  color: #eac589;
+}
+
+.buying-guidance__row-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.6rem, 2.1vw, 2rem);
+  white-space: nowrap;
+}
+
+.buying-guidance__row-arrow {
+  color: #e9d5c2;
+}
+
+.buying-guidance__row-detail {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.buying-guidance__cta {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 13px;
+  margin-top: 31px;
+  border-bottom: 1px solid currentColor;
+  color: #fff8f4;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.1;
+  text-decoration: none;
+  transition: gap 180ms ease;
+}
+
+.buying-guidance__cta:hover {
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .atelier-story__content { padding-right: 30px; }
+  .atelier-story__detail { width: 110px; opacity: 0.45; }
+  .buying-guidance__content { width: min(74%, 820px); }
+  .buying-guidance__row { grid-template-columns: 45px minmax(140px, 190px) 22px 1fr; gap: 10px; }
+}
+
+@media (max-width: 767px) {
+  .atelier-story { grid-template-columns: 1fr; }
+  .atelier-story__media { min-height: clamp(280px, 64vw, 440px); }
+  .atelier-story__media::after { background: linear-gradient(180deg, transparent 76%, #fff8f5 100%); }
+  .atelier-story__content { min-height: 390px; padding: 27px 7vw 55px; }
+  .atelier-story__eyebrow { margin-bottom: 19px; font-size: 10px; }
+  .atelier-story__title { font-size: clamp(3.1rem, 10.7vw, 4.7rem); }
+  .atelier-story__desktop-break { display: none; }
+  .atelier-story__detail { display: none; }
+  .atelier-story__divider { margin: 21px 0 20px; }
+  .atelier-story__link { font-size: 11px; }
+  .buying-guidance { min-height: 650px; }
+  .buying-guidance__photo { object-position: 67% center; }
+  .buying-guidance__shade { background: linear-gradient(90deg, rgb(38 5 16 / 97%) 0%, rgb(38 5 16 / 90%) 62%, rgb(38 5 16 / 65%) 100%); }
+  .buying-guidance__content { width: 100%; margin-left: 0; padding: 68px 7vw 72px; }
+  .buying-guidance__eyebrow { font-size: 10px; margin-bottom: 22px; }
+  .buying-guidance__title { font-size: clamp(3.1rem, 10vw, 4.6rem); line-height: 0.96; }
+  .buying-guidance__row { min-height: 92px; grid-template-columns: 36px 1fr 22px; gap: 8px 12px; padding: 12px 0; }
+  .buying-guidance__row-title { font-size: 1.75rem; }
+  .buying-guidance__row-arrow { grid-column: 3; grid-row: 1; }
+  .buying-guidance__row-detail { grid-column: 2 / 4; font-size: 13px; }
+  .buying-guidance__cta { font-size: 1.8rem; }
+}

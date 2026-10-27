@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import FloatingPetals from "@/components/FloatingPetals";
 import ProductCard from "@/components/ProductCard";
+import AtelierStory from "@/components/home/AtelierStory";
+import BuyingGuidance from "@/components/home/BuyingGuidance";
 import { useEnquirySubmission } from "@/hooks/useEnquirySubmission";
 import { fetchPosCatalog, groupCatalogByStyle } from "@/lib/pos-catalog";
 import type { ProductItem } from "@/data/boutique-data";
@@ -382,6 +384,9 @@ export default function MasterBoutiquePage() {
           </div>
         </div>
       </section>}
+
+      <AtelierStory />
+      <BuyingGuidance />
 
       {/* ============================================================== */}
       {/* 06. CONTACT PAGE SECTION                                        */}
