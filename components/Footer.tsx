@@ -108,11 +108,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/lookbook" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
-                  Style inspiration
-                </Link>
-              </li>
-              <li>
                 <Link href="/custom-design" className="inline-block py-1 hover:text-rosepetal-wine transition-colors">
                   Custom designs
                 </Link>

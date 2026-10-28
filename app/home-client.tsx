@@ -269,8 +269,7 @@ export default function MasterBoutiquePage() {
         <div className="rounded-[2rem] border border-white/40 bg-[#FFF5F6] p-6 shadow-xl sm:p-10">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-rosepetal-wine">The live edit</p>
           <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div><h2 className="font-serif-luxury text-3xl text-rosepetal-text sm:text-5xl">Shop what is here now.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-rosepetal-muted">These categories come from pieces currently published by the boutique. Explore the lookbook for style inspiration beyond the live edit.</p></div>
-            <Link href="/lookbook" className="text-sm font-semibold text-rosepetal-wine underline underline-offset-4">Explore the lookbook</Link>
+            <div><h2 className="font-serif-luxury text-3xl text-rosepetal-text sm:text-5xl">Shop what is here now.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-rosepetal-muted">These categories come from pieces currently published by the boutique. Explore each edit to see available designs and options.</p></div>
           </div>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {liveCategories.map(({ category, product, count }) => <Link key={category} href={`/collections?category=${encodeURIComponent(category)}`} className="group flex items-center gap-4 rounded-xl border border-rosepetal-border bg-white p-3 transition-shadow hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">

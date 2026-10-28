@@ -26,18 +26,9 @@ export interface ProductItem {
   prebookOnly?: boolean;
 }
 
-export interface LookbookItem {
-  id: string;
-  title: string;
-  category: "Festive" | "Bridal" | "Handloom" | "Contemporary";
-  image: string;
-  aspect: "tall" | "wide" | "square";
-}
-
 export const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/collections" },
-  { name: "Lookbook", href: "/lookbook" },
   { name: "Custom Designs", href: "/custom-design" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -424,65 +415,6 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
     category: "Accessories",
     image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800",
     description: "Pastel peach tailored outfit with hand-appliqué floral lace and handcrafted potli bag.",
-  },
-];
-
-export const LOOKBOOK_GALLERY: LookbookItem[] = [
-  {
-    id: "look-1",
-    title: "Red Bridal Lehenga",
-    category: "Bridal",
-    image: "/lehenga-red-bridal.png",
-    aspect: "tall",
-  },
-  {
-    id: "look-2",
-    title: "Floral Festive Dress",
-    category: "Festive",
-    image: "/libas-dress-01.jpg",
-    aspect: "tall",
-  },
-  {
-    id: "look-3",
-    title: "Green Silk Saree",
-    category: "Handloom",
-    image: "/heritage-silk-saree-green.png",
-    aspect: "tall",
-  },
-  {
-    id: "look-4",
-    title: "Ivory Bridal Lehenga",
-    category: "Bridal",
-    image: "/shop-all-featured-lehenga.png",
-    aspect: "tall",
-  },
-  {
-    id: "look-5",
-    title: "Rose Occasion Suit",
-    category: "Festive",
-    image: "/shop-all-featured-dress.png",
-    aspect: "tall",
-  },
-  {
-    id: "look-6",
-    title: "Contemporary Dress",
-    category: "Contemporary",
-    image: "/libas-dress-07.jpg",
-    aspect: "tall",
-  },
-  {
-    id: "look-7",
-    title: "Woven Silk Detail",
-    category: "Handloom",
-    image: "/thridha-handloom-01.webp",
-    aspect: "tall",
-  },
-  {
-    id: "look-8",
-    title: "Printed Designer Dress",
-    category: "Contemporary",
-    image: "/libas-dress-03.jpg",
-    aspect: "tall",
   },
 ];
 

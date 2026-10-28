@@ -1,6 +1,9 @@
 {
   "hosting": {
     "public": "out",
+    "redirects": [
+      { "source": "/lookbook", "destination": "/collections", "type": 301 }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -45,10 +48,6 @@
       },
       {
         "source": "/custom-design",
-        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
-      },
-      {
-        "source": "/lookbook",
         "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
       },
       {

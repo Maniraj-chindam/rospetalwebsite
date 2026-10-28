@@ -48,23 +48,23 @@ export default function VariantSelector({ variants, selected, onSelect }: {
   return (
     <div className="space-y-5">
       {sizes.length > 0 && <fieldset>
-        <legend className="text-xs font-semibold uppercase tracking-[0.17em] text-rosepetal-wine">Size</legend>
+        <legend className="text-xs font-semibold uppercase tracking-[0.17em] text-rosepetal-wine">Choose a size <span className="ml-2 font-normal normal-case tracking-normal text-rosepetal-muted">{selected.size}</span></legend>
         <div className="mt-3 flex flex-wrap gap-2">
           {sizes.map((size) => {
             const selectedSize = selected.size === size;
             const allSoldOut = variants.filter((item) => item.size === size).every((item) => (item.availableStock ?? 0) < 1);
-            return <button key={size} type="button" onClick={() => chooseSize(size)} aria-pressed={selectedSize} aria-label={`Size ${size}${allSoldOut ? ", sold out" : ""}`} className={`min-h-11 min-w-12 rounded-md border px-4 py-2 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${selectedSize ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-text hover:border-rosepetal-wine"} ${allSoldOut ? "opacity-60" : ""}`}>{size.toUpperCase()}</button>;
+            return <button key={size} type="button" onClick={() => chooseSize(size)} aria-pressed={selectedSize} aria-label={`Size ${size}${allSoldOut ? ", sold out" : ""}`} className={`min-h-12 min-w-14 rounded-sm border px-4 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${selectedSize ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-text hover:border-rosepetal-wine"} ${allSoldOut ? "opacity-60" : ""}`}>{size.toUpperCase()}</button>;
           })}
         </div>
       </fieldset>}
       {colours.length > 0 && <fieldset>
-        <legend className="text-xs font-semibold uppercase tracking-[0.17em] text-rosepetal-wine">Colour <span className="ml-2 font-normal normal-case tracking-normal text-rosepetal-muted">{selected.color}</span></legend>
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <legend className="text-xs font-semibold uppercase tracking-[0.17em] text-rosepetal-wine">Choose a colour <span className="ml-2 font-normal normal-case tracking-normal text-rosepetal-muted">{selected.color}</span></legend>
+        <div className="mt-3 flex flex-wrap gap-2">
           {colours.map((colour) => {
             const option = variants.find((item) => item.size === selected.size && item.color === colour);
             const selectedColour = selected.color === colour;
             const fill = swatchColour(colour);
-            return <button key={colour} type="button" onClick={() => chooseColour(colour)} disabled={!option} aria-pressed={selectedColour} aria-label={`Colour ${colour}${option && (option.availableStock ?? 0) < 1 ? ", sold out" : ""}`} title={colour} className={`inline-flex size-11 items-center justify-center rounded-md border-2 bg-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${selectedColour ? "border-rosepetal-wine" : "border-rosepetal-border hover:border-rosepetal-wine"} disabled:cursor-not-allowed disabled:opacity-40`}><span aria-hidden="true" className={`flex size-7 items-center justify-center rounded-[2px] border border-black/10 text-[10px] font-semibold uppercase text-rosepetal-wine ${fill ? "" : "bg-rosepetal-card"}`} style={fill ? { backgroundColor: fill } : undefined}>{fill ? "" : colour.slice(0, 2)}</span></button>;
+            return <button key={colour} type="button" onClick={() => chooseColour(colour)} disabled={!option} aria-pressed={selectedColour} aria-label={`Colour ${colour}${option && (option.availableStock ?? 0) < 1 ? ", sold out" : ""}`} className={`inline-flex min-h-12 items-center gap-2 rounded-sm border px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine ${selectedColour ? "border-rosepetal-wine bg-rosepetal-wine text-white" : "border-rosepetal-border bg-white text-rosepetal-text hover:border-rosepetal-wine"} disabled:cursor-not-allowed disabled:opacity-40`}><span aria-hidden="true" className={`size-4 shrink-0 rounded-full border ${selectedColour ? "border-white/70" : "border-black/10"} ${fill ? "" : "bg-rosepetal-card"}`} style={fill ? { backgroundColor: fill } : undefined} />{colour}</button>;
           })}
         </div>
       </fieldset>}
