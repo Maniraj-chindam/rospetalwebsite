@@ -68,11 +68,6 @@ export default function MasterBoutiquePage() {
     return () => controller.abort();
   }, []);
   const arrivalGroups = groupCatalogByStyle(newArrivals).slice(0, 4);
-  const liveCategories = [...new Set(newArrivals.map((item) => item.category))].map((category) => ({
-    category,
-    product: newArrivals.find((item) => item.category === category)!,
-    count: groupCatalogByStyle(newArrivals.filter((item) => item.category === category)).length,
-  }));
   const hasLivePiecesFor = (href: string) => {
     const params = new URLSearchParams(href.split("?")[1] || "");
     return newArrivals.some((item) =>
@@ -264,22 +259,6 @@ export default function MasterBoutiquePage() {
         </div>}
       </section>
 
-      {/* Only published POS categories are presented as shoppable. */}
-      {liveCategories.length > 0 && <section id="shop-all" className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
-        <div className="rounded-[2rem] border border-white/40 bg-[#FFF5F6] p-6 shadow-xl sm:p-10">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-rosepetal-wine">The live edit</p>
-          <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div><h2 className="font-serif-luxury text-3xl text-rosepetal-text sm:text-5xl">Shop what is here now.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-rosepetal-muted">These categories come from pieces currently published by the boutique. Explore each edit to see available designs and options.</p></div>
-          </div>
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {liveCategories.map(({ category, product, count }) => <Link key={category} href={`/collections?category=${encodeURIComponent(category)}`} className="group flex items-center gap-4 rounded-xl border border-rosepetal-border bg-white p-3 transition-shadow hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">
-              <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-lg bg-rosepetal-card"><Image src={product.image} alt="" fill sizes="96px" className="object-cover transition-transform group-hover:scale-105" /></div>
-              <div><h3 className="font-serif-luxury text-xl text-rosepetal-text">{category}</h3><p className="mt-2 text-xs text-rosepetal-muted">{count} {count === 1 ? "design" : "designs"} in the live edit</p><span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-rosepetal-wine">Explore <ArrowRight className="size-3.5" /></span></div>
-            </Link>)}
-          </div>
-        </div>
-      </section>}
-
       {/* ============================================================== */}
       {/* 05. NEW ARRIVALS SECTION                                        */}
       {/* ============================================================== */}
@@ -310,7 +289,15 @@ export default function MasterBoutiquePage() {
           {arrivalStatus === "loading" && <p role="status" className="py-8 text-center text-white">Loading new pieces…</p>}
           {arrivalStatus === "error" && <p role="alert" className="py-8 text-center text-white">New pieces are temporarily unavailable. Please visit the collection later.</p>}
           {arrivalStatus === "ready" && newArrivals.length === 0 && <p className="py-8 text-center text-white">New pieces are coming soon.</p>}
-          {arrivalGroups.length > 0 && <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">{arrivalGroups.map((variants) => <div key={variants[0].styleCode || variants[0].id} className="rounded-xl bg-white p-3"><ProductCard product={variants[0]} variants={variants} /></div>)}</div>}
+          {arrivalGroups.length > 0 && (
+            <div className={`grid gap-4 sm:gap-6 ${arrivalGroups.length === 1 ? "mx-auto max-w-sm grid-cols-1" : arrivalGroups.length === 2 ? "mx-auto max-w-3xl grid-cols-1 sm:grid-cols-2" : arrivalGroups.length === 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"}`}>
+              {arrivalGroups.map((variants) => (
+                <div key={variants[0].styleCode || variants[0].id} className="rounded-[1.25rem] border border-white/60 bg-[#FFF8F6] p-3 shadow-[0_14px_34px_rgba(65,19,39,0.12)] transition-shadow duration-300 hover:shadow-[0_20px_42px_rgba(65,19,39,0.2)] sm:p-3.5">
+                  <ProductCard product={variants[0]} variants={variants} imageFit="contain" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
       </section>

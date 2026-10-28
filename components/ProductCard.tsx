@@ -20,7 +20,7 @@ function enquiryUrl(product: ProductItem) {
   return `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`;
 }
 
-export default function ProductCard({ product, variants = [product] }: { product: ProductItem; variants?: ProductItem[] }) {
+export default function ProductCard({ product, variants = [product], imageFit = "cover" }: { product: ProductItem; variants?: ProductItem[]; imageFit?: "cover" | "contain" }) {
   const { wishlist, toggleWishlist, bag, addToBag, buyNow } = useBoutique();
   const router=useRouter();
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
@@ -51,10 +51,10 @@ export default function ProductCard({ product, variants = [product] }: { product
 
   return (
     <>
-      <article className="group flex flex-col text-left">
-        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-md bg-[#F2E8E7]">
+      <article className="group flex h-full flex-col text-left">
+        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-[#F2E8E7]">
           <Link href={productHref} aria-label={`View ${product.name}`} className="relative block h-full w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosepetal-wine">
-            <Image src={product.image} alt={cardImageAlt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+            <Image src={product.image} alt={cardImageAlt} fill sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw" className={`${imageFit === "contain" ? "object-contain" : "object-cover"} object-center transition-transform duration-700 group-hover:scale-[1.025]`} />
           </Link>
           <button type="button" onClick={() => toggleWishlist(product.id)} className={`absolute right-3 top-3 z-10 rounded-full p-2 ${isFavorited ? "bg-rosepetal-wine text-white" : "bg-white/90 text-rosepetal-text"}`} aria-label={isFavorited ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`} aria-pressed={isFavorited}>
             <Heart className={`h-4 w-4 ${isFavorited ? "fill-white" : ""}`} aria-hidden="true" />
