@@ -114,22 +114,22 @@ export default function MasterBoutiquePage() {
       {/* Story Video Modal */}
 
       {/* ============================================================== */}
-      {/* 01. HERO SECTION WITH EXACT USER IMAGE & 8 ARCHED CATEGORIES    */}
+      {/* 01. HERO SECTION & LIVE POS CATEGORIES                          */}
       {/* ============================================================== */}
       <section id="step-01" className="relative bg-transparent">
 
-        {/* ---------------- NEW ULTRA-HD HERO BANNER ---------------- */}
+        {/* The photo is a separate asset; all hero copy and actions are live UI. */}
         <div className="w-full">
           <div className="relative overflow-hidden group">
-            <div className="relative min-h-[100svh] w-full overflow-hidden bg-[#9C2D5B]">
-              {/* Ultra-HD Hero Image: object-[80%_15%] on mobile frames saree pleats and embroidered blouse in top zone */}
+            <div className="relative min-h-[100svh] w-full overflow-hidden bg-[#4D1023]">
+              {/* On phones, keep the embellished dress form in the cropped frame. */}
               <Image
-                src="/hero-rosepetal-bridal-silk.jpg"
-                alt="Pink silk saree and embellished occasion-wear styling"
+                src="/hero-designer-lehengas.webp"
+                alt="Illustrative embroidered lehenga and occasion dress displayed on mannequins"
                 fill
                 priority
                 sizes="100vw"
-                className="absolute inset-0 h-full w-full object-cover object-[80%_15%] sm:object-right md:object-center"
+                className="absolute inset-0 h-full w-full object-cover object-[77%_center] sm:object-[58%_center] lg:object-center"
               />
 
               {/* A dark wine scrim keeps text readable over the photograph. */}
@@ -163,7 +163,7 @@ export default function MasterBoutiquePage() {
 
                   {/* Description: Balanced max-width on mobile */}
                   <p className="mt-2.5 max-w-[18.5rem] sm:max-w-lg text-sm sm:text-base leading-relaxed text-rose-100 font-sans font-light">
-                    Explore silk sarees, occasion wear and custom design ideas for life’s most cherished celebrations.
+                    Explore designer dresses, lehengas and custom occasion wear for life’s most cherished celebrations.
                   </p>
 
                   {/* Actions Bar */}
