@@ -17,7 +17,9 @@ npm run release:check
 
 `npm test` covers the catalog contract, provisional and stale bag items, enquiry acknowledgements, courier quote totals, and checkout responses. `npm run check:export` checks exported routes and local links/assets after the build. Older visual tests in `tests/` target superseded shop designs and are not release checks. A manual browser pass is also required before deployment.
 
-The build exports to `out/`. Firebase Hosting serves static files only; Next.js API routes will not run there. Deploy with `npx firebase-tools deploy --only hosting --project rosepetal-boutique-live` after the checks pass.
+The build exports to `out/`. Firebase Hosting serves static files only; Next.js API routes will not run there. The authorized release source is `maniraj/main` in `Maniraj-chindam/rospetalwebsite`. Run `npm run deploy:hosting` from a clean, synced `main` checkout. The command checks the remote revision and Firebase project, runs lint/tests/build/export, deploys the generated files, then compares live page hashes on both Hosting domains. Use `node scripts/deploy-hosting.mjs --check` to run the same source and build checks without deploying.
+
+Do not deploy directly from another checkout or Firebase console upload. This repository guard cannot prevent a separate Firebase account with Hosting deploy access from replacing the release; the project owner must limit that access to the authorized release operator or CI identity. If the live site differs, check Firebase Hosting release history and compare its timestamp with `maniraj/main` before restoring it.
 
 ## Live integrations
 
