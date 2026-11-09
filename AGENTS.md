@@ -18,6 +18,13 @@
 - Preserve uncommitted work. Use Harsha
   <reddyharshavardhan145@gmail.com> for commits. The authorized website push remote
   is `maniraj`, currently on `main`; do not push to the unrelated `origin` remote.
+- Before any Firebase Hosting release, fetch and reconcile `maniraj/main`, then
+  use `node scripts/deploy-hosting.mjs` (or `npm run deploy:hosting`) from a clean,
+  synced `main` checkout. This command
+  runs release checks and verifies that the custom domain and default Hosting
+  domain serve the generated pages. Never deploy an old local export or an
+  unrelated repository. A separate account with Firebase deploy access can
+  still overwrite the site; repository checks cannot prevent that.
 - On 2026-10-26, this catalog change was deployed to Firebase Hosting from
   `a1dc270`, before the matching POS UI/API release. The live website reads the
   main POS product category, prices and text through the catalog. Checkout and
